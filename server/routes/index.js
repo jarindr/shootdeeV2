@@ -3,6 +3,7 @@ var router = express.Router()
 var path = require('path')
 const webpack = require('webpack')
 const webpackConfig = require('../webpack/webpack.dev.config.js')
+
 router.get('*', function (req, res, next) {
   const compiler = webpack(webpackConfig)
   const filename = path.resolve(compiler.outputPath, 'index.html')

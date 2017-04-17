@@ -1,7 +1,13 @@
 import HomePage from './src/HomePage'
 import React from 'react'
-import { Route } from 'react-router-dom'
+import { Route, BrowserRouter as Router } from 'react-router-dom'
 
 export default(
-  <Route path='/' component={HomePage} />
+  <Router>
+    <div>
+      <Route exact path='/' component={HomePage} />
+      <Route path='/eiei/' component={() => <div><h1>KUY</h1></div>} />
+    </div>
+  </Router>
+
 )

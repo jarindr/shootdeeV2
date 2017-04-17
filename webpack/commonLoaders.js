@@ -1,11 +1,16 @@
 module.exports = [
   {
     test: /\.jsx?$/,
-    loader: 'babel-loader',
-    exclude: /node_modules/,
-    query: {
-      presets: ['es2015', 'react']
-    }
+    use: [
+      { loader: 'react-hot-loader' },
+      {
+        loader: 'babel-loader',
+        options: {
+          presets: ['es2015', 'react']
+        }
+      }
+    ],
+    exclude: /node_modules/
   },
   {
     test: /\.placeholder\.(jpg|png)$/,
@@ -40,6 +45,10 @@ module.exports = [
   {
     test: /\.(eot|woff2|woff|ttf|otf|)(\?.*)?$/,
     loader: 'file-loader?name=assets/fonts/[hash].[ext]'
+  },
+  {
+    test: /\.json$/,
+    loader: 'json-loader'
   }
 
 ]

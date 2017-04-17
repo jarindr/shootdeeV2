@@ -5,12 +5,12 @@ const webpack = require('webpack')
 const path = require('path')
 module.exports = {
   entry: [
-    'webpack-hot-middleware/client',
-    path.resolve(__dirname, '../../client/index.js')
+    path.resolve(__dirname, '../client/index.js')
   ],
 
   output: {
-    publicPath: '/',
+    path: path.resolve(__dirname, '../server/public'),
+    publicPath: '/public/',
     filename: 'bundle.js'
   },
 
@@ -21,11 +21,12 @@ module.exports = {
   },
 
   plugins: [
-    new HtmlWebpackPlugin({template: path.resolve(__dirname, '../public/index.html')}),
+    new HtmlWebpackPlugin({template: path.resolve(__dirname, './index.html')}),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery'
-    })
+    }),
+    new webpack.LoaderOptionsPlugin({ options: { postcss: [ autoprefixer ] } })
   ]
 }

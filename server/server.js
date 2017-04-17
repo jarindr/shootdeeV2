@@ -2,7 +2,6 @@
 var app = require('./app')
 var debug = require('debug')('shootdd:server') // use debug module
 var http = require('http')
-
 /**
  * Get port from environment and store in Express.
  */
@@ -20,7 +19,10 @@ var server = http.createServer(app) // connect app to server
  * Listen on provided port, on all network interfaces.
  */
 
-server.listen(port)
+server.listen(port, function (err) {
+  if (err) throw err
+  console.log('server is up and listening to port', port)
+})
 server.on('error', onError)
 server.on('listening', onListening)
 

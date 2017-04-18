@@ -1,11 +1,25 @@
+import { combineReducers, createStore } from 'redux'
+
+import { Provider } from 'react-redux'
+import React from 'react'
+import defaultReducer from './reducers/default'
 import { render } from 'react-dom'
 import routes from './routes'
 
-// Client renderer
+const reducers = combineReducers({
+  defaultReducer
+})
+
+const store = createStore(reducers)
+const element = (
+  <Provider store={store}>
+    {routes}
+  </Provider>
+)
+
 if (typeof document !== 'undefined') {
   const app = document.getElementById('app')
-  render(routes, app)
-
+  render(element, app)
   // Hot Module Replacement
   if (module.hot) {
     module.hot.accept('./routes', () => {

@@ -1,4 +1,5 @@
 import React from 'react'
+import { connect } from 'react-redux'
 import request from 'request-promise'
 class HomePage extends React.Component {
 
@@ -8,6 +9,7 @@ class HomePage extends React.Component {
   }
 
   render () {
+    console.log(this.props)
     return (
       <div>
         <h1>Hello it is so good development so far wow this is it</h1>
@@ -16,4 +18,4 @@ class HomePage extends React.Component {
   }
 }
 
-export default HomePage
+export default connect()(HomePage)

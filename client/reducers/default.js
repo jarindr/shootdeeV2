@@ -1,1 +1,3 @@
-export default (state = 0, action) => state
+const initialState = { user: null }
+const defaultReducer = (state = initialState, action) => state
+export default defaultReducer

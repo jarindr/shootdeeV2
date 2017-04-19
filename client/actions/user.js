@@ -1,6 +1,6 @@
 export function setCurrentUser (user) {
   return {
-    type: 'SET_USER_LOGIN',
+    type: 'SET_USER',
     user
   }
 }

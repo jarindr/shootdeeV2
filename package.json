@@ -57,12 +57,14 @@
   "dependencies": {
     "fs": "0.0.1-security",
     "mongodb": "^2.2.25",
+    "normalize.css": "^6.0.0",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-redux": "^5.0.4",
     "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1",
     "redux": "^3.6.0",
-    "request": "^2.81.0"
+    "request": "^2.81.0",
+    "reset-css": "^2.2.0"
   }
 }

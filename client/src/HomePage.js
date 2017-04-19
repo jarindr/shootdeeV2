@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { setCurrentUser } from '../actions/user'
 import { getCurrentUser } from '../selectors/user'
+import styles from './HomePage.sass'
 class HomePage extends React.Component {
 
   static propTypes = {
@@ -14,7 +15,7 @@ class HomePage extends React.Component {
   }
   render () {
     return (
-      <div>
+      <div className={styles.container}>
         <h1>{this.props.user}</h1>
         <button onClick={this.onButtonClick}>CLICK ME BISH</button>
       </div>

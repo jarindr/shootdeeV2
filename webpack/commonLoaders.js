@@ -14,6 +14,20 @@ module.exports = [
     exclude: /node_modules/
   },
   {
+    test: /\.sass$/,
+    use: [{
+      loader: 'style-loader'
+    }, {
+      loader: 'css-loader',
+      options: {
+        modules: true,
+        localIdentName: '[name]-[local]-[hash:base64]'
+      }
+    }, {
+      loader: 'sass-loader'
+    }]
+  },
+  {
     test: /\.placeholder\.(jpg|png)$/,
     loader: 'url-loader?name=assets/images/[hash].[ext]&limit=4096'
   },

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build:client": "webpack --config ./webpack/webpack.prod.config.js",
-    "dev:server": "nodemon server/server.js --watch server",
+    "dev:server": "nodemon server/server.js --exec babel-node --presets env --watch server",
     "dev:client": "webpack-dev-server --config webpack/webpack.dev.config.js",
     "dev": "npm run dev:client && npm run dev:server",
     "prod": "NODE_ENV='production' npm run build:client && node server/server.js"
@@ -55,9 +55,13 @@
     "webpack-hot-middleware": "^2.18.0"
   },
   "dependencies": {
+    "babel-cli": "^6.24.1",
     "fs": "0.0.1-security",
-    "mongodb": "^2.2.25",
+    "log4js": "^1.1.1",
+    "mongodb": "^2.2.26",
+    "mongoose": "^4.9.5",
     "normalize.css": "^6.0.0",
+    "prop-types": "^15.5.8",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-redux": "^5.0.4",

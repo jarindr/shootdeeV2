@@ -1,18 +1,25 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { setCurrentUser } from '../actions/user'
 import { getCurrentUser } from '../selectors/user'
+import { setCurrentUser } from '../actions/user'
 import styles from './HomePage.sass'
+import propTypes from 'prop-types'
 class HomePage extends React.Component {
 
   static propTypes = {
-    user: React.PropTypes.string,
-    setCurrentUser: React.PropTypes.func
+    user: propTypes.string,
+    setCurrentUser: propTypes.func
   }
 
   onButtonClick = () => {
-    this.props.setCurrentUser('me')
+    fetch('http://localhost:3000/api/bookings/', { method: 'POST' })
+      .then(response => {
+        if (response.status === 200) {
+          this.props.setCurrentUser('okay')
+        }
+      })
   }
+
   render () {
     return (
       <div className={styles.container}>

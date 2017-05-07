@@ -7,9 +7,31 @@ router.get('/login', function (req, res, next) {
   res.send('successfully login.')
 })
 
+router.get('/bookings/:id', function (req, res, next) {
+  if (req.params.id === 'all') {
+    booking.getAllBookingsAsync({
+      onSuccess: result => {
+        res.send(result)
+      },
+      onFailed: err => {
+        res.send(err)
+      }
+    })
+  } else {
+    booking.getBookingsAsync({
+      onSuccess: result => {
+        res.send(result)
+      },
+      onFailed: err => {
+        res.send(err)
+      }
+    })
+  }
+})
+
 router.post('/bookings/', function (req, res, next) {
   const { data } = req.body
-  booking.insertBookingsAsync({
+  booking.saveBookingsAsync({
     data,
     onSuccess: result => {
       res.send(result)

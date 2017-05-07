@@ -12,15 +12,11 @@ class HomePage extends React.Component {
   }
 
   onButtonClick = () => {
-    fetch('http://localhost:3000/api/bookings/', { method: 'POST' })
-      .then(response => {
-        if (response.status === 200) {
-          this.props.setCurrentUser('okay')
-        }
-      })
+    this.props.setCurrentUser('okay')
   }
 
   render () {
+    console.log(this.props)
     return (
       <div className={styles.container}>
         <h1>{this.props.user}</h1>

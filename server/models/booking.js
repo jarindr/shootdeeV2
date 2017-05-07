@@ -2,6 +2,7 @@ import log4js from 'log4js'
 import mongoose from 'mongoose'
 const logger = log4js.getLogger()
 const bookingSchema = mongoose.Schema({
+  _id: { type: mongoose.Schema.ObjectId },
   bookingId: { type: String, required: true },
   customer: { type: String },
   assignment: { type: String, required: true },
@@ -25,12 +26,9 @@ const bookingSchema = mongoose.Schema({
 
 bookingSchema.index({ bookingId: 1, studioRoom: 1 }, { unique: true })
 
-bookingSchema.findById = (id, callback) => {
-  this.find({ bookingId: id }, callback)
-}
 const Booking = mongoose.model('bookings', bookingSchema)
 
-export function insertBookingsAsync ({data, onSuccess, onFailed}) {
+export function saveBookingsAsync ({data, onSuccess, onFailed}) {
   const booking = new Booking(data)
   booking.save((err, result) => {
     if (err) {
@@ -38,7 +36,20 @@ export function insertBookingsAsync ({data, onSuccess, onFailed}) {
       logger.error(err)
     } else {
       onSuccess()
-      logger.info('booking saved to database.')
+      logger.info('bookings saved to database.')
     }
   })
 }
+
+export function getAllBookingsAsync ({onSuccess, onFailed}) {
+  Booking.find({}, null, (err, result) => {
+    if (err) {
+      onFailed(err)
+      logger.error(err)
+    } else {
+      onSuccess(result)
+      logger.info('get all bookings completed.')
+    }
+  })
+}
+

@@ -68,9 +68,12 @@
     "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1",
     "redux": "^3.6.0",
+    "redux-devtools-extension": "^2.13.2",
     "redux-thunk": "^2.2.0",
     "request": "^2.81.0",
     "request-promise": "^4.2.0",
-    "reset-css": "^2.2.0"
+    "reset-css": "^2.2.0",
+    "socket.io": "^1.7.4",
+    "socket.io-client": "^1.7.4"
   }
 }

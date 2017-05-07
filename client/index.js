@@ -6,8 +6,9 @@ import reducers from './reducers/reducers'
 import { render } from 'react-dom'
 import routes from './routes'
 import thunk from 'redux-thunk'
+import { composeWithDevTools } from 'redux-devtools-extension';
 
-export const store = createStore(reducers, applyMiddleware(thunk))
+export const store = createStore(reducers, composeWithDevTools(applyMiddleware(thunk)))
 const element = (
   <Provider store={store}>
     {routes}

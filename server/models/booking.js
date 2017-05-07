@@ -1,5 +1,5 @@
-import mongoose from 'mongoose'
 import log4js from 'log4js'
+import mongoose from 'mongoose'
 const logger = log4js.getLogger()
 const bookingSchema = mongoose.Schema({
   bookingId: { type: String, required: true },
@@ -19,15 +19,16 @@ const bookingSchema = mongoose.Schema({
   photographer: { type: String, required: true },
   shootingDates: { type: [Date], required: true },
   times: { type: [Date], required: true },
-  assistants: { type: [String] }
+  assistants: [{ type: String }],
+  equipments: [ {type: mongoose.Schema.Types.ObjectId, ref: 'equipments'} ]
 })
-bookingSchema.index({ bookingId: 1, roomBookingId: 1 }, { unique: true })
 
-const Booking = mongoose.model('bookings', bookingSchema)
+bookingSchema.index({ bookingId: 1, studioRoom: 1 }, { unique: true })
 
-Booking.statics.findById = (id, callback) => {
+bookingSchema.findById = (id, callback) => {
   this.find({ bookingId: id }, callback)
 }
+const Booking = mongoose.model('bookings', bookingSchema)
 
 export function insertBookingsAsync ({data, onSuccess, onFailed}) {
   const booking = new Booking(data)
@@ -35,8 +36,9 @@ export function insertBookingsAsync ({data, onSuccess, onFailed}) {
     if (err) {
       onFailed()
       logger.error(err)
+    } else {
+      onSuccess()
+      logger.info('booking saved to database.')
     }
-    onSuccess()
-    logger.info('booking saved to database.')
   })
 }

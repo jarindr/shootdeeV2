@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { getCurrentUser } from '../selectors/user'
-import { setCurrentUser } from '../actions/user'
+import { getCurrentUser } from '../selectors/userSelectors'
+import { setCurrentUser } from '../actions/userActions'
 import styles from './HomePage.sass'
 import propTypes from 'prop-types'
 class HomePage extends React.Component {
@@ -19,7 +19,7 @@ class HomePage extends React.Component {
     console.log(this.props)
     return (
       <div className={styles.container}>
-        <h1>{this.props.user}</h1>
+        <h1>{this.props.user.userId}</h1>
         <button onClick={this.onButtonClick}>CLICK ME BISH</button>
       </div>
     )

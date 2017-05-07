@@ -1,3 +1,3 @@
 export const getCurrentUser = (state) => {
-  return state.user
+  return {user: state.user}
 }

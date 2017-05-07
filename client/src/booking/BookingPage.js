@@ -1,12 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { getAllBookings } from '../../selectors/bookings'
+import { getAllBookings } from '../../selectors/bookingsSelectors'
 import styles from './BookingPage.sass'
 import propTypes from 'prop-types'
 class BookingPage extends React.Component {
 
   static propTypes = {
-    bookings: propTypes.string
+    bookings: propTypes.array
   }
 
   render () {

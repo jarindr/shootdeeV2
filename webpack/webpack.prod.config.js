@@ -19,7 +19,12 @@ module.exports = {
       ...commonLoaders
     ]
   },
-
+  node: {
+    console: true,
+    fs: 'empty',
+    net: 'empty',
+    tls: 'empty'
+  },
   plugins: [
     new HtmlWebpackPlugin({template: path.resolve(__dirname, './index.html')}),
     new webpack.HotModuleReplacementPlugin(),

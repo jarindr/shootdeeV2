@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { getAllBookings } from '../../selectors/bookingsSelectors'
 import styles from './BookingPage.sass'
 import propTypes from 'prop-types'
+
 class BookingPage extends React.Component {
 
   static propTypes = {
@@ -17,5 +18,4 @@ class BookingPage extends React.Component {
     )
   }
 }
-
 export default connect(getAllBookings)(BookingPage)

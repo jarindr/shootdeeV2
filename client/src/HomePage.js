@@ -16,7 +16,6 @@ class HomePage extends React.Component {
   }
 
   render () {
-    console.log(this.props)
     return (
       <div className={styles.container}>
         <h1>{this.props.user.userId}</h1>

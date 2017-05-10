@@ -7,7 +7,10 @@ module.exports = [
         loader: 'babel-loader',
         options: {
           presets: ['env', 'react'],
-          plugins: ['babel-plugin-transform-class-properties']
+          plugins: ['babel-plugin-transform-class-properties', ['import', {
+            'libraryName': 'antd',
+            'style': 'css'
+          }]]
         }
       }
     ],
@@ -23,10 +26,31 @@ module.exports = [
         modules: true,
         localIdentName: '[name]-[local]-[hash:base64]'
       }
+    },
+    {
+      loader: 'postcss-loader'
     }, {
       loader: 'sass-loader'
     }]
   },
+  {
+    test: /\.scss$/,
+    use: [{
+      loader: 'style-loader'
+    }, {
+      loader: 'css-loader',
+      options: {
+        modules: true,
+        localIdentName: '[name]-[local]-[hash:base64]'
+      }
+    },
+    {
+      loader: 'postcss-loader'
+    }, {
+      loader: 'less-loader'
+    }]
+  },
+  { test: /(\.css$)/, loaders: ['style-loader', 'css-loader', 'postcss-loader'] },
   {
     test: /\.placeholder\.(jpg|png)$/,
     loader: 'url-loader?name=assets/images/[hash].[ext]&limit=4096'

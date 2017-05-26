@@ -21,33 +21,43 @@ class NormalLoginForm extends React.Component {
     e.preventDefault()
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values)
+        this.setState({ loginState: true })
       }
     })
-  }
-
-  onLoginButtonClick = (e) => {
-    this.setState({loginState: !this.state.loginState})
   }
 
   render () {
     const { getFieldDecorator } = this.props.form
     return (
-      <Form onSubmit={this.handleSubmit} className={styles.loginForm}>
-        <img src={require('./images/logo_A2.jpg')} className={styles.logo} />
-        <FormItem>
+      <Form onSubmit={this.handleSubmit} className={styles.loginForm} wow='1'>
+        <img src={require('./images/logo_A2.png')} className={styles.logo} />
+        <FormItem className={styles.form}>
           {getFieldDecorator('userName', {
             rules: [{ required: true, message: 'Please input your username.' }]
           })(
-            <Input size='large' prefix={<Icon type='user' style={{ fontSize: 13 }} />} placeholder='Username' />
-          )}
+            <Input
+              size='large'
+              prefix={<Icon type='user' style={{ fontSize: 13 }} />}
+              placeholder='Username'
+              disabled={this.state.loginState}
+              className={styles.input}
+            />
+            )}
         </FormItem>
-        <FormItem>
+        <FormItem className={styles.form}>
           {getFieldDecorator('password', {
             rules: [{ required: true, message: 'Please input your password.' }]
           })(
-            <Input size='large' prefix={<Icon type='lock' style={{ fontSize: 13 }} />} type='password' placeholder='Password' />
-          )}
+            <Input
+              size='large'
+              prefix={<Icon type='lock' />}
+              style={{ fontSize: 13 }}
+              type='password'
+              placeholder='Password'
+              disabled={this.state.loginState}
+              className={styles.input}
+            />
+            )}
         </FormItem>
         <FormItem>
           <Button
@@ -66,14 +76,20 @@ class NormalLoginForm extends React.Component {
   }
 }
 
-const WrappedNormalLoginForm = Form.create()(NormalLoginForm)
+const WrappedNormalLoginForm = Form.create({
+  onFieldsChange: (props, field) => console.log(props, field)
+})(NormalLoginForm)
 
 class LoginPage extends Component {
   render () {
     return (
       <div className={styles.container}>
-        <WrappedNormalLoginForm />
-        <div className={styles.background} />
+        <div className={styles.innerContainer}>
+          <WrappedNormalLoginForm />
+          <div className={styles.copyright}>
+            <Icon type='copyright' /> Copyright shootdee studio 2017
+          </div>
+        </div>
       </div>
     )
   }

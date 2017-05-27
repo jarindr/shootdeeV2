@@ -9,7 +9,7 @@ module.exports = [
           presets: ['env', 'react'],
           plugins: ['babel-plugin-transform-class-properties', ['import', {
             'libraryName': 'antd',
-            'style': 'css'
+            'style': true
           }]]
         }
       }
@@ -34,20 +34,19 @@ module.exports = [
     }]
   },
   {
-    test: /\.scss$/,
+    test: /\.less$/,
     use: [{
       loader: 'style-loader'
     }, {
-      loader: 'css-loader',
-      options: {
-        modules: true,
-        localIdentName: '[name]-[local]-[hash:base64]'
-      }
+      loader: 'css-loader'
     },
     {
       loader: 'postcss-loader'
     }, {
-      loader: 'less-loader'
+      loader: 'less-loader',
+      options: {
+        modifyVars: {'primary-color': '#31a7aa'}
+      }
     }]
   },
   { test: /(\.css$)/, loaders: ['style-loader', 'css-loader', 'postcss-loader'] },

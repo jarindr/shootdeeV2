@@ -76,9 +76,7 @@ class NormalLoginForm extends React.Component {
   }
 }
 
-const WrappedNormalLoginForm = Form.create({
-  onFieldsChange: (props, field) => console.log(props, field)
-})(NormalLoginForm)
+const WrappedNormalLoginForm = Form.create({})(NormalLoginForm)
 
 class LoginPage extends Component {
   render () {

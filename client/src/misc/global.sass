@@ -2,7 +2,15 @@
 @import reset-css/reset.css
 
 \:global
-  body
-    color: red
+  body, #app
+    overflow: hidden
+    position: absolute
+    left: 0
+    right: 0
+    bottom: 0
+    top: 0
   input[disabled]
     cursor: default
+
+  .ant-menu-dark.ant-menu-inline .ant-menu-item-selected
+    background-color: red

@@ -20,7 +20,7 @@ class InitialProvider extends Component {
 
   render () {
     return (
-      <div>
+      <div style={{height: '100%'}}>
         {this.props.children}
       </div>
     )

@@ -1,42 +1,66 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Menu, Icon, Layout } from 'antd'
-const { Sider, Header } = Layout
+import { Menu, Icon, Layout, Row, Col } from 'antd'
+const { Sider } = Layout
+import { withRouter } from 'react-router'
 import styles from './Layout.sass'
 class LayoutApp extends Component {
   static propTypes = {
-    children: PropTypes.node
+    children: PropTypes.node,
+    location: PropTypes.object
+  }
+
+  getActiveMenu = () => {
+    return this.props.location.pathname.split('/')[1]
+  }
+
+  renderSideNav = () => {
+    return (
+      <Sider width={200}>
+        <div className={styles.logo}>
+          <img src={require('../login/images/logo_C2.png')} />
+        </div>
+        <Menu
+          mode='inline'
+          defaultSelectedKeys={[this.getActiveMenu()]}
+          theme='dark'
+        >
+          <Menu.Item key='schedules'>
+            <Icon type='calendar' /><span className='nav-text'>Schedules</span>
+          </Menu.Item>
+          <Menu.Item key='booking'>
+            <Icon type='plus-circle-o' /><span className='nav-text'>Booking</span>
+          </Menu.Item>
+          <Menu.Item key='equipments'>
+            <Icon type='tool' /><span className='nav-text'>Equipments</span>
+          </Menu.Item>
+          <Menu.Item key='customer'>
+            <Icon type='user' /><span className='nav-text'>Customer</span>
+          </Menu.Item>
+        </Menu>
+      </Sider>
+    )
+  }
+
+  renderContent = () => {
+    return (
+      <Layout className={styles.contentContainer}>
+        <Row>
+          <Col span={20} offset={2}>
+            {this.props.children}
+          </Col>
+        </Row>
+      </Layout>
+    )
   }
   render () {
     return (
       <Layout style={{height: '100%'}}>
-        <Sider width={200}>
-          <div className={styles.logo}>
-            <img src={require('../login/images/logo_C2.png')} />
-          </div>
-          <Menu
-            mode='inline'
-            defaultSelectedKeys={['1']}
-            defaultOpenKeys={['sub1']}
-            theme='dark'
-          >
-            <Menu.Item key='1'>
-              <Icon type='calendar' /><span className='nav-text'>Schedules</span>
-            </Menu.Item>
-            <Menu.Item key='2'>
-              <Icon type='plus-circle-o' /><span className='nav-text'>Booking</span>
-            </Menu.Item>
-            <Menu.Item key='3'>
-              <Icon type='user' /><span className='nav-text'>Customer</span>
-            </Menu.Item>
-          </Menu>
-        </Sider>
-        <Layout>
-          {this.props.children}
-        </Layout>
+        {this.renderSideNav()}
+        {this.renderContent()}
       </Layout>
     )
   }
 }
 
-export default LayoutApp
+export default withRouter(LayoutApp)

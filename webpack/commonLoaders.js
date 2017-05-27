@@ -7,10 +7,13 @@ module.exports = [
         loader: 'babel-loader',
         options: {
           presets: ['env', 'react'],
-          plugins: ['babel-plugin-transform-class-properties', ['import', {
-            'libraryName': 'antd',
-            'style': true
-          }]]
+          plugins: [
+            'babel-plugin-transform-class-properties',
+            ['import', {
+              'libraryName': 'antd',
+              'style': true
+            }],
+            'transform-object-rest-spread']
         }
       }
     ],
@@ -45,7 +48,7 @@ module.exports = [
     }, {
       loader: 'less-loader',
       options: {
-        modifyVars: {'primary-color': '#31a7aa'}
+        modifyVars: require('../client/misc/theme.js')
       }
     }]
   },

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Menu, Icon, Layout, Row, Col } from 'antd'
-const { Sider } = Layout
+const { Sider, Header } = Layout
 import { withRouter } from 'react-router'
 import styles from './Layout.sass'
 class LayoutApp extends Component {
@@ -10,13 +10,25 @@ class LayoutApp extends Component {
     location: PropTypes.object
   }
 
+  constructor (props) {
+    super(props)
+    this.state = {
+      collapsed: false
+    }
+  }
+
   getActiveMenu = () => {
     return this.props.location.pathname.split('/')[1]
   }
 
   renderSideNav = () => {
     return (
-      <Sider width={200}>
+      <Sider
+        width={200}
+        trigger={null}
+        collapsible
+        collapsed={this.state.collapsed}
+      >
         <div className={styles.logo}>
           <img src={require('../login/images/logo_C2.png')} />
         </div>
@@ -41,10 +53,22 @@ class LayoutApp extends Component {
       </Sider>
     )
   }
+  toggle = () => {
+    this.setState({
+      collapsed: !this.state.collapsed
+    })
+  }
 
   renderContent = () => {
     return (
       <Layout className={styles.contentContainer}>
+        <Header className={styles.topNav}>
+          <Icon
+            className={styles.icon}
+            type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
+            onClick={this.toggle}
+          />
+        </Header>
         <Row>
           <Col span={20} offset={2}>
             {this.props.children}

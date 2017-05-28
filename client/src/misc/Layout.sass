@@ -9,7 +9,9 @@
 .contentContainer
   background-color: white
   height: 100%
-  overflow: auto
+  overflow: hidden
+  display: flex
+  flex-direction: column
 .topNav
   background-color: darken(white, 10%)
   height: 50px
@@ -17,6 +19,9 @@
   align-items: center
   font-weight: 600
   flex-direction: row-reverse
-  .icon
-    font-size: 20px
-    cursor: pointer
+.icon
+  font-size: 22px
+  cursor: pointer
+.innerContentContainer
+  flex: 1 1
+  overflow-y: auto

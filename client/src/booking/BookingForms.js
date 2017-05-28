@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import propTypes from 'prop-types'
-import { Form, Input, Row, Col } from 'antd'
+import { Form, Input, Row, Col, Select } from 'antd'
 import styles from './BookingForms.sass'
 const FormItem = Form.Item
+const Option = Select.Option
 class NormalLoginForm extends Component {
 
   static propTypes = {
@@ -30,8 +31,8 @@ class NormalLoginForm extends Component {
     return (
       <FormItem
         label={name}
-        labelCol={{sm: {span: 6}}}
-        wrapperCol={{sm: {span: 18}}}
+        labelCol={{sm: {span: 5}}}
+        wrapperCol={{sm: {span: 14}}}
       >
         {getFieldDecorator(name, {
           rules: [{ required, message: 'this field can\'t be empty!' }]
@@ -46,13 +47,30 @@ class NormalLoginForm extends Component {
     )
   }
 
+  createSelectForm = () => {
+    return (
+      <FormItem
+        label={'assignment'}
+        labelCol={{sm: {span: 5}}}
+        wrapperCol={{sm: {span: 14}}}
+      >
+        <Select defaultValue='lucy'>
+          <Option value='jack'>Jack</Option>
+          <Option value='lucy'>Lucy</Option>
+          <Option value='disabled' disabled>Disabled</Option>
+          <Option value='Yiminghe'>yiminghe</Option>
+        </Select>
+      </FormItem>
+
+    )
+  }
   createTextAreaForm = (name) => {
     const { getFieldDecorator } = this.props.form
     return (
       <FormItem
         label={name}
-        labelCol={{sm: {span: 6}}}
-        wrapperCol={{sm: {span: 18}}}
+        labelCol={{sm: {span: 5}}}
+        wrapperCol={{sm: {span: 14}}}
       >
         {getFieldDecorator(name, {
           rules: [{ required: false, message: 'this field can\'t be empty!' }]
@@ -72,14 +90,21 @@ class NormalLoginForm extends Component {
     return (
       <div className={styles.container}>
         <Row>
-          <Col md={12} xs={{span: 22, offset: 1}}>
+          <Col md={16} xs={{span: 22, offset: 1}}>
             <Form onSubmit={this.handleSubmit}>
+              <FormItem
+                labelCol={{sm: {span: 5}}}
+                wrapperCol={{sm: {span: 14}}}
+                label='quotation'
+              >
+                <span>Q0000001</span>
+              </FormItem>
               {this.createInputForm('client')}
-              {this.createInputForm('assignment')}
+              {this.createSelectForm()}
               {this.createTextAreaForm('job description')}
             </Form>
           </Col>
-          <Col sm={11} />
+          <Col md={6} />
         </Row>
       </div>
     )

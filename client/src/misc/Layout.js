@@ -21,13 +21,31 @@ class LayoutApp extends Component {
     return this.props.location.pathname.split('/')[1]
   }
 
+  toggle = () => {
+    this.setState({
+      collapsed: !this.state.collapsed
+    })
+  }
+
+  renderTriggerSideNav = () => {
+    return (
+      <div onClick={this.toggle}>
+        <Icon
+          className={styles.icon}
+          type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
+        />
+      </div>
+    )
+  }
+
   renderSideNav = () => {
     return (
       <Sider
         width={200}
-        trigger={null}
+        trigger={this.renderTriggerSideNav()}
         collapsible
         collapsed={this.state.collapsed}
+        style={{overflow: 'hidden'}}
       >
         <div className={styles.logo}>
           <img src={require('../login/images/logo_C2.png')} />
@@ -53,23 +71,14 @@ class LayoutApp extends Component {
       </Sider>
     )
   }
-  toggle = () => {
-    this.setState({
-      collapsed: !this.state.collapsed
-    })
-  }
 
   renderContent = () => {
     return (
       <Layout className={styles.contentContainer}>
         <Header className={styles.topNav}>
-          <Icon
-            className={styles.icon}
-            type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
-            onClick={this.toggle}
-          />
+          <Icon type='down' /><span style={{marginLeft: '5px'}}>Jarindr</span> <Icon type='user' />
         </Header>
-        <Row>
+        <Row className={styles.innerContentContainer}>
           <Col span={20} offset={2}>
             {this.props.children}
           </Col>
@@ -77,6 +86,7 @@ class LayoutApp extends Component {
       </Layout>
     )
   }
+
   render () {
     return (
       <Layout style={{height: '100%'}}>

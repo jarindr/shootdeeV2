@@ -1,11 +1,36 @@
 .container
-  display: block
   margin-top: 20px
   .subTitle
     font-weight: 400
+  \:global
+    .ant-form-item-label
+      font-weight: 600
+    .anticon
+      vertical-align: middle
 .stepContainer
   margin: 20px auto
   \:global
     .ant-steps .ant-steps-tail > i
       height: 3px
       background-color: green
+.topSectionContainer
+  display: flex
+  align-items: center
+.titleContainer
+  flex: 1 1
+.stepNavigationContainer
+  \:global
+    .ant-btn
+      border-radius: 100px
+      font-weight: 400
+.submitButton
+  margin-top: 20px
+  float: right
+  height: auto
+  padding: 5px 20px
+  background-color: #2c6a95
+  border-color: #2c6a95
+  &:hover, &:focus
+    background-color: lighten(#2c6a95, 5%)
+    border-color: #2c6a95
+  

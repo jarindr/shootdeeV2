@@ -13,13 +13,36 @@ class BookingPage extends React.Component {
     bookings: propTypes.array
   }
 
+  constructor (props) {
+    super(props)
+    this.state = {
+      stepState: 0
+    }
+  }
+
+  onClickStep = (index) => {
+    return (e) => this.setState({stepState: index})
+  }
+
   renderSteps = () => {
     return (
       <div className={styles.stepContainer}>
-        <Steps current={0}>
-          <Step title='job' description='job information' />
-          <Step title='info' description='rooms, dates, etc' />
-          <Step title='confirm' description='confirm job' />
+        <Steps current={this.state.stepState}>
+          <Step
+            title={<span onClick={this.onClickStep(0)}>job</span>}
+            description={<span onClick={this.onClickStep(0)}>job information</span>}
+            icon={<Icon type='solution' onClick={this.onClickStep(0)} />}
+          />
+          <Step
+            title={<span onClick={this.onClickStep(1)}>rooms</span>}
+            description={<span onClick={this.onClickStep(1)}>rooms,dates,etc</span>}
+            icon={<Icon type='switcher' onClick={this.onClickStep(1)} />}
+          />
+          <Step
+            title={<span onClick={this.onClickStep(2)}>confirm</span>}
+            description={<span onClick={this.onClickStep(2)}>confirm job</span>}
+            icon={<Icon type='check' onClick={this.onClickStep(2)} />}
+          />
         </Steps>
       </div>
     )

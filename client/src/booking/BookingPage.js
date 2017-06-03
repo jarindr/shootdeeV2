@@ -3,7 +3,8 @@ import { connect } from 'react-redux'
 import { getAllBookings } from '../../selectors/bookingsSelectors'
 import styles from './BookingPage.sass'
 import propTypes from 'prop-types'
-import BookingForms from './BookingForms'
+import RoomTabs from './RoomTabs'
+import JobInformationForms from './JobInformationForms'
 import { Steps, Button, Icon } from 'antd'
 const Step = Steps.Step
 
@@ -22,6 +23,11 @@ class BookingPage extends React.Component {
 
   onClickStep = (index) => {
     return (e) => this.setState({stepState: index})
+  }
+
+  renderPageStep = () => {
+    const stepsComponent = [<JobInformationForms />, <RoomTabs />]
+    return stepsComponent[this.state.stepState]
   }
 
   renderSteps = () => {
@@ -67,7 +73,7 @@ class BookingPage extends React.Component {
           </div>
         </div>
         {this.renderSteps()}
-        <BookingForms />
+        {this.renderPageStep()}
         <Button type='primary' icon='select' className={styles.submitButton}>Submit</Button>
       </div>
     )

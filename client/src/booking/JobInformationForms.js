@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import propTypes from 'prop-types'
 import { Form, Input, Row, Col, Select } from 'antd'
-import styles from './BookingForms.sass'
+import styles from './JobInformationForms.sass'
 const FormItem = Form.Item
 const Option = Select.Option
 class NormalLoginForm extends Component {
@@ -54,11 +54,12 @@ class NormalLoginForm extends Component {
         labelCol={{sm: {span: 5}}}
         wrapperCol={{sm: {span: 14}}}
       >
-        <Select defaultValue='lucy'>
-          <Option value='jack'>Jack</Option>
-          <Option value='lucy'>Lucy</Option>
-          <Option value='disabled' disabled>Disabled</Option>
-          <Option value='Yiminghe'>yiminghe</Option>
+        <Select defaultValue='Studio rental'>
+          <Option value='Studio rental'>Studio rental</Option>
+          <Option value='Studio rental + Location'>Studio rental + Location</Option>
+          <Option value='Equipment rental'>Equipment rental</Option>
+          <Option value='Onscreen room'>Onscreen room</Option>
+          <Option value='Production'>Production</Option>
         </Select>
       </FormItem>
 

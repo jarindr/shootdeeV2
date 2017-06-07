@@ -5,6 +5,7 @@ const webpack = require('webpack')
 const path = require('path')
 module.exports = {
   entry: [
+    'react-hot-loader/patch',
     path.resolve(__dirname, '../client/index.js')
   ],
 

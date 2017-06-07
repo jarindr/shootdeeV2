@@ -2,18 +2,19 @@ module.exports = [
   {
     test: /\.jsx?$/,
     use: [
-      { loader: 'react-hot-loader/webpack' },
       {
         loader: 'babel-loader',
         options: {
-          presets: ['env', 'react'],
+          presets: [['env', { 'modules': false }], 'react'],
           plugins: [
             'babel-plugin-transform-class-properties',
             ['import', {
               'libraryName': 'antd',
               'style': true
             }],
-            'transform-object-rest-spread']
+            'transform-object-rest-spread',
+            'react-hot-loader/babel']
+
         }
       }
     ],

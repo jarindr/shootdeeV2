@@ -11,13 +11,13 @@ const Step = Steps.Step
 class BookingPage extends React.Component {
 
   static propTypes = {
-    bookings: propTypes.array
+    step: propTypes.string
   }
 
   constructor (props) {
     super(props)
     this.state = {
-      stepState: 0
+      stepState: this.props.step
     }
   }
 
@@ -41,7 +41,7 @@ class BookingPage extends React.Component {
           />
           <Step
             title={<span onClick={this.onClickStep(1)}>rooms</span>}
-            description={<span onClick={this.onClickStep(1)}>rooms,dates,etc</span>}
+            description={<span onClick={this.onClickStep(1)}>rooms, dates</span>}
             icon={<Icon type='switcher' onClick={this.onClickStep(1)} />}
           />
           <Step
@@ -79,4 +79,4 @@ class BookingPage extends React.Component {
     )
   }
 }
-export default connect(getAllBookings)(BookingPage)
+export default BookingPage

@@ -5,7 +5,7 @@ import styles from './JobInformationForms.sass'
 import AssistantForm from './AssistantForm'
 const FormItem = Form.Item
 const Option = Select.Option
-
+import EquipmentsSection from './EquipmentsSection'
 class NormalLoginForm extends Component {
 
   static propTypes = {
@@ -154,8 +154,8 @@ class NormalLoginForm extends Component {
 
   render () {
     return (
-      <div className={styles.container}>
-        <Row>
+      <div>
+        <Row className={styles.container}>
           <Col md={16} xs={{span: 22, offset: 1}}>
             <Form onSubmit={this.handleSubmit}>
               {this.createSelectRoomForm()}
@@ -167,6 +167,10 @@ class NormalLoginForm extends Component {
             </Form>
           </Col>
           <Col md={6} />
+        </Row>
+        <h1>Equipments</h1>
+        <Row>
+          <EquipmentsSection />
         </Row>
       </div>
     )

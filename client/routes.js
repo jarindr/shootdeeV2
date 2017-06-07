@@ -10,7 +10,8 @@ export default(
       <Route path='/authentication/' component={LoginPage} />
       <Layout>
         <Route exact path='/' component={() => <Redirect to='/schedules/' />} />
-        <Route path='/booking/' component={BookingPage} />
+        <Route path='/booking/job/' component={() => <BookingPage step={0} />} />
+        <Route path='/booking/rooms/' component={() => <BookingPage step={1} />} />
         <Route path='/schedules/' component={BookingPage} />
       </Layout>
     </InitialProvider>

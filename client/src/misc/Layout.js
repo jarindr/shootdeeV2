@@ -17,6 +17,10 @@ class LayoutApp extends Component {
     }
   }
 
+  componentWillReceiveProps (nextProps) {
+
+  }
+
   getActiveMenu = () => {
     return this.props.location.pathname.split('/')[1]
   }
@@ -52,7 +56,7 @@ class LayoutApp extends Component {
         </div>
         <Menu
           mode='inline'
-          defaultSelectedKeys={[this.getActiveMenu()]}
+          selectedKeys={[this.getActiveMenu()]}
           theme='dark'
         >
           <Menu.Item key='schedules'>

@@ -31,8 +31,8 @@ class NormalLoginForm extends Component {
     return (
       <FormItem
         label={name}
-        labelCol={{sm: {span: 5}}}
-        wrapperCol={{sm: {span: 14}}}
+        labelCol={{sm: {span: 4}}}
+        wrapperCol={{sm: {span: 10}}}
       >
         {getFieldDecorator(name, {
           rules: [{ required, message: 'this field can\'t be empty!' }]
@@ -51,8 +51,8 @@ class NormalLoginForm extends Component {
     return (
       <FormItem
         label={'assignment'}
-        labelCol={{sm: {span: 5}}}
-        wrapperCol={{sm: {span: 14}}}
+        labelCol={{sm: {span: 4}}}
+        wrapperCol={{sm: {span: 10}}}
       >
         <Select defaultValue='Studio rental'>
           <Option value='Studio rental'>Studio rental</Option>
@@ -70,8 +70,8 @@ class NormalLoginForm extends Component {
     return (
       <FormItem
         label={name}
-        labelCol={{sm: {span: 5}}}
-        wrapperCol={{sm: {span: 14}}}
+        labelCol={{sm: {span: 4}}}
+        wrapperCol={{sm: {span: 10}}}
       >
         {getFieldDecorator(name, {
           rules: [{ required: false, message: 'this field can\'t be empty!' }]
@@ -91,11 +91,11 @@ class NormalLoginForm extends Component {
     return (
       <div className={styles.container}>
         <Row>
-          <Col md={16} xs={{span: 22, offset: 1}}>
+          <Col>
             <Form onSubmit={this.handleSubmit}>
               <FormItem
-                labelCol={{sm: {span: 5}}}
-                wrapperCol={{sm: {span: 14}}}
+                labelCol={{sm: {span: 4}}}
+                wrapperCol={{sm: {span: 10}}}
                 label='quotation'
               >
                 <span>Q0000001</span>

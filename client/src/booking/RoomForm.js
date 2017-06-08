@@ -33,7 +33,7 @@ class NormalLoginForm extends Component {
     return (
       <FormItem
         label={name}
-        labelCol={{sm: {span: 5}}}
+        labelCol={{sm: {span: 4}}}
         wrapperCol={{sm: {span: 10}}}
       >
         {getFieldDecorator(name, {
@@ -53,7 +53,7 @@ class NormalLoginForm extends Component {
     return (
       <FormItem
         label={'room'}
-        labelCol={{sm: {span: 5}}}
+        labelCol={{sm: {span: 4}}}
         wrapperCol={{sm: {span: 10}}}
       >
         <Select defaultValue='S'>
@@ -71,7 +71,7 @@ class NormalLoginForm extends Component {
     return (
       <FormItem
         label={'status'}
-        labelCol={{sm: {span: 5}}}
+        labelCol={{sm: {span: 4}}}
         wrapperCol={{sm: {span: 10}}}
       >
         <Select defaultValue='Tentative'>
@@ -87,7 +87,7 @@ class NormalLoginForm extends Component {
     return (
       <FormItem
         label={'date'}
-        labelCol={{sm: {span: 5}}}
+        labelCol={{sm: {span: 4}}}
         wrapperCol={{sm: {span: 10}}}
       >
         <DatePicker style={{width: '100%'}} />
@@ -108,7 +108,7 @@ class NormalLoginForm extends Component {
     return (
       <FormItem
         label={name}
-        labelCol={{sm: {span: 5}}}
+        labelCol={{sm: {span: 4}}}
         wrapperCol={{sm: {span: 10}}}
       >
         <TimePicker
@@ -123,7 +123,7 @@ class NormalLoginForm extends Component {
     return (
       <FormItem
         label='assistant'
-        labelCol={{sm: {span: 5}}}
+        labelCol={{sm: {span: 4}}}
         wrapperCol={{sm: {span: 10}}}
       >
         <AssistantForm />
@@ -135,7 +135,7 @@ class NormalLoginForm extends Component {
     return (
       <FormItem
         label={name}
-        labelCol={{sm: {span: 5}}}
+        labelCol={{sm: {span: 4}}}
         wrapperCol={{sm: {span: 10}}}
       >
         {getFieldDecorator(name, {
@@ -156,7 +156,7 @@ class NormalLoginForm extends Component {
     return (
       <div>
         <Row className={styles.container}>
-          <Col md={16} xs={{span: 22, offset: 1}}>
+          <Col>
             <Form onSubmit={this.handleSubmit}>
               {this.createSelectRoomForm()}
               {this.renderDatePickerForm()}
@@ -168,7 +168,7 @@ class NormalLoginForm extends Component {
           </Col>
           <Col md={6} />
         </Row>
-        <h1>Equipments</h1>
+        <h2>Equipments</h2>
         <Row>
           <EquipmentsSection />
         </Row>

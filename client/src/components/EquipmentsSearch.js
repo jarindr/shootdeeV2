@@ -1,8 +1,10 @@
-import { AutoComplete, Input, Icon } from 'antd'
+import { AutoComplete, Input, Icon, Button, Select, InputNumber } from 'antd'
 const Option = AutoComplete.Option
+const InputGroup = Input.Group
 const OptGroup = AutoComplete.OptGroup
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import styles from './EquipmentsSearch.sass'
 import _ from 'lodash'
 const dataSource = [
   {
@@ -80,17 +82,7 @@ class EquipmentSearch extends Component {
           </Option>
     ))}
       </OptGroup>
-    )).concat([
-      <Option disabled key='all' className='show-all'>
-        <a
-          href='https://www.google.com/search?q=antd'
-          target='_blank'
-          rel='noopener noreferrer'
-        >
-          查看所有结果
-        </a>
-      </Option>
-    ])
+    ))
   }
   filterOption = (value, option) => {
     return new RegExp(value, 'g').test(option.key)
@@ -98,14 +90,22 @@ class EquipmentSearch extends Component {
 
   render () {
     return (
-      <AutoComplete
-        dataSource={this.renderOption()}
-        size='large'
-        style={{ width: '100%' }}
-        filterOption={this.filterOption}
-      >
-        <Input suffix={<Icon type='search' className='certain-category-icon' />} />
-      </AutoComplete>
+      <div>
+        <InputGroup size='large'>
+          <Select
+            showSearch
+            size='large'
+            style={{ width: '50%' }}
+            placeholder='Select a equipment'
+            optionFilterProp='value'
+            filterOption={this.filterOption}
+          >
+            {this.renderOption()}
+          </Select>
+          <InputNumber size='large' defaultValue={1} />
+          <Button shape='circle' type='primary' icon='plus' className={styles.addButton} />
+        </InputGroup>
+      </div>
     )
   }
 }

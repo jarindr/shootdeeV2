@@ -9,12 +9,15 @@ import { composeWithDevTools } from 'redux-devtools-extension'
 import { LocaleProvider } from 'antd'
 import enUS from 'antd/lib/locale-provider/en_US'
 import { render } from 'react-dom'
+import InitialProvider from './src/misc/InitialProvider'
 export const store = createStore(reducers, composeWithDevTools(applyMiddleware(thunk)))
 const element = (
   <AppContainer>
     <Provider store={store}>
       <LocaleProvider locale={enUS}>
-        {routes}
+        <InitialProvider>
+          {routes}
+        </InitialProvider>
       </LocaleProvider>
     </Provider>
   </AppContainer>

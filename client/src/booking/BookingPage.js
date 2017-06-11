@@ -11,7 +11,7 @@ const Step = Steps.Step
 class BookingPage extends React.Component {
 
   static propTypes = {
-    step: propTypes.string
+    step: propTypes.number
   }
 
   constructor (props) {
@@ -62,19 +62,20 @@ class BookingPage extends React.Component {
             <h4 className={styles.subTitle}>quotation: Q0000001</h4>
           </div>
           <div className={styles.stepNavigationContainer}>
-            <Button.Group>
-              <Button type='primary'>
-                <Icon type='left' title='hello' />previous
-              </Button>
-              <Button type='primary'>
-              next<Icon type='right' />
-              </Button>
-            </Button.Group>
+            <Button type='primary' icon='select' className={styles.submitButton}>Submit</Button>
+
           </div>
         </div>
         {this.renderSteps()}
         {this.renderPageStep()}
-        <Button type='primary' icon='select' className={styles.submitButton}>Submit</Button>
+        <Button.Group>
+          <Button type='primary'>
+            <Icon type='left' title='hello' />previous
+              </Button>
+          <Button type='primary'>
+              next<Icon type='right' />
+          </Button>
+        </Button.Group>
       </div>
     )
   }

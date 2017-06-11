@@ -14,15 +14,11 @@ class InitialProvider extends Component {
   }
 
   onConntected = () => {
-
+    console.log('websocket connected.')
   }
 
   render () {
-    return (
-      <div style={{height: '100%'}}>
-        {this.props.children}
-      </div>
-    )
+    return React.Children.only(this.props.children)
   }
 }
 

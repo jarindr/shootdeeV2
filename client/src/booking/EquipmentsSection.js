@@ -3,8 +3,12 @@ import PropTypes from 'prop-types'
 import styles from './EquipmentsSection.sass'
 import { Checkbox, Row, Col } from 'antd'
 import EquipmentsSearch from '../components/EquipmentsSearch'
+import {connect} from 'react-redux'
+import { getAllEquipments } from '../../selectors/equipmentsSelectors'
 class EquipmentSection extends Component {
   render () {
+    console.log(this.props)
+
     return (
       <div className={styles.container}>
         <Row>
@@ -27,4 +31,4 @@ EquipmentSection.propTypes = {
 
 }
 
-export default EquipmentSection
+export default connect(getAllEquipments, null)(EquipmentSection)

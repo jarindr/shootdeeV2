@@ -1,15 +1,11 @@
-import { store } from './index'
+import store from './store'
 import * as equipmentActions from './actions/equipmentActions'
 import _ from 'lodash'
-export function initSocketConnection ({onConntected}) {
+export function initSocketConnection ({ onConntected }) {
   const socket = require('socket.io-client')('http://localhost:3000')
   socket.on('connect', function () {
     onConntected()
     handleBackendRecieved(socket)
-    socket.emit('get:equipments')
-    socket.on('get:equipments', (data) => {
-      console.log('yooo')
-    })
   })
 }
 function handleBackendRecieved (socket) {

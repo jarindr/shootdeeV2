@@ -6,59 +6,15 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styles from './EquipmentsSearch.sass'
 import _ from 'lodash'
-const dataSource = [
-  {
-    type: 'prophoto',
-    equipment: 'hello1'
-  },
-  {
-    type: 'prophoto',
-    equipment: 'hello2'
-  },
-  {
-    type: 'prophoto',
-    equipment: 'hello3'
-  },
-  {
-    type: 'prophoto',
-    equipment: 'hello4'
-  },
-  {
-    type: 'prophoto',
-    equipment: 'hello5'
-  },
-  {
-    type: 'prophoto',
-    equipment: 'hello6'
-  },
-  {
-    type: 'prophoto',
-    equipment: 'hello7'
-  },
-  {
-    type: 'prophoto',
-    equipment: 'hello8'
-  },
-
-  {
-    type: 'broncolor',
-    equipment: 'potato4'
-  }
-]
 
 class EquipmentSearch extends Component {
-
-  filterOption = (value, option) => {
-    return option.props.equipment
-  }
-
-  constructor (props) {
-    super(props)
-    this.data = this.groupDataSource()
+  static propTypes = {
+    equipments: PropTypes.array
   }
 
   groupDataSource = () => {
-    return _(dataSource)
+    return _(this.props.equipments)
+    .uniqBy('description')
     .groupBy(x => x.type)
     .map((value, key) => {
       return {
@@ -70,22 +26,24 @@ class EquipmentSearch extends Component {
   }
 
   renderOption = () => {
-    return this.data.map(group => (
-      <OptGroup
-        key={group.type}
-        label={group.type}
-      >
-        {group.equipments.map(opt => (
-          <Option key={opt.equipment} value={opt.equipment}>
-            {opt.title}
-            <span className='certain-search-item-count'>{opt.equipment}</span>
-          </Option>
+    if (this.props.equipments) {
+      return this.groupDataSource().map(group => (
+        <OptGroup
+          key={group.type}
+          label={group.type}
+        >
+          {group.equipments.map(opt => (
+            <Option key={opt.description} value={opt.description}>
+              {opt.description}
+            </Option>
     ))}
-      </OptGroup>
+        </OptGroup>
     ))
+    }
+    return []
   }
   filterOption = (value, option) => {
-    return new RegExp(value, 'g').test(option.key)
+    return new RegExp(value.toLowerCase(), 'g').test(option.key.toLowerCase())
   }
 
   render () {

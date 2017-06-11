@@ -1,5 +1,3 @@
-const request = require('request-promise')
-
 export function saveBookingAction (payload) {
   return {
     type: 'SAVING_BOOKINGS',
@@ -43,32 +41,17 @@ export function getBookingFailedAction (err) {
   }
 }
 
-export function saveBooking () {
-  return (dispatch) => {
-    dispatch(saveBookingAction())
-    request('http://localhost:3000/api/bookings/', { method: 'POST' })
-      .then(response => {
-        if (response.status === 200) {
-          dispatch(getBookingSuccessAction(response))
-        }
-      })
-      .catch(err => {
-        dispatch(getBookingFailedAction(err))
-      })
+export function getUnfinshedBooking (booking) {
+  return {
+    type: 'GET_UNFINISHED_BOOKINGS',
+    response: booking
   }
 }
 
-export function getBooking (bookingId) {
-  return (dispatch) => {
-    dispatch(getBookingAction(bookingId))
-    request('http://localhost:3000/api/bookings/', { method: 'GET' })
-      .then(response => {
-        if (response.status === 200) {
-          dispatch(getBookingSuccessAction(response))
-        }
-      })
-      .catch(err => {
-        dispatch(getBookingFailedAction(err))
-      })
+export function saveUnfinshedBooking (booking) {
+  return {
+    type: 'SET_UNFINISHED_BOOKINGS',
+    response: booking
   }
 }
+

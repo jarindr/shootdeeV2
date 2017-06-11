@@ -6,12 +6,21 @@ export function initSocketConnection ({ onConntected }) {
   socket.on('connect', function () {
     onConntected()
     handleBackendRecieved(socket)
+    getStarter(socket)
   })
 }
+
+function getStarter (socket) {
+  const topics = ['equipments:get']
+  for (const topic of topics) {
+    socket.emit(topic)
+  }
+}
+
 function handleBackendRecieved (socket) {
   const topics = {
-    'get:equipments': (data) => {
-      store.dispatch(equipmentActions.getEquipmentsAction(data))
+    'equipments:get': (data) => {
+      store.dispatch(equipmentActions.getAllEquipmentsAction(data))
     }
   }
   // loop and create socket event handler

@@ -1,4 +1,4 @@
-export function getEquipmentsAction (equipments) {
+export function getAllEquipmentsAction (equipments) {
   return {
     type: 'GET_ALL_EQUIPMENTS',
     equipments

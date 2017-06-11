@@ -9,7 +9,8 @@ import _ from 'lodash'
 
 class EquipmentSearch extends Component {
   static propTypes = {
-    equipments: PropTypes.array
+    equipments: PropTypes.array,
+    onAddEquipment: PropTypes.func
   }
 
   groupDataSource = () => {
@@ -61,7 +62,13 @@ class EquipmentSearch extends Component {
             {this.renderOption()}
           </Select>
           <InputNumber size='large' defaultValue={1} />
-          <Button shape='circle' type='primary' icon='plus' className={styles.addButton} />
+          <Button
+            shape='circle'
+            type='primary'
+            icon='plus'
+            className={styles.addButton}
+            onClick={this.props.onAddEquipment}
+          />
         </InputGroup>
       </div>
     )

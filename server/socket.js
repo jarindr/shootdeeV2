@@ -14,10 +14,10 @@ export function initSocketHandler (server) {
 
 function handleTopicRecieved (socket, io) {
   const topics = {
-    'get:equipments': () => {
+    'equipments:get': () => {
       EquipmentsModel.getAllEquipmentsAsync({
         onSuccess: (data) => {
-          io.emit('get:equipments', { data })
+          io.emit('equipments:get', { data })
         }
       })
     }

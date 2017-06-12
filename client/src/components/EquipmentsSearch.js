@@ -1,16 +1,18 @@
-import { AutoComplete, Input, Icon, Button, Select, InputNumber } from 'antd'
-const Option = AutoComplete.Option
-const InputGroup = Input.Group
-const OptGroup = AutoComplete.OptGroup
+import { AutoComplete, Input, Form, Button, Select, InputNumber } from 'antd'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styles from './EquipmentsSearch.sass'
 import _ from 'lodash'
 
+const Option = AutoComplete.Option
+const InputGroup = Input.Group
+const OptGroup = AutoComplete.OptGroup
+
 class EquipmentSearch extends Component {
   static propTypes = {
     equipments: PropTypes.array,
-    onAddEquipment: PropTypes.func
+    onAddEquipment: PropTypes.func,
+    getFieldDecorator: PropTypes.func
   }
 
   groupDataSource = () => {
@@ -49,8 +51,8 @@ class EquipmentSearch extends Component {
 
   render () {
     return (
-      <div>
-        <InputGroup size='large'>
+      <Form.Item>
+        {this.props.getFieldDecorator('equipmentSelect')(
           <Select
             showSearch
             size='large'
@@ -61,16 +63,18 @@ class EquipmentSearch extends Component {
           >
             {this.renderOption()}
           </Select>
-          <InputNumber size='large' defaultValue={1} />
-          <Button
-            shape='circle'
-            type='primary'
-            icon='plus'
-            className={styles.addButton}
-            onClick={this.props.onAddEquipment}
-          />
-        </InputGroup>
-      </div>
+        )}
+        {this.props.getFieldDecorator('number', { initialValue: 1 })(
+          <InputNumber size='large' />
+        )}
+        <Button
+          shape='circle'
+          type='primary'
+          icon='plus'
+          className={styles.addButton}
+          onClick={this.props.onAddEquipment}
+        />
+      </Form.Item>
     )
   }
 }

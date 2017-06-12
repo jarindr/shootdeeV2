@@ -2,7 +2,7 @@ import { Tag, Input, Tooltip, Button } from 'antd'
 import React from 'react'
 class EditableTagGroup extends React.Component {
   state = {
-    tags: ['jarindr', 'priyanut'],
+    tags: [],
     inputVisible: false,
     inputValue: ''
   };

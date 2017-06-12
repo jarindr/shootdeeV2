@@ -1,4 +1,4 @@
-import { Tabs } from 'antd'
+import { Tabs, Form } from 'antd'
 import React from 'react'
 const TabPane = Tabs.TabPane
 import RoomForm from './RoomForm'
@@ -7,8 +7,8 @@ class RoomTabs extends React.Component {
     super(props)
     this.newTabIndex = 0
     const panes = [
-      { title: 'Room S', content: <RoomForm />, key: '1', closable: false },
-      { title: 'Room L', content: <RoomForm />, key: '2' }
+      { title: 'Room S', content: <RoomForm id='1' saveUnfinshedBooking={this.props.saveUnfinshedBooking} />, key: '1', closable: false },
+      { title: 'Room L', content: <RoomForm id='2' saveUnfinshedBooking={this.props.saveUnfinshedBooking} />, key: '2' }
     ]
     this.state = {
       activeKey: panes[0].key,
@@ -56,4 +56,4 @@ class RoomTabs extends React.Component {
   }
 }
 
-export default RoomTabs
+export default Form.create()(RoomTabs)

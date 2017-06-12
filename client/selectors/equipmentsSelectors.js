@@ -1,3 +1,3 @@
 export const getAllEquipments = (state) => {
-  return { equipments: state.equipments.data }
+  return { equipments: state.equipments }
 }

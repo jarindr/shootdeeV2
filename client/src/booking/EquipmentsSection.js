@@ -1,4 +1,4 @@
-import { Checkbox, Col, Row } from 'antd'
+import { Checkbox, Col, Row, Form, Input } from 'antd'
 import React, { Component } from 'react'
 
 import EquipmentsSearch from '../components/EquipmentsSearch'
@@ -12,14 +12,16 @@ class EquipmentSection extends Component {
 
   static propTypes = {
     equipments: propTypes.number,
-    saveUnfinshedBooking: propTypes.func
+    saveUnfinshedBooking: propTypes.func,
+    form: propTypes.func
   }
 
-  onAddEquipment = (e) => {
-    this.props.saveUnfinshedBooking(equipment)
+  onAddEquipment = (equipment) => {
+    return (e) => this.props.saveUnfinshedBooking(equipment)
   }
 
   render () {
+    const { getFieldDecorator } = this.props.form
     return (
       <div className={styles.container}>
         <Row>
@@ -34,7 +36,11 @@ class EquipmentSection extends Component {
             <span className={styles.amount}>X 213d2e2</span>
           </Col>
           <Col>
-            <EquipmentsSearch equipments={this.props.equipments} onAddEquipment={this.onAddEquipment} />
+            <EquipmentsSearch
+              equipments={this.props.equipments}
+              onAddEquipment={this.onAddEquipment}
+              getFieldDecorator={getFieldDecorator}
+            />
           </Col>
         </Row>
       </div>
@@ -49,4 +55,4 @@ EquipmentSection.propTypes = {
 export default connect(
   getAllEquipments,
   { saveUnfinshedBooking }
-  )(EquipmentSection)
+  )(Form.create({})(EquipmentSection))

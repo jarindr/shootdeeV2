@@ -1,17 +1,18 @@
 import React from 'react'
-import { connect } from 'react-redux'
-import { getAllBookings } from '../../selectors/bookingsSelectors'
 import styles from './BookingPage.sass'
 import propTypes from 'prop-types'
 import RoomTabs from './RoomTabs'
 import JobInformationForms from './JobInformationForms'
-import { Steps, Button, Icon } from 'antd'
+import { Steps, Button, Icon, Form } from 'antd'
+import { connect } from 'react-redux'
+import { saveUnfinshedBooking } from '../../actions/bookingUnfinishedActions'
 const Step = Steps.Step
 
 class BookingPage extends React.Component {
 
   static propTypes = {
-    step: propTypes.number
+    step: propTypes.number,
+    saveUnfinshedBooking: propTypes.func
   }
 
   constructor (props) {
@@ -26,7 +27,11 @@ class BookingPage extends React.Component {
   }
 
   renderPageStep = () => {
-    const stepsComponent = [<JobInformationForms />, <RoomTabs />]
+    const stepsComponent = [
+      <JobInformationForms saveUnfinshedBooking={this.props.saveUnfinshedBooking} />,
+      <RoomTabs saveUnfinshedBooking={this.props.saveUnfinshedBooking} />
+    ]
+
     return stepsComponent[this.state.stepState]
   }
 
@@ -63,7 +68,6 @@ class BookingPage extends React.Component {
           </div>
           <div className={styles.stepNavigationContainer}>
             <Button type='primary' icon='select' className={styles.submitButton}>Submit</Button>
-
           </div>
         </div>
         {this.renderSteps()}
@@ -80,4 +84,4 @@ class BookingPage extends React.Component {
     )
   }
 }
-export default BookingPage
+export default connect(null, { saveUnfinshedBooking })(BookingPage)

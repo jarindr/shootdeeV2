@@ -2,20 +2,59 @@ import { Tabs, Form } from 'antd'
 import React from 'react'
 const TabPane = Tabs.TabPane
 import RoomForm from './RoomForm'
+import PropTypes from 'prop-types'
+import _ from 'lodash'
+
 class RoomTabs extends React.Component {
+
+  static propTypes = {
+    selectBookingUnfinishedById: PropTypes.func,
+    saveUnfinshedBooking: PropTypes.func
+  }
+
   constructor (props) {
     super(props)
-    this.newTabIndex = 0
-    const panes = [
-      { title: 'Room S', content: <RoomForm id='1' saveUnfinshedBooking={this.props.saveUnfinshedBooking} />, key: '1', closable: false },
-      { title: 'Room L', content: <RoomForm id='2' saveUnfinshedBooking={this.props.saveUnfinshedBooking} />, key: '2' }
-    ]
+    this.newTabIndex = 1
+
+    const panes = [{
+      title: 'room S',
+      key: '0',
+      closable: true
+    }]
+
     this.state = {
-      activeKey: panes[0].key,
+      activeKey: '0',
       panes
     }
   }
 
+  onChangeField = (value) => {
+    const index = _.findIndex(this.state.panes, (pane) => pane.key === value.id)
+    const updateField = _(value).omit('id').map(value => value).value()[0]
+    if (updateField.name === 'room') {
+      this.state.panes[index].title = `Room ${updateField.value}`
+    }
+  }
+
+  renderTabs = () => {
+    return this.state.panes.map(pane => {
+      return (
+        <TabPane
+          actve
+          tab={pane.title}
+          key={pane.key}
+          closable={pane.closable}
+        >
+          <RoomForm
+            saveUnfinshedBooking={this.props.saveUnfinshedBooking}
+            selectBookingUnfinishedById={this.props.selectBookingUnfinishedById}
+            id={pane.key}
+            onChangeField={this.onChangeField}
+          />
+        </TabPane>
+      )
+    })
+  }
   onChange = (activeKey) => {
     this.setState({ activeKey })
   }
@@ -24,8 +63,11 @@ class RoomTabs extends React.Component {
   }
   add = () => {
     const panes = this.state.panes
-    const activeKey = `newTab${this.newTabIndex++}`
-    panes.push({ title: 'New Tab', content: <RoomForm />, key: activeKey })
+    const activeKey = `${this.newTabIndex++}`
+    panes.push({
+      title: 'Room S',
+      key: activeKey
+    })
     this.setState({ panes, activeKey })
   }
   remove = (targetKey) => {
@@ -50,7 +92,7 @@ class RoomTabs extends React.Component {
         type='editable-card'
         onEdit={this.onEdit}
       >
-        {this.state.panes.map(pane => <TabPane tab={pane.title} key={pane.key} closable={pane.closable}>{pane.content}</TabPane>)}
+        {this.renderTabs()}
       </Tabs>
     )
   }

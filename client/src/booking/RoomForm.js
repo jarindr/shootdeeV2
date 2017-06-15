@@ -2,23 +2,24 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Form, Input, Row, Col, Select, DatePicker, TimePicker } from 'antd'
 import styles from './JobInformationForms.sass'
-import AssistantForm from './AssistantForm'
 const FormItem = Form.Item
 const Option = Select.Option
 import EquipmentsSection from './EquipmentsSection'
 import moment from 'moment'
+import _ from 'lodash'
 class NormalLoginForm extends Component {
 
   static propTypes = {
     form: PropTypes.object,
-    saveUnfinshedBooking: PropTypes.func
+    saveUnfinshedBooking: PropTypes.func, // eslint-disable-line react/no-unused-prop-types
+    selectBookingUnfinishedById: PropTypes.func, // eslint-disable-line react/no-unused-prop-types
+    id: PropTypes.string // eslint-disable-line react/no-unused-prop-types
   }
 
   constructor (props) {
     super(props)
     this.state = {
-      loginState: false,
-      isTimePickerOpen: false
+      loginState: false
     }
   }
 
@@ -73,13 +74,16 @@ class NormalLoginForm extends Component {
     )
   }
   createSelectStatusForm = () => {
+    const { bookingUnfinished } = this.props.selectBookingUnfinishedById(this.props.id)
+    const initialValue = bookingUnfinished.get('status') || 'Tentative'
+
     return (
       <FormItem
         label={'status'}
         labelCol={{sm: {span: 4}}}
         wrapperCol={{sm: {span: 10}}}
       >
-        {this.props.form.getFieldDecorator('status', {initialValue: 'Tentative'})(
+        {this.props.form.getFieldDecorator('status', { initialValue })(
           <Select>
             <Option value='Tentative'>Tentative</Option>
             <Option value='Confirm'>Confirm</Option>
@@ -173,26 +177,18 @@ class NormalLoginForm extends Component {
         </Row>
         <h2>Equipments</h2>
         <Row>
-          <EquipmentsSection />
+          <EquipmentsSection id={this.props.id} />
         </Row>
       </div>
     )
   }
 }
-function onFieldsChange (props, value) {
-  const { room, date, status, startTime, endTime, assistants } = value
-  if (status) {
-    props.saveUnfinshedBooking({ status: status.value })
-  } else if (room) {
-    props.saveUnfinshedBooking({ room: room.value })
-  } else if (date) {
-    props.saveUnfinshedBooking({ date: date.value })
-  } else if (startTime) {
-    props.saveUnfinshedBooking({ startTime: startTime.value })
-  } else if (endTime) {
-    props.saveUnfinshedBooking({ endTime: endTime.value })
-  } else if (assistants) {
-    props.saveUnfinshedBooking({ assistants: assistants.value })
-  }
+
+function onFieldsChange (props, field) {
+  const updateField = _.map(field, (value) => value)[0]
+  const entity = { ...updateField, ...{ id: props.id } }
+  props.onChangeField(entity)
+  props.saveUnfinshedBooking(entity)
 }
+
 export default Form.create({onFieldsChange})(NormalLoginForm)

@@ -49,8 +49,6 @@ export function getUnfinshedBooking (booking) {
 }
 
 export function saveUnfinshedBooking (booking) {
-  console.log(booking)
-
   return {
     type: 'SET_UNFINISHED_BOOKINGS',
     response: booking

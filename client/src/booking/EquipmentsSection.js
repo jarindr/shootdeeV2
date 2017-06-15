@@ -13,11 +13,15 @@ class EquipmentSection extends Component {
   static propTypes = {
     equipments: propTypes.number,
     saveUnfinshedBooking: propTypes.func,
-    form: propTypes.func
+    form: propTypes.func,
+    id: propTypes.string
   }
 
-  onAddEquipment = (equipment) => {
-    return (e) => this.props.saveUnfinshedBooking(equipment)
+  onAddEquipment = ({equipment, amount}) => {
+    this.props.saveUnfinshedBooking({
+      id: this.props.id,
+      name: 'equipments',
+      value: { equipment, amount: 2 }})
   }
 
   render () {

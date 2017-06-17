@@ -21,9 +21,9 @@ class EquipmentSection extends Component {
     this.props.saveUnfinshedBooking({
       id: this.props.id,
       name: 'equipments',
-      value: { equipment, amount: 2 }})
+      value: { [equipment]: {equipment, amount} }
+    })
   }
-
   render () {
     const { getFieldDecorator } = this.props.form
     return (

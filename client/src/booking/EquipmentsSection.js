@@ -19,19 +19,24 @@ class EquipmentSection extends Component {
     selectUnfinishedEquipmentsById: propTypes.func
   }
 
-  onAddEquipment = ({equipment, amount}) => {
+  onAddEquipment = (data) => {
+    const { equipment, type } = JSON.parse(data.equipment)
     this.props.saveUnfinshedBooking({
       id: this.props.id,
       name: 'equipments',
-      value: { equipment, amount }
+      value: { equipment, amount: data.amount, type }
     })
   }
   renderAddedEquipments = () => {
     const equipments = this.props.selectUnfinishedEquipmentsById(this.props.id)
+    const group = _.groupBy(equipments, 'type')
     if (equipments) {
-      return _.map(equipments, (value, key) => {
-        return <div>{value.equipment}{value.amount}</div>
-      })
+      return _.map(group, (value, key) => (
+        <div>
+          <div><b>{key}</b></div>
+          {_.map(value, eq => (<div>{eq.equipment} {eq.amount}</div>))}
+        </div>
+      ))
     }
     return null
   }

@@ -30,18 +30,20 @@ class EquipmentSearch extends Component {
 
   renderOption = () => {
     if (this.props.equipments) {
+      console.log(this.groupDataSource())
+
       return this.groupDataSource().map(group => (
         <OptGroup
           key={group.type}
           label={group.type}
         >
           {group.equipments.map(opt => (
-            <Option key={opt.description} value={opt.description}>
+            <Option key={opt.description} filter={opt.description} value={JSON.stringify({ equipment: opt.description, type: group.type })}>
               {opt.description}
             </Option>
-    ))}
+          ))}
         </OptGroup>
-    ))
+      ))
     }
     return []
   }
@@ -50,8 +52,8 @@ class EquipmentSearch extends Component {
   }
 
   onAddEquipment = (e) => {
-    const { equipment, amount } = this.props.form.getFieldsValue()
-    this.props.onAddEquipment({equipment, amount})
+    const { equipment, amount, type } = this.props.form.getFieldsValue()
+    this.props.onAddEquipment({equipment, amount, type})
   }
 
   render () {
@@ -66,7 +68,7 @@ class EquipmentSearch extends Component {
               size='large'
               style={{ width: '50%' }}
               placeholder='Select a equipment'
-              optionFilterProp='value'
+              optionFilterProp='filter'
               filterOption={this.filterOption}
             >
               {this.renderOption()}

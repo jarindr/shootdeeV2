@@ -92,4 +92,7 @@ class BookingPage extends React.Component {
   }
 }
 
-export default connect(selectGetBookingUnfinishedById, { saveUnfinshedBooking })(BookingPage)
+export default connect(state => ({
+  selectBookingUnfinishedById: selectGetBookingUnfinishedById(state) }
+  ),
+  { saveUnfinshedBooking })(BookingPage)

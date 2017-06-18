@@ -30,9 +30,8 @@ class RoomTabs extends React.Component {
 
   onChangeField = (value) => {
     const index = _.findIndex(this.state.panes, (pane) => pane.key === value.id)
-    const updateField = _(value).omit('id').map(value => value).value()[0]
-    if (updateField.name === 'room') {
-      this.state.panes[index].title = `Room ${updateField.value}`
+    if (value.name === 'room') {
+      this.state.panes[index].title = `Room ${value.value}`
     }
   }
 

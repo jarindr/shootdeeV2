@@ -12,3 +12,10 @@ export function saveUnfinshedBooking (bookingUnfinished) {
   }
 }
 
+export function saveUnfinshedEquipments (equipmentsUnfinished) {
+  return {
+    type: 'SAVE_UNFINISHED_BOOKING',
+    equipmentsUnfinished
+  }
+}
+

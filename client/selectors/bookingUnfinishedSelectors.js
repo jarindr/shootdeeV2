@@ -1,6 +1,14 @@
 import Immutable from 'immutable'
 export const selectGetBookingUnfinishedById = (state) => {
-  return { selectBookingUnfinishedById: (id) => {
-    return { bookingUnfinished: state.bookingUnfinished.get(id) ? state.bookingUnfinished.get(id) : Immutable.Map() }
-  }}
+  return (id) => {
+    return state.bookingUnfinished.get(id) ? state.bookingUnfinished.get(id) : Immutable.Map()
+  }
 }
+
+export const selectGetBookingUnfinishedEquipmentsById = (state) => {
+  return (id) => {
+    const equipments = state.bookingUnfinished.getIn([id, 'equipments'])
+    return equipments
+  }
+}
+

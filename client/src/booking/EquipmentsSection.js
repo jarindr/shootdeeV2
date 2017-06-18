@@ -4,25 +4,36 @@ import React, { Component } from 'react'
 import EquipmentsSearch from '../components/EquipmentsSearch'
 import { connect } from 'react-redux'
 import { getAllEquipments } from '../../selectors/equipmentsSelectors'
+import { selectGetBookingUnfinishedEquipmentsById } from '../../selectors/bookingUnfinishedSelectors'
 import { saveUnfinshedBooking } from '../../actions/bookingUnfinishedActions'
 import propTypes from 'prop-types'
 import styles from './EquipmentsSection.sass'
-
+import _ from 'lodash'
 class EquipmentSection extends Component {
 
   static propTypes = {
     equipments: propTypes.number,
     saveUnfinshedBooking: propTypes.func,
     form: propTypes.func,
-    id: propTypes.string
+    id: propTypes.string,
+    selectUnfinishedEquipmentsById: propTypes.func
   }
 
   onAddEquipment = ({equipment, amount}) => {
     this.props.saveUnfinshedBooking({
       id: this.props.id,
       name: 'equipments',
-      value: { [equipment]: {equipment, amount} }
+      value: { equipment, amount }
     })
+  }
+  renderAddedEquipments = () => {
+    const equipments = this.props.selectUnfinishedEquipmentsById(this.props.id)
+    if (equipments) {
+      return _.map(equipments, (value, key) => {
+        return <div>{value.equipment}{value.amount}</div>
+      })
+    }
+    return null
   }
   render () {
     const { getFieldDecorator } = this.props.form
@@ -36,8 +47,7 @@ class EquipmentSection extends Component {
         </Row>
         <Row>
           <Col>
-            <span className={styles.equipment}> Po b14 </span>
-            <span className={styles.amount}>X 213d2e2</span>
+            {this.renderAddedEquipments()}
           </Col>
           <Col>
             <EquipmentsSearch
@@ -57,6 +67,11 @@ EquipmentSection.propTypes = {
 }
 
 export default connect(
-  getAllEquipments,
+  (state) => {
+    return {
+      equipments: getAllEquipments(state),
+      selectUnfinishedEquipmentsById: selectGetBookingUnfinishedEquipmentsById(state)
+    }
+  },
   { saveUnfinshedBooking }
   )(Form.create({})(EquipmentSection))

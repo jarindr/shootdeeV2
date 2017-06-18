@@ -74,7 +74,7 @@ class NormalLoginForm extends Component {
     )
   }
   createSelectStatusForm = () => {
-    const { bookingUnfinished } = this.props.selectBookingUnfinishedById(this.props.id)
+    const bookingUnfinished = this.props.selectBookingUnfinishedById(this.props.id)
     const initialValue = bookingUnfinished.get('status') || 'Tentative'
 
     return (

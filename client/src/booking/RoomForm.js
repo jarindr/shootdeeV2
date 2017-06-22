@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Form, Input, Row, Col, Select, DatePicker, TimePicker } from 'antd'
-import styles from './JobInformationForms.sass'
+import styles from './RoomForm.sass'
 const FormItem = Form.Item
 const Option = Select.Option
 import EquipmentsSection from './EquipmentsSection'
@@ -175,7 +175,7 @@ class NormalLoginForm extends Component {
           </Col>
           <Col md={6} />
         </Row>
-        <h2>Equipments</h2>
+        <h2 className={styles.equipmentHeader}>Equipments</h2>
         <Row>
           <EquipmentsSection id={this.props.id} />
         </Row>

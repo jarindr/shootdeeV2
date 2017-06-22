@@ -51,7 +51,6 @@ class EquipmentSearch extends Component {
   onAddEquipment = (e) => {
     const { equipment, amount, type } = this.props.form.getFieldsValue()
     this.props.onAddEquipment({equipment, amount, type})
-    $('.potato').focus()
   }
 
   render () {
@@ -68,7 +67,6 @@ class EquipmentSearch extends Component {
               placeholder='Select a equipment'
               optionFilterProp='filter'
               filterOption={this.filterOption}
-              className='potato'
             >
               {this.renderOption()}
             </Select>

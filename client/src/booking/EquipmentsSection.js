@@ -1,4 +1,4 @@
-import { Checkbox, Col, Row, Form, Input } from 'antd'
+import { Checkbox, Col, Row, Form, Icon } from 'antd'
 import React, { Component } from 'react'
 
 import EquipmentsSearch from '../components/EquipmentsSearch'
@@ -37,8 +37,21 @@ class EquipmentSection extends Component {
     if (equipments) {
       return _.map(group, (value, key) => (
         <div key={key}>
-          <div><b>{key}</b></div>
-          {_.map(value, eq => (<div key={eq.equipment}>{eq.equipment} {eq.amount} <span onClick={this.onClickRemoveEquipment(eq.equipment, this.props.id)}>-</span></div>))}
+          <div className={styles.equipmentGroup}>[ {key} ]</div>
+          {_.map(value, eq => (
+            <div
+              key={eq.equipment}
+              className={styles.equipmentName}
+            >
+              {eq.equipment} {eq.amount}
+              <span
+                onClick={this.onClickRemoveEquipment(eq.equipment, this.props.id)}
+                className={styles.removeEquipmentIcon}
+              >
+                <Icon type='close-circle-o' />
+              </span>
+            </div>
+          ))}
         </div>
       ))
     }

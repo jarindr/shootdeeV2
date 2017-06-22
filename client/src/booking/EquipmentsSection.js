@@ -5,19 +5,24 @@ import EquipmentsSearch from '../components/EquipmentsSearch'
 import { connect } from 'react-redux'
 import { getAllEquipments } from '../../selectors/equipmentsSelectors'
 import { selectGetBookingUnfinishedEquipmentsById } from '../../selectors/bookingUnfinishedSelectors'
-import { saveUnfinshedBooking, removeUnfinshedEquipment } from '../../actions/bookingUnfinishedActions'
+import {
+  saveUnfinshedBooking,
+  removeUnfinshedEquipment,
+  addDefaultProphoto
+} from '../../actions/bookingUnfinishedActions'
 import propTypes from 'prop-types'
 import styles from './EquipmentsSection.sass'
 import _ from 'lodash'
 class EquipmentSection extends Component {
 
   static propTypes = {
+    form: propTypes.func,
+    id: propTypes.string,
     equipments: propTypes.number,
     saveUnfinshedBooking: propTypes.func,
     removeUnfinshedEquipment: propTypes.func,
-    form: propTypes.func,
-    id: propTypes.string,
-    selectUnfinishedEquipmentsById: propTypes.func
+    selectUnfinishedEquipmentsById: propTypes.func,
+    addDefaultProphoto: propTypes.func
   }
 
   onAddEquipment = (data) => {
@@ -62,13 +67,17 @@ class EquipmentSection extends Component {
     }
     return null
   }
+  onChangeProphoto = () => {
+    this.props.addDefaultProphoto(this.props.id)
+  }
+
   render () {
     const { getFieldDecorator } = this.props.form
     return (
       <div className={styles.container}>
         <Row>
           <Col>
-            <Checkbox>Prophoto</Checkbox>
+            <Checkbox onChange={this.onChangeProphoto}>Prophoto</Checkbox>
             <Checkbox>Broncolor</Checkbox>
           </Col>
         </Row>
@@ -100,5 +109,5 @@ export default connect(
       selectUnfinishedEquipmentsById: selectGetBookingUnfinishedEquipmentsById(state)
     }
   },
-  { saveUnfinshedBooking, removeUnfinshedEquipment }
+  { saveUnfinshedBooking, removeUnfinshedEquipment, addDefaultProphoto }
   )(Form.create({})(EquipmentSection))

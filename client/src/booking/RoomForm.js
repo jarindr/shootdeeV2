@@ -102,7 +102,10 @@ class NormalLoginForm extends Component {
         wrapperCol={{sm: {span: 10}}}
       >
         {this.props.form.getFieldDecorator('date')(
-          <DatePicker style={{width: '100%'}} />
+          <DatePicker.RangePicker
+            format={'dddd DD MMMM YYYY'}
+            style={{width: '100%'}}
+          />
       )}
       </FormItem>
     )

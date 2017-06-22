@@ -26,3 +26,10 @@ export function removeUnfinshedEquipment (equipmentId, id) {
     bookingId: id
   }
 }
+
+export function addDefaultProphoto (bookingId) {
+  return {
+    type: 'ADD_DEFAULT_PROPHOTO',
+    bookingId
+  }
+}

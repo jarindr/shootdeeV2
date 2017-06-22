@@ -1,4 +1,4 @@
-import { AutoComplete, Input, Form, Button, Select, InputNumber } from 'antd'
+import { AutoComplete, Form, Button, Select, InputNumber } from 'antd'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styles from './EquipmentsSearch.sass'

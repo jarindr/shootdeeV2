@@ -43,13 +43,18 @@ class EquipmentSection extends Component {
               key={eq.equipment}
               className={styles.equipmentName}
             >
-              {eq.equipment} {eq.amount}
-              <span
-                onClick={this.onClickRemoveEquipment(eq.equipment, this.props.id)}
-                className={styles.removeEquipmentIcon}
-              >
-                <Icon type='close-circle-o' />
-              </span>
+              <Row>
+                <Col xs={10}>{eq.equipment}</Col>
+                <Col xs={1}>{eq.amount}</Col>
+                <Col xs={1}>
+                  <span
+                    onClick={this.onClickRemoveEquipment(eq.equipment, this.props.id)}
+                    className={styles.removeEquipmentIcon}
+                  >
+                    <Icon type='close-circle-o' />
+                  </span>
+                </Col>
+              </Row>
             </div>
           ))}
         </div>

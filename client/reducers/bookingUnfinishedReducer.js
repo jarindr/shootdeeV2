@@ -9,10 +9,24 @@ const bookingsUnfinishedReducer = (state = initialState, action) => {
         if (!state.getIn([id, name])) {
           return state.setIn([id, name], [value])
         } else {
-          return state.updateIn([id, name], arr => [...arr, value])
+          return state.updateIn([id, name], arr => {
+            const index = _.findIndex(arr, x => x.equipment === value.equipment)
+            return index === -1 ? [...arr, value] : arr.map((x, i) => i === index ? value : x)
+          })
         }
       }
       return state.setIn([id, name], value)
+
+    case 'REMOVE_EQUIPMENT_UNFINISHED_BOOKING':
+      const { bookingId, equipmentId } = action
+      return state.updateIn([bookingId, 'equipments'], arr => {
+        const index = _.findIndex(arr, x => x.equipment === equipmentId)
+        if (arr.length === 1 && index === 0) {
+          return []
+        }
+        _.pullAt(arr, [index])
+        return [...arr]
+      })
     default:
       return state
   }

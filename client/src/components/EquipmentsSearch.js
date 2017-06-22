@@ -5,7 +5,6 @@ import styles from './EquipmentsSearch.sass'
 import _ from 'lodash'
 
 const Option = AutoComplete.Option
-const InputGroup = Input.Group
 const OptGroup = AutoComplete.OptGroup
 class EquipmentSearch extends Component {
   static propTypes = {
@@ -30,8 +29,6 @@ class EquipmentSearch extends Component {
 
   renderOption = () => {
     if (this.props.equipments) {
-      console.log(this.groupDataSource())
-
       return this.groupDataSource().map(group => (
         <OptGroup
           key={group.type}
@@ -54,6 +51,7 @@ class EquipmentSearch extends Component {
   onAddEquipment = (e) => {
     const { equipment, amount, type } = this.props.form.getFieldsValue()
     this.props.onAddEquipment({equipment, amount, type})
+    $('.potato').focus()
   }
 
   render () {
@@ -70,6 +68,7 @@ class EquipmentSearch extends Component {
               placeholder='Select a equipment'
               optionFilterProp='filter'
               filterOption={this.filterOption}
+              className='potato'
             >
               {this.renderOption()}
             </Select>

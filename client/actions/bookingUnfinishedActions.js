@@ -19,3 +19,10 @@ export function saveUnfinshedEquipments (equipmentsUnfinished) {
   }
 }
 
+export function removeUnfinshedEquipment (equipmentId, id) {
+  return {
+    type: 'REMOVE_EQUIPMENT_UNFINISHED_BOOKING',
+    equipmentId,
+    bookingId: id
+  }
+}

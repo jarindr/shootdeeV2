@@ -3,6 +3,7 @@ import _ from 'lodash'
 const initialState = Immutable.Map()
 const bookingsUnfinishedReducer = (state = initialState, action) => {
   switch (action.type) {
+
     case 'SAVE_UNFINISHED_BOOKING': {
       const { id, name, value } = action.bookingUnfinished
       if (name === 'equipments') {
@@ -32,20 +33,20 @@ const bookingsUnfinishedReducer = (state = initialState, action) => {
 
     case 'ADD_DEFAULT_PROPHOTO': {
       const { bookingId } = action
-
       const defaultProphoto = [
         { equipment: 'Pro-8a 2400 AirEUR', amount: 2, type: 'prophoto' },
         { equipment: 'Century Stand', amount: 4, type: 'Light stand' },
         { equipment: 'ProHead', amount: 4, type: 'prophoto' },
         { equipment: 'Profoto Air Remote', amount: 1, type: 'prophoto' }
       ]
-      const defaultProphotoMap = _.keyBy(defaultProphoto, 'equipment')
 
       return state.updateIn([bookingId, 'equipments'], arr => {
         if (_.isEmpty(arr)) {
           return defaultProphoto
         }
-        return _.uniqWith([...defaultProphoto, ...arr], _.isEqual)
+        return _.uniqWith([...defaultProphoto, ...arr], (arr1, arr2) => {
+          return arr1.equipment === arr2.equipment
+        })
       })
     }
 

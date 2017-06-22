@@ -45,11 +45,7 @@ const bookingsUnfinishedReducer = (state = initialState, action) => {
         if (_.isEmpty(arr)) {
           return defaultProphoto
         }
-        return arr.map(e => {
-          if (defaultProphotoMap[e.equipment]) {
-            return defaultProphotoMap[e.equipment]
-          }
-        })
+        return _.uniqWith([...defaultProphoto, ...arr], _.isEqual)
       })
     }
 

@@ -31,22 +31,27 @@ const bookingsUnfinishedReducer = (state = initialState, action) => {
       })
     }
 
-    case 'ADD_DEFAULT_PROPHOTO': {
-      const { bookingId } = action
-      const defaultProphoto = [
-        { equipment: 'Pro-8a 2400 AirEUR', amount: 2, type: 'prophoto' },
-        { equipment: 'Century Stand', amount: 4, type: 'Light stand' },
-        { equipment: 'ProHead', amount: 4, type: 'prophoto' },
-        { equipment: 'Profoto Air Remote', amount: 1, type: 'prophoto' }
-      ]
-
+    case 'ADD_DEFAULT_EQUIPMENTS': {
+      const { bookingId, preset } = action
+      const presetsMap = {
+        prophoto: [
+          { equipment: 'Pro-8a 2400 AirEUR', amount: 2, type: 'prophoto' },
+          { equipment: 'Century Stand', amount: 4, type: 'Light stand' },
+          { equipment: 'ProHead', amount: 4, type: 'prophoto' },
+          { equipment: 'Profoto Air Remote', amount: 1, type: 'prophoto' }
+        ],
+        broncolor: [
+          { equipment: 'Broncolor ScoroE 3200', amount: 2, type: 'broncolor' },
+          { equipment: 'Century Stand', amount: 4, type: 'Light stand' },
+          { equipment: 'Lamp Base Pulso G+reflector', amount: 4, type: 'broncolor' },
+          { equipment: 'Transceiver RSF2 Broncolor', amount: 1, type: 'broncolor' }
+        ]
+      }
       return state.updateIn([bookingId, 'equipments'], arr => {
-        if (_.isEmpty(arr)) {
-          return defaultProphoto
-        }
-        return _.uniqWith([...defaultProphoto, ...arr], (arr1, arr2) => {
-          return arr1.equipment === arr2.equipment
-        })
+        return presetsMap[preset]
+        // return _.uniqWith([...defaultProphoto, ...arr], (arr1, arr2) => {
+        //   return arr1.equipment === arr2.equipment
+        // })
       })
     }
 

@@ -27,9 +27,10 @@ export function removeUnfinshedEquipment (equipmentId, id) {
   }
 }
 
-export function addDefaultProphoto (bookingId) {
+export function addDefaultEquipment (bookingId, preset) {
   return {
-    type: 'ADD_DEFAULT_PROPHOTO',
-    bookingId
+    type: 'ADD_DEFAULT_EQUIPMENTS',
+    bookingId,
+    preset
   }
 }

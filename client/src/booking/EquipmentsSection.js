@@ -1,4 +1,4 @@
-import { Checkbox, Col, Row, Form, Icon } from 'antd'
+import { Col, Row, Icon, Select, Form } from 'antd'
 import React, { Component } from 'react'
 
 import EquipmentsSearch from '../components/EquipmentsSearch'
@@ -8,7 +8,7 @@ import { selectGetBookingUnfinishedEquipmentsById } from '../../selectors/bookin
 import {
   saveUnfinshedBooking,
   removeUnfinshedEquipment,
-  addDefaultProphoto
+  addDefaultEquipment
 } from '../../actions/bookingUnfinishedActions'
 import propTypes from 'prop-types'
 import styles from './EquipmentsSection.sass'
@@ -22,7 +22,14 @@ class EquipmentSection extends Component {
     saveUnfinshedBooking: propTypes.func,
     removeUnfinshedEquipment: propTypes.func,
     selectUnfinishedEquipmentsById: propTypes.func,
-    addDefaultProphoto: propTypes.func
+    addDefaultEquipment: propTypes.func
+  }
+
+  constructor (props) {
+    super(props)
+    this.state = {
+      activeCheckbox: 'NO_LIGHTING'
+    }
   }
 
   onAddEquipment = (data) => {
@@ -67,8 +74,32 @@ class EquipmentSection extends Component {
     }
     return null
   }
-  onChangeProphoto = () => {
-    this.props.addDefaultProphoto(this.props.id)
+
+  onSelectPreset = (preset) => {
+    this.props.addDefaultEquipment(this.props.id, preset)
+  }
+
+  renderPresetSelect = () => {
+    const getFieldDecorator = this.props.form.getFieldDecorator
+    return (
+      <Form.Item
+        label='preset'
+        labelCol={{sm: {span: 2}}}
+        wrapperCol={{sm: {span: 6}}}
+      >
+        {getFieldDecorator('preset', {initialValue: 'no'})(
+          <Select
+            showSearch
+            placeholder='Please select preset'
+            onChange={this.onSelectPreset}
+          >
+            <Select.Option value='no'>No lighting</Select.Option>
+            <Select.Option value='prophoto'>Prophoto with lighting</Select.Option>
+            <Select.Option value='broncolor'>Broncolor with lighting</Select.Option>
+          </Select>
+        )}
+      </Form.Item>
+    )
   }
 
   render () {
@@ -77,8 +108,9 @@ class EquipmentSection extends Component {
       <div className={styles.container}>
         <Row>
           <Col>
-            <Checkbox onChange={this.onChangeProphoto}>Prophoto</Checkbox>
-            <Checkbox>Broncolor</Checkbox>
+            <Form>
+              {this.renderPresetSelect()}
+            </Form>
           </Col>
         </Row>
         <Row>
@@ -109,5 +141,5 @@ export default connect(
       selectUnfinishedEquipmentsById: selectGetBookingUnfinishedEquipmentsById(state)
     }
   },
-  { saveUnfinshedBooking, removeUnfinshedEquipment, addDefaultProphoto }
+  { saveUnfinshedBooking, removeUnfinshedEquipment, addDefaultEquipment }
   )(Form.create({})(EquipmentSection))

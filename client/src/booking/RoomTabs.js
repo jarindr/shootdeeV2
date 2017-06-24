@@ -4,7 +4,7 @@ const TabPane = Tabs.TabPane
 import RoomForm from './RoomForm'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
-
+import styles from './RoomTabs.sass'
 class RoomTabs extends React.Component {
 
   static propTypes = {
@@ -90,6 +90,7 @@ class RoomTabs extends React.Component {
         activeKey={this.state.activeKey}
         type='editable-card'
         onEdit={this.onEdit}
+        className={styles.tabs}
       >
         {this.renderTabs()}
       </Tabs>

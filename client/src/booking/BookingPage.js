@@ -8,51 +8,54 @@ import { connect } from 'react-redux'
 import { saveUnfinshedBooking } from '../../actions/bookingUnfinishedActions'
 import { selectGetBookingUnfinishedById } from '../../selectors/bookingUnfinishedSelectors'
 const Step = Steps.Step
-import { withRouter } from 'react-router-dom'
+import { withRouter, Route } from 'react-router-dom'
 class BookingPage extends React.Component {
 
   static propTypes = {
-    step: propTypes.number,
     saveUnfinshedBooking: propTypes.func,
     selectBookingUnfinishedById: propTypes.object,
     history: propTypes.object,
-    match: propTypes.object
+    location: propTypes.object
   }
-
   onClickStep = (route) => {
     return (e) => {
       this.props.history.push(route)
     }
   }
 
+  renderRoomTabs = () => {
+    return (
+      <RoomTabs
+        saveUnfinshedBooking={this.props.saveUnfinshedBooking}
+        selectBookingUnfinishedById={this.props.selectBookingUnfinishedById}
+      />
+    )
+  }
+
+  renderJobInformation = () => {
+    return (
+      <JobInformationForms
+        saveUnfinshedBooking={this.props.saveUnfinshedBooking}
+      />
+    )
+  }
+
   renderPageStep = () => {
-    const { page } = this.props.match.params
-    switch (page) {
-      case 'rooms':
-        return (
-          <RoomTabs
-            saveUnfinshedBooking={this.props.saveUnfinshedBooking}
-            selectBookingUnfinishedById={this.props.selectBookingUnfinishedById}
-          />
-        )
-
-      case 'job':
-        return (
-          <JobInformationForms
-            saveUnfinshedBooking={this.props.saveUnfinshedBooking}
-          />)
-
-      default:
-        return null
-    }
+    return (
+      <div>
+        <Route render={this.renderRoomTabs} path='/booking/rooms/' />
+        <Route render={this.renderJobInformation} path='/booking/job/' />
+      </div>
+    )
   }
 
   renderSteps = () => {
-    const { page } = this.props.match.params
+    const page = this.props.location.pathname
     const pageIndex = {
-      job: 0,
-      rooms: 1
+      '/booking/job/': 0,
+      '/booking/rooms/': 1
     }
+    console.log(pageIndex[page])
 
     return (
       <div className={styles.stepContainer}>

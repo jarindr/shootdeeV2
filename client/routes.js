@@ -9,7 +9,7 @@ export default(
       <Route path='/authentication/' component={LoginPage} />
       <Layout>
         <Route exact path='/' render={() => <Redirect to='/booking/rooms/' />} />
-        <Route exact path='/booking/:page/' component={BookingPage} />
+        <Route path='/booking/' component={BookingPage} />
         <Route path='/schedules/' component={BookingPage} />
       </Layout>
     </Switch>

@@ -8,53 +8,64 @@ import { connect } from 'react-redux'
 import { saveUnfinshedBooking } from '../../actions/bookingUnfinishedActions'
 import { selectGetBookingUnfinishedById } from '../../selectors/bookingUnfinishedSelectors'
 const Step = Steps.Step
-
+import { withRouter } from 'react-router-dom'
 class BookingPage extends React.Component {
 
   static propTypes = {
     step: propTypes.number,
     saveUnfinshedBooking: propTypes.func,
-    selectBookingUnfinishedById: propTypes.object
+    selectBookingUnfinishedById: propTypes.object,
+    history: propTypes.object,
+    match: propTypes.object
   }
 
-  constructor (props) {
-    super(props)
-    this.state = {
-      stepState: this.props.step
+  onClickStep = (route) => {
+    return (e) => {
+      this.props.history.push(route)
     }
   }
 
-  onClickStep = (index) => {
-    return (e) => this.setState({stepState: index})
-  }
-
   renderPageStep = () => {
-    const stepsComponent = [
-      <JobInformationForms
-        saveUnfinshedBooking={this.props.saveUnfinshedBooking}
-      />,
-      <RoomTabs
-        saveUnfinshedBooking={this.props.saveUnfinshedBooking}
-        selectBookingUnfinishedById={this.props.selectBookingUnfinishedById}
-      />
-    ]
+    const { page } = this.props.match.params
+    switch (page) {
+      case 'rooms':
+        return (
+          <RoomTabs
+            saveUnfinshedBooking={this.props.saveUnfinshedBooking}
+            selectBookingUnfinishedById={this.props.selectBookingUnfinishedById}
+          />
+        )
 
-    return stepsComponent[this.state.stepState]
+      case 'job':
+        return (
+          <JobInformationForms
+            saveUnfinshedBooking={this.props.saveUnfinshedBooking}
+          />)
+
+      default:
+        return null
+    }
   }
 
   renderSteps = () => {
+    const { page } = this.props.match.params
+    const pageIndex = {
+      job: 0,
+      rooms: 1
+    }
+
     return (
       <div className={styles.stepContainer}>
-        <Steps current={this.state.stepState}>
+        <Steps current={pageIndex[page]}>
           <Step
-            title={<span onClick={this.onClickStep(0)}>job</span>}
-            description={<span onClick={this.onClickStep(0)}>job information</span>}
-            icon={<Icon type='solution' onClick={this.onClickStep(0)} />}
+            title={<span onClick={this.onClickStep('/booking/job/')}>job</span>}
+            description={<span onClick={this.onClickStep('/booking/job/')}>job information</span>}
+            icon={<Icon type='solution' onClick={this.onClickStep('/booking/job/')} />}
           />
           <Step
-            title={<span onClick={this.onClickStep(1)}>rooms</span>}
-            description={<span onClick={this.onClickStep(1)}>rooms, dates</span>}
-            icon={<Icon type='switcher' onClick={this.onClickStep(1)} />}
+            title={<span onClick={this.onClickStep('/booking/rooms/')}>rooms</span>}
+            description={<span onClick={this.onClickStep('/booking/rooms/')}>rooms, dates</span>}
+            icon={<Icon type='switcher' onClick={this.onClickStep('/booking/rooms/')} />}
           />
           <Step
             title={<span onClick={this.onClickStep(2)}>confirm</span>}
@@ -79,12 +90,12 @@ class BookingPage extends React.Component {
         </div>
         {this.renderSteps()}
         {this.renderPageStep()}
-        <Button.Group>
+        <Button.Group className={styles.stepNavigationButtons}>
           <Button type='primary'>
             <Icon type='left' title='hello' />previous
               </Button>
           <Button type='primary'>
-              next<Icon type='right' />
+            next<Icon type='right' />
           </Button>
         </Button.Group>
       </div>
@@ -92,7 +103,8 @@ class BookingPage extends React.Component {
   }
 }
 
-export default connect(state => ({
-  selectBookingUnfinishedById: selectGetBookingUnfinishedById(state) }
-  ),
-  { saveUnfinshedBooking })(BookingPage)
+export default withRouter(connect(state => ({
+  selectBookingUnfinishedById: selectGetBookingUnfinishedById(state)
+}
+),
+  { saveUnfinshedBooking })(BookingPage))

@@ -8,9 +8,8 @@ export default(
     <Switch>
       <Route path='/authentication/' component={LoginPage} />
       <Layout>
-        <Route exact path='/' component={() => <Redirect to='/booking/rooms/' />} />
-        <Route path='/booking/job/' component={() => <BookingPage step={0} />} />
-        <Route path='/booking/rooms/' component={() => <BookingPage step={1} />} />
+        <Route exact path='/' render={() => <Redirect to='/booking/rooms/' />} />
+        <Route exact path='/booking/:page/' component={BookingPage} />
         <Route path='/schedules/' component={BookingPage} />
       </Layout>
     </Switch>

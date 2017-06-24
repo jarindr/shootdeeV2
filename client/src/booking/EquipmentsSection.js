@@ -94,7 +94,7 @@ class EquipmentSection extends Component {
             onChange={this.onSelectPreset}
           >
             <Select.Option value='no'>No lighting</Select.Option>
-            <Select.Option value='prophoto'>Prophoto with lighting</Select.Option>
+            <Select.Option value='profoto'>profoto with lighting</Select.Option>
             <Select.Option value='broncolor'>Broncolor with lighting</Select.Option>
           </Select>
         )}

@@ -10,22 +10,6 @@ class NormalLoginForm extends Component {
     form: propTypes.object
   }
 
-  constructor (props) {
-    super(props)
-    this.state = {
-      loginState: false
-    }
-  }
-
-  handleSubmit = (e) => {
-    e.preventDefault()
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        this.setState({ loginState: true })
-      }
-    })
-  }
-
   createInputForm = (name, { type = 'input', required = true } = {}) => {
     const { getFieldDecorator } = this.props.form
     return (
@@ -48,19 +32,22 @@ class NormalLoginForm extends Component {
   }
 
   createSelectForm = () => {
+    const { getFieldDecorator } = this.props.form
     return (
       <FormItem
         label={'assignment'}
         labelCol={{sm: {span: 4}}}
         wrapperCol={{sm: {span: 10}}}
       >
-        <Select defaultValue='Studio rental'>
-          <Option value='Studio rental'>Studio rental</Option>
-          <Option value='Studio rental + Location'>Studio rental + Location</Option>
-          <Option value='Equipment rental'>Equipment rental</Option>
-          <Option value='Onscreen room'>Onscreen room</Option>
-          <Option value='Production'>Production</Option>
-        </Select>
+        {this.props.form.getFieldDecorator('type')(
+          <Select defaultValue='Studio rental'>
+            <Option value='Studio rental'>Studio rental</Option>
+            <Option value='Studio rental + Location'>Studio rental + Location</Option>
+            <Option value='Equipment rental'>Equipment rental</Option>
+            <Option value='Onscreen room'>Onscreen room</Option>
+            <Option value='Production'>Production</Option>
+          </Select>
+      )}
       </FormItem>
 
     )
@@ -112,4 +99,7 @@ class NormalLoginForm extends Component {
   }
 }
 
-export default Form.create({})(NormalLoginForm)
+function onFieldsChange (props, value) {
+}
+
+export default Form.create({onFieldsChange})(NormalLoginForm)

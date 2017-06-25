@@ -54,13 +54,15 @@ class NormalLoginForm extends Component {
   }
 
   createSelectRoomForm = () => {
+    const bookingUnfinished = this.props.selectBookingUnfinishedById(this.props.id)
+    const initialValue = bookingUnfinished.get('room') || 'S'
     return (
       <FormItem
         label={'room'}
         labelCol={{sm: {span: 4}}}
         wrapperCol={{sm: {span: 10}}}
       >
-        {this.props.form.getFieldDecorator('room', {initialValue: 'S'})(
+        {this.props.form.getFieldDecorator('room', {initialValue})(
           <Select>
             <Option value='S'>Studio room S</Option>
             <Option value='M'>Studio room M</Option>
@@ -95,13 +97,17 @@ class NormalLoginForm extends Component {
     )
   }
   renderDatePickerForm = () => {
+    const bookingUnfinished = this.props.selectBookingUnfinishedById(this.props.id)
+    const initialValue = bookingUnfinished.get('date')
+    console.log(initialValue)
+
     return (
       <FormItem
         label={'date'}
         labelCol={{sm: {span: 4}}}
         wrapperCol={{sm: {span: 10}}}
       >
-        {this.props.form.getFieldDecorator('date')(
+        {this.props.form.getFieldDecorator('date', {initialValue})(
           <DatePicker.RangePicker
             format={'dddd DD MMMM YYYY'}
             style={{width: '100%'}}

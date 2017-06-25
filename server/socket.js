@@ -2,6 +2,7 @@ let io = null
 import log4js from 'log4js'
 const logger = log4js.getLogger()
 import * as EquipmentsModel from './models/equipments'
+import * as BookingsModel from './models/booking'
 import _ from 'lodash'
 export function initSocketHandler (server) {
   io = require('socket.io')(server)
@@ -18,6 +19,13 @@ function handleTopicRecieved (socket, io) {
       EquipmentsModel.getAllEquipmentsAsync({
         onSuccess: (data) => {
           io.emit('equipments:get', { data })
+        }
+      })
+    },
+    'booking:get:id': () => {
+      BookingsModel.getBookingIdAsync({
+        onSuccess: (data) => {
+          io.emit('booking:get:id', data)
         }
       })
     }

@@ -1,5 +1,6 @@
 import log4js from 'log4js'
 import mongoose from 'mongoose'
+import moment from 'moment'
 const logger = log4js.getLogger()
 const bookingSchema = mongoose.Schema({
   _id: { type: mongoose.Schema.ObjectId },
@@ -37,6 +38,20 @@ export function saveBookingsAsync ({data, onSuccess, onFailed}) {
     } else {
       onSuccess()
       logger.info('bookings saved to database.')
+    }
+  })
+}
+
+export function getBookingIdAsync ({onSuccess, onFailed}) {
+  Booking.count({}, (err, result) => {
+    if (err) {
+      onFailed(err)
+      logger.error(err)
+    } else {
+      let count = `000${result}`
+      count = count.substr(count.length - 4)
+      const id = `Q${moment().format('YYDD')}${count}`
+      onSuccess(id)
     }
   })
 }

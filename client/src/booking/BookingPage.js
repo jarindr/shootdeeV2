@@ -108,6 +108,4 @@ class BookingPage extends React.Component {
 
 export default withRouter(connect(state => ({
   selectBookingUnfinishedById: selectGetBookingUnfinishedById(state)
-}
-),
-  { saveUnfinshedBooking })(BookingPage))
+}), { saveUnfinshedBooking })(BookingPage))

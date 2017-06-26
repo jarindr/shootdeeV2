@@ -13,7 +13,7 @@ class BookingPage extends React.Component {
 
   static propTypes = {
     saveUnfinshedBooking: propTypes.func,
-    selectBookingUnfinishedById: propTypes.object,
+    selectBookingUnfinishedById: propTypes.func,
     history: propTypes.object,
     location: propTypes.object
   }
@@ -55,7 +55,6 @@ class BookingPage extends React.Component {
       '/booking/job/': 0,
       '/booking/rooms/': 1
     }
-    console.log(pageIndex[page])
 
     return (
       <div className={styles.stepContainer}>

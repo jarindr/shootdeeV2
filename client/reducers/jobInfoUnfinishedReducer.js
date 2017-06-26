@@ -1,9 +1,8 @@
 import Immutable from 'immutable'
-import _ from 'lodash'
 const initialState = Immutable.Map({
   bookings: [0]
 })
-const bookingsUnfinishedReducer = (state = initialState, action) => {
+const jobInfoUnfinishedReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'SAVE_UNFINISHED_JOB': {
       const { name, value } = action.job
@@ -18,4 +17,4 @@ const bookingsUnfinishedReducer = (state = initialState, action) => {
   }
 }
 
-export default bookingsUnfinishedReducer
+export default jobInfoUnfinishedReducer

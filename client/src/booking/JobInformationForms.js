@@ -2,31 +2,35 @@ import React, { Component } from 'react'
 import propTypes from 'prop-types'
 import { Form, Input, Row, Col, Select } from 'antd'
 import styles from './JobInformationForms.sass'
+import { connect } from 'react-redux'
+import { selectjobInfoUnfinished } from '../../selectors/jobUnfinishedSelectors'
+import { saveUnfinshedJob } from '../../actions/jobInfoUnfinishedActions'
 const FormItem = Form.Item
 const Option = Select.Option
 class NormalLoginForm extends Component {
 
   static propTypes = {
-    form: propTypes.object
+    form: propTypes.object,
+    job: propTypes.object,
+    saveUnfinshedJob: propTypes.func // eslint-disable-line react/no-unused-prop-types
   }
 
-  createInputForm = (name, { type = 'input', required = true } = {}) => {
+  createInputForm = () => {
     const { getFieldDecorator } = this.props.form
     return (
       <FormItem
-        label={name}
+        label='client'
         labelCol={{sm: {span: 4}}}
         wrapperCol={{sm: {span: 10}}}
       >
-        {getFieldDecorator(name, {
-          rules: [{ required, message: 'this field can\'t be empty!' }]
-        })(
+        {getFieldDecorator('client')(
           <Input
             size='large'
-            placeholder={name}
-            type={type}
+            placeholder='client'
+            type='input'
           />
-            )}
+        )
+        }
       </FormItem>
     )
   }
@@ -39,8 +43,8 @@ class NormalLoginForm extends Component {
         labelCol={{sm: {span: 4}}}
         wrapperCol={{sm: {span: 10}}}
       >
-        {this.props.form.getFieldDecorator('type')(
-          <Select defaultValue='Studio rental'>
+        {getFieldDecorator('type', {initialValue: 'Studio rental'})(
+          <Select>
             <Option value='Studio rental'>Studio rental</Option>
             <Option value='Studio rental + Location'>Studio rental + Location</Option>
             <Option value='Equipment rental'>Equipment rental</Option>
@@ -85,9 +89,9 @@ class NormalLoginForm extends Component {
                 wrapperCol={{sm: {span: 10}}}
                 label='quotation'
               >
-                <span>Q0000001</span>
+                <span>{this.props.job.get('id')}</span>
               </FormItem>
-              {this.createInputForm('client')}
+              {this.createInputForm()}
               {this.createSelectForm()}
               {this.createTextAreaForm('job description')}
             </Form>
@@ -99,7 +103,11 @@ class NormalLoginForm extends Component {
   }
 }
 
-function onFieldsChange (props, value) {
+function onFieldsChange (props, field) {
+  const updateField = _.map(field, value => value)[0]
+  props.saveUnfinshedJob(updateField)
 }
 
-export default Form.create({onFieldsChange})(NormalLoginForm)
+export default connect(state => {
+  return { job: selectjobInfoUnfinished(state) }
+}, { saveUnfinshedJob })(Form.create({onFieldsChange})(NormalLoginForm))

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Form, Input, Row, Col, Select, DatePicker, TimePicker } from 'antd'
+import { Form, Row, Col, Select, DatePicker, TimePicker } from 'antd'
 import styles from './RoomForm.sass'
 const FormItem = Form.Item
 const Option = Select.Option
@@ -30,27 +30,6 @@ class NormalLoginForm extends Component {
         this.setState({ loginState: true })
       }
     })
-  }
-
-  createInputForm = (name, { type = 'input', required = true } = {}) => {
-    const { getFieldDecorator } = this.props.form
-    return (
-      <FormItem
-        label={name}
-        labelCol={{sm: {span: 4}}}
-        wrapperCol={{sm: {span: 10}}}
-      >
-        {getFieldDecorator(name, {
-          rules: [{ required, message: 'this field can\'t be empty!' }]
-        })(
-          <Input
-            size='large'
-            placeholder={name}
-            type={type}
-          />
-            )}
-      </FormItem>
-    )
   }
 
   createSelectRoomForm = () => {

@@ -2,13 +2,18 @@ import store from './store'
 import * as equipmentActions from './actions/equipmentActions'
 import * as jobInfoUnfinishedActions from './actions/jobInfoUnfinishedActions'
 import _ from 'lodash'
+let socket = null
 export function initSocketConnection ({ onConntected }) {
-  const socket = require('socket.io-client')('http://localhost:3000')
+  socket = require('socket.io-client')('http://localhost:3000')
   socket.on('connect', function () {
     onConntected()
     handleBackendRecieved(socket)
     getStarter(socket)
   })
+}
+
+export function publish (topic, data) {
+  socket.emit(topic, data)
 }
 
 function getStarter (socket) {

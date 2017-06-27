@@ -56,9 +56,6 @@ const bookingsUnfinishedReducer = (state = initialState, action) => {
       }
       return state.updateIn([bookingId, 'equipments'], arr => {
         return presetsMap[preset]
-        // return _.uniqWith([...defaultprofoto, ...arr], (arr1, arr2) => {
-        //   return arr1.equipment === arr2.equipment
-        // })
       })
     }
 

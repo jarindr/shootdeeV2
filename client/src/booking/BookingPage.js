@@ -6,6 +6,7 @@ import JobInformationForms from './JobInformationForms'
 import { Steps, Button, Icon } from 'antd'
 import { connect } from 'react-redux'
 import { saveUnfinshedBooking } from '../../actions/bookingUnfinishedActions'
+import { submitBooking } from '../../actions/jobInfoUnfinishedActions'
 import { selectGetBookingUnfinishedById } from '../../selectors/bookingUnfinishedSelectors'
 const Step = Steps.Step
 import { withRouter, Route } from 'react-router-dom'
@@ -14,6 +15,7 @@ class BookingPage extends React.Component {
   static propTypes = {
     saveUnfinshedBooking: propTypes.func,
     selectBookingUnfinishedById: propTypes.func,
+    submitBooking: propTypes.func,
     history: propTypes.object,
     location: propTypes.object
   }
@@ -78,6 +80,9 @@ class BookingPage extends React.Component {
       </div>
     )
   }
+  onClickSubmitBooking = () => {
+    this.props.submitBooking()
+  }
   render () {
     return (
       <div className={styles.container}>
@@ -87,7 +92,7 @@ class BookingPage extends React.Component {
             <h4 className={styles.subTitle}>quotation: Q0000001</h4>
           </div>
           <div className={styles.stepNavigationContainer}>
-            <Button type='primary' icon='select' className={styles.submitButton}>Submit</Button>
+            <Button onClick={this.onClickSubmitBooking} type='primary' icon='select' className={styles.submitButton}>Submit</Button>
           </div>
         </div>
         {this.renderSteps()}
@@ -107,4 +112,4 @@ class BookingPage extends React.Component {
 
 export default withRouter(connect(state => ({
   selectBookingUnfinishedById: selectGetBookingUnfinishedById(state)
-}), { saveUnfinshedBooking })(BookingPage))
+}), { saveUnfinshedBooking, submitBooking })(BookingPage))

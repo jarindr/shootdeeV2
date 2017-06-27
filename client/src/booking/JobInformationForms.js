@@ -23,7 +23,7 @@ class NormalLoginForm extends Component {
         labelCol={{sm: {span: 4}}}
         wrapperCol={{sm: {span: 10}}}
       >
-        {getFieldDecorator('client')(
+        {getFieldDecorator('customer')(
           <Input
             size='large'
             placeholder='client'
@@ -43,7 +43,7 @@ class NormalLoginForm extends Component {
         labelCol={{sm: {span: 4}}}
         wrapperCol={{sm: {span: 10}}}
       >
-        {getFieldDecorator('type', {initialValue: 'Studio rental'})(
+        {getFieldDecorator('assignment', {initialValue: 'Studio rental'})(
           <Select>
             <Option value='Studio rental'>Studio rental</Option>
             <Option value='Studio rental + Location'>Studio rental + Location</Option>
@@ -60,13 +60,11 @@ class NormalLoginForm extends Component {
     const { getFieldDecorator } = this.props.form
     return (
       <FormItem
-        label={name}
+        label={'job description'}
         labelCol={{sm: {span: 4}}}
         wrapperCol={{sm: {span: 10}}}
       >
-        {getFieldDecorator(name, {
-          rules: [{ required: false, message: 'this field can\'t be empty!' }]
-        })(
+        {getFieldDecorator('description')(
           <Input
             size='large'
             placeholder={name}
@@ -93,7 +91,7 @@ class NormalLoginForm extends Component {
               </FormItem>
               {this.createInputForm()}
               {this.createSelectForm()}
-              {this.createTextAreaForm('job description')}
+              {this.createTextAreaForm()}
             </Form>
           </Col>
           <Col md={6} />

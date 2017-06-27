@@ -28,6 +28,17 @@ function handleTopicRecieved (socket, io) {
           io.emit('booking:get:id', data)
         }
       })
+    },
+    'booking:save': (data) => {
+      BookingsModel.saveBookingsAsync({
+        data,
+        onSuccess: (response) => {
+          console.log(response)
+        },
+        onFailed: (response) => {
+          console.log(response)
+        }
+      })
     }
   }
   _.forOwn(topics, (callback, topic) => {

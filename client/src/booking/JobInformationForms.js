@@ -1,12 +1,22 @@
+import { Col, Form, Input, Row, Select } from 'antd'
 import React, { Component } from 'react'
-import propTypes from 'prop-types'
-import { Form, Input, Row, Col, Select } from 'antd'
-import styles from './JobInformationForms.sass'
+
+import _ from 'lodash'
+import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { selectjobInfoUnfinished } from '../../selectors/jobUnfinishedSelectors'
+import propTypes from 'prop-types'
 import { saveUnfinshedJob } from '../../actions/jobInfoUnfinishedActions'
+import { selectjobInfoUnfinished } from '../../selectors/jobUnfinishedSelectors'
+import styles from './JobInformationForms.sass'
+
 const FormItem = Form.Item
 const Option = Select.Option
+
+const enhance = compose(
+  connect(createSelectors, { saveUnfinshedJob }),
+  Form.create({onFieldsChange})
+)
+
 class NormalLoginForm extends Component {
 
   static propTypes = {
@@ -23,7 +33,7 @@ class NormalLoginForm extends Component {
         labelCol={{sm: {span: 4}}}
         wrapperCol={{sm: {span: 10}}}
       >
-        {getFieldDecorator('customer')(
+        {getFieldDecorator('customer', {initialValue: this.props.job.get('customer')})(
           <Input
             size='large'
             placeholder='client'
@@ -43,7 +53,7 @@ class NormalLoginForm extends Component {
         labelCol={{sm: {span: 4}}}
         wrapperCol={{sm: {span: 10}}}
       >
-        {getFieldDecorator('assignment', {initialValue: 'Studio rental'})(
+        {getFieldDecorator('assignment', {initialValue: this.props.job.get('assignment')})(
           <Select>
             <Option value='Studio rental'>Studio rental</Option>
             <Option value='Studio rental + Location'>Studio rental + Location</Option>
@@ -64,7 +74,7 @@ class NormalLoginForm extends Component {
         labelCol={{sm: {span: 4}}}
         wrapperCol={{sm: {span: 10}}}
       >
-        {getFieldDecorator('description')(
+        {getFieldDecorator('description', {initialValue: this.props.job.get('description')})(
           <Input
             size='large'
             placeholder={name}
@@ -106,6 +116,10 @@ function onFieldsChange (props, field) {
   props.saveUnfinshedJob(updateField)
 }
 
-export default connect(state => {
-  return { job: selectjobInfoUnfinished(state) }
-}, { saveUnfinshedJob })(Form.create({onFieldsChange})(NormalLoginForm))
+function createSelectors () {
+  return (state) => (
+    {job: selectjobInfoUnfinished(state)}
+  )
+}
+
+export default enhance(NormalLoginForm)

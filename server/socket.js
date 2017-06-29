@@ -33,10 +33,9 @@ function handleTopicRecieved (socket, io) {
       BookingsModel.saveBookingsAsync({
         data,
         onSuccess: (response) => {
-          console.log(response)
+          io.emit('booking:save', response)
         },
         onFailed: (response) => {
-          console.log(response)
         }
       })
     }

@@ -24,7 +24,7 @@ const bookingSchema = mongoose.Schema({
   // equipments: [ {type: mongoose.Schema.Types.ObjectId, ref: 'equipments'} ]
 })
 
-// bookingSchema.index({ id: 1, room: 1 }, { unique: true })
+bookingSchema.index({ id: 1, room: 1 }, { unique: true })
 
 const Booking = mongoose.model('bookings', bookingSchema)
 

@@ -2,7 +2,7 @@ import log4js from 'log4js'
 import mongoose from 'mongoose'
 const logger = log4js.getLogger()
 const bookingSchema = mongoose.Schema({
-  id: { type: String, required: true },
+  id: { type: String, required: true, unique: true },
   status: {
     type: String,
     required: true,
@@ -20,8 +20,6 @@ const bookingSchema = mongoose.Schema({
   assistants: [{ type: String }],
   equipments: [ {type: Object} ]
 })
-
-bookingSchema.index({ id: 1, room: 1 }, { unique: true })
 
 export const Booking = mongoose.model('bookings', bookingSchema)
 

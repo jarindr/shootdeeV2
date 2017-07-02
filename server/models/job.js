@@ -25,8 +25,7 @@ export function saveJobAsync ({ job, bookingUnfinished, onSuccess, onFailed }) {
       logger.info(`job ${job.id} completely saved to database`)
     }
   })
-  console.log(bookingUnfinished)
-  
+
   Booking.insertMany(bookingUnfinished, (err, docs) => {
     if (err) {
       onFailed()

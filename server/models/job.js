@@ -1,32 +1,45 @@
 import log4js from 'log4js'
 import moment from 'moment'
 import mongoose from 'mongoose'
+import { Booking } from './booking'
 const logger = log4js.getLogger()
 const job = mongoose.Schema({
-  id: { type: String, required: true },
+  id: { type: String, required: true, unique: true },
   customer: { type: String },
-  assignment: { type: String, required: true }
+  assignment: { type: String, required: true },
+  description: { type: String, required: true },
+  bookings: [{ type: String }]
 })
 
-job.index({ id: 1, room: 1 }, { unique: true })
+const JobModel = mongoose.model('job', job)
 
-const Booking = mongoose.model('job', job)
+export function saveJobAsync ({ job, bookingUnfinished, onSuccess, onFailed }) {
+  const newJob = new JobModel(job)
 
-export function saveJobAsync ({ data, onSuccess, onFailed }) {
-  const booking = new Booking(data)
-  booking.save((err, result) => {
+  newJob.save((err, result) => {
     if (err) {
       onFailed()
       logger.error(err)
     } else {
       onSuccess()
-      logger.info(`job ${data.id} completely saved to database`)
+      logger.info(`job ${job.id} completely saved to database`)
+    }
+  })
+  console.log(bookingUnfinished)
+  
+  Booking.insertMany(bookingUnfinished, (err, docs) => {
+    if (err) {
+      onFailed()
+      logger.error(err)
+    } else {
+      onSuccess()
+      logger.info(`bookings completely saved to database`)
     }
   })
 }
 
 export function getJobIdAsync ({ onSuccess, onFailed }) {
-  Booking.count({}, (err, result) => {
+  JobModel.count({}, (err, result) => {
     if (err) {
       onFailed(err)
       logger.error(err)
@@ -40,7 +53,7 @@ export function getJobIdAsync ({ onSuccess, onFailed }) {
 }
 
 export function getAllJobAsync ({ onSuccess, onFailed }) {
-  Booking.find({}, null, (err, result) => {
+  JobModel.find({}, null, (err, result) => {
     if (err) {
       onFailed(err)
       logger.error(err)

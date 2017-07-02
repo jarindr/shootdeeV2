@@ -16,6 +16,8 @@ export function initSocketConnection ({ onConntected }) {
 }
 
 export function publish (topic, data) {
+  console.log(topic)
+  
   socket.emit(topic, data)
 }
 

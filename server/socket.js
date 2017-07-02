@@ -29,11 +29,15 @@ function handleTopicRecieved (socket, io) {
         }
       })
     },
-    'job:save': (data) => {
-      jobModel.saveBookingsAsync({
-        data,
+    'job:save': ({job, bookingUnfinished}) => {
+      const bookings = _.values(bookingUnfinished).map((booking, index) => {
+        return Object.assign({}, booking, {id: `${job.id}-${index}`})
+      })
+      jobModel.saveJobAsync({
+        job,
+        bookingUnfinished: bookings,
         onSuccess: (response) => {
-          io.emit('่job:save', response)
+          io.emit('job:save', response)
         },
         onFailed: (response) => {
         }

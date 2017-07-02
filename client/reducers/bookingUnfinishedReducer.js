@@ -4,8 +4,11 @@ import moment from 'moment'
 const initialState = Immutable.Map({
   0: Immutable.Map({
     room: 'S',
-    status: 'Tentative',
-    date: [moment(), moment()]
+    status: 'TENTATIVE',
+    date: [moment(), moment()],
+    assistance: [],
+    equipments: [],
+    preset: 'no'
   })
 })
 

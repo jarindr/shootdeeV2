@@ -9,14 +9,14 @@ import propTypes from 'prop-types'
 import { saveUnfinshedBooking } from '../../actions/bookingUnfinishedActions'
 import { selectGetBookingUnfinishedById } from '../../selectors/bookingUnfinishedSelectors'
 import styles from './BookingPage.sass'
-import { submitBooking } from '../../actions/jobUnfinishedActions'
+import { submitJob } from '../../actions/jobUnfinishedActions'
 const Step = Steps.Step
 class BookingPage extends React.Component {
 
   static propTypes = {
     saveUnfinshedBooking: propTypes.func,
     selectBookingUnfinishedById: propTypes.func,
-    submitBooking: propTypes.func,
+    submitJob: propTypes.func,
     history: propTypes.object,
     location: propTypes.object
   }
@@ -82,7 +82,7 @@ class BookingPage extends React.Component {
     )
   }
   onClickSubmitBooking = () => {
-    this.props.submitBooking()
+    this.props.submitJob()
   }
   render () {
     return (
@@ -113,4 +113,4 @@ class BookingPage extends React.Component {
 
 export default withRouter(connect(state => ({
   selectBookingUnfinishedById: selectGetBookingUnfinishedById(state)
-}), { saveUnfinshedBooking, submitBooking })(BookingPage))
+}), { saveUnfinshedBooking, submitJob })(BookingPage))

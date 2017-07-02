@@ -2,27 +2,28 @@ import log4js from 'log4js'
 import mongoose from 'mongoose'
 const logger = log4js.getLogger()
 const bookingSchema = mongoose.Schema({
+  id: { type: String, required: true },
   status: {
     type: String,
     required: true,
     enum: ['CONFIRMED', 'TENTATIVE', 'CANCLE']
   },
-  description: { type: String, required: true },
   room: {
     type: String,
     required: true,
-    enum: ['X', 'M', 'L', 'XL', 'G', 'ONSCREEN']
+    enum: ['S', 'M', 'L', 'XL', 'G', 'ONSCREEN']
   },
-  photographer: { type: String, required: true },
-  shootingDates: { type: [Date], required: true },
-  times: { type: [Date], required: true },
+  photographer: { type: String },
+  date: { type: [Date] },
+  startTime: { type: String },
+  endTime: { type: String },
   assistants: [{ type: String }],
-  equipments: [ {type: mongoose.Schema.Types.ObjectId, ref: 'equipments'} ]
+  equipments: [ {type: Object} ]
 })
 
 bookingSchema.index({ id: 1, room: 1 }, { unique: true })
 
-const Booking = mongoose.model('bookings', bookingSchema)
+export const Booking = mongoose.model('bookings', bookingSchema)
 
 export function saveBookingsAsync ({ data, onSuccess, onFailed }) {
   const booking = new Booking(data)

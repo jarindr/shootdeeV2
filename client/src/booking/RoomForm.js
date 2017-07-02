@@ -66,9 +66,9 @@ class NormalLoginForm extends Component {
       >
         {this.props.form.getFieldDecorator('status', { initialValue })(
           <Select>
-            <Option value='Tentative'>Tentative</Option>
-            <Option value='Confirm'>Confirm</Option>
-            <Option value='Cancel'>Cancel</Option>
+            <Option value='TENTATIVE'>Tentative</Option>
+            <Option value='CONFIRM'>Confirm</Option>
+            <Option value='CANCEL'>Cancel</Option>
           </Select>
       )}
       </FormItem>
@@ -78,8 +78,6 @@ class NormalLoginForm extends Component {
   renderDatePickerForm = () => {
     const bookingUnfinished = this.props.selectBookingUnfinishedById(this.props.id)
     const initialValue = bookingUnfinished.get('date')
-    console.log(initialValue)
-
     return (
       <FormItem
         label={'date'}

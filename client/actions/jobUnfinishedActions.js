@@ -1,5 +1,4 @@
 import * as bc from '../backend'
-
 export function saveUnfinshedJob (job) {
   return {
     type: 'SAVE_UNFINISHED_JOB',
@@ -14,10 +13,10 @@ export function jobIdRecievedFromBackend (jobId) {
   }
 }
 
-export function submitBooking () {
+export function submitJob () {
   return (dispatch, getState) => {
-    const { job } = getState()
-    bc.publish('booking:save', job)
-    dispatch({ type: 'SUBMIT_BOOKING' })
+    const { job, bookingUnfinished } = getState()
+    bc.publish('job:save', { job, bookingUnfinished })
+    dispatch({ type: 'SUBMIT_JOB' })
   }
 }

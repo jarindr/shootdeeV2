@@ -1,15 +1,16 @@
-import React from 'react'
-import styles from './BookingPage.sass'
-import propTypes from 'prop-types'
-import RoomTabs from './RoomTabs'
+import { Button, Icon, Steps } from 'antd'
+import { Route, withRouter } from 'react-router-dom'
+
 import JobInformationForms from './JobInformationForms'
-import { Steps, Button, Icon } from 'antd'
+import React from 'react'
+import RoomTabs from './RoomTabs'
 import { connect } from 'react-redux'
+import propTypes from 'prop-types'
 import { saveUnfinshedBooking } from '../../actions/bookingUnfinishedActions'
-import { submitBooking } from '../../actions/jobInfoUnfinishedActions'
 import { selectGetBookingUnfinishedById } from '../../selectors/bookingUnfinishedSelectors'
+import styles from './BookingPage.sass'
+import { submitBooking } from '../../actions/jobUnfinishedActions'
 const Step = Steps.Step
-import { withRouter, Route } from 'react-router-dom'
 class BookingPage extends React.Component {
 
   static propTypes = {

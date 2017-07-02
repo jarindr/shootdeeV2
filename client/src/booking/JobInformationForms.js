@@ -5,7 +5,7 @@ import _ from 'lodash'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import propTypes from 'prop-types'
-import { saveUnfinshedJob } from '../../actions/jobInfoUnfinishedActions'
+import { saveUnfinshedJob } from '../../actions/jobUnfinishedActions'
 import { selectjobInfoUnfinished } from '../../selectors/jobUnfinishedSelectors'
 import styles from './JobInformationForms.sass'
 
@@ -53,7 +53,7 @@ class NormalLoginForm extends Component {
         labelCol={{sm: {span: 4}}}
         wrapperCol={{sm: {span: 10}}}
       >
-        {getFieldDecorator('assignment', {initialValue: this.props.job.get('assignment')})(
+        {getFieldDecorator('assignment', { initialValue: this.props.job.get('assignment') })(
           <Select>
             <Option value='Studio rental'>Studio rental</Option>
             <Option value='Studio rental + Location'>Studio rental + Location</Option>
@@ -118,7 +118,7 @@ function onFieldsChange (props, field) {
 
 function createSelectors () {
   return (state) => (
-    {job: selectjobInfoUnfinished(state)}
+    { job: selectjobInfoUnfinished(state) }
   )
 }
 

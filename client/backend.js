@@ -1,8 +1,11 @@
-import store from './store'
 import * as equipmentActions from './actions/equipmentActions'
-import * as jobInfoUnfinishedActions from './actions/jobInfoUnfinishedActions'
+import * as jobUnfinishedActions from './actions/jobUnfinishedActions'
+
 import _ from 'lodash'
+import store from './store'
+
 let socket = null
+
 export function initSocketConnection ({ onConntected }) {
   socket = require('socket.io-client')('http://localhost:3000')
   socket.on('connect', function () {
@@ -17,7 +20,7 @@ export function publish (topic, data) {
 }
 
 function getStarter (socket) {
-  const topics = ['equipments:get', 'booking:get:id']
+  const topics = ['equipments:get', 'job:get:id']
   for (const topic of topics) {
     socket.emit(topic)
   }
@@ -28,8 +31,8 @@ function handleBackendRecieved (socket) {
     'equipments:get': (data) => {
       store.dispatch(equipmentActions.getAllEquipmentsAction(data))
     },
-    'booking:get:id': (data) => {
-      store.dispatch(jobInfoUnfinishedActions.bookingIdRecievedFromBackend(data))
+    'job:get:id': (data) => {
+      store.dispatch(jobUnfinishedActions.jobIdRecievedFromBackend(data))
     }
   }
   // loop and create socket event handler

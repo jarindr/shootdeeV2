@@ -7,10 +7,10 @@ export function saveUnfinshedJob (job) {
   }
 }
 
-export function bookingIdRecievedFromBackend (bookingId) {
+export function jobIdRecievedFromBackend (jobId) {
   return {
     type: 'SET_BOOKING_ID',
-    bookingId
+    jobId
   }
 }
 
@@ -21,4 +21,3 @@ export function submitBooking () {
     dispatch({ type: 'SUBMIT_BOOKING' })
   }
 }
-

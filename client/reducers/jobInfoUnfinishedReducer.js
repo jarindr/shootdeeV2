@@ -12,7 +12,7 @@ const jobInfoUnfinishedReducer = (state = initialState, action) => {
       return state.setIn([name], value)
     }
     case 'SET_BOOKING_ID': {
-      return state.setIn(['id'], action.bookingId)
+      return state.setIn(['id'], action.jobId)
     }
     default: {
       return state

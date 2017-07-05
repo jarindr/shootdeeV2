@@ -5,6 +5,7 @@ import RoomForm from './RoomForm'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 import styles from './RoomTabs.sass'
+import moment from 'moment'
 class RoomTabs extends React.Component {
 
   static propTypes = {
@@ -21,13 +22,18 @@ class RoomTabs extends React.Component {
       activeKey: '0'
     }
   }
+  formatDate (date) {
+    const moments = _.uniq(date.map(x => moment(x).format('DD/MM'))).join(' - ')
+    return moments
+  }
 
   getPanes = () => {
     return _.values(this.props.bookingUnfinished.toJS()).map((booking, index) => {
-      return { ...booking, ...{ title: `room ${booking.room}`, key: booking.id } }
+      console.log(booking.date)
+
+      return { ...booking, ...{ title: `[${booking.room}] ${this.formatDate(booking.date)}`, key: booking.id } }
     })
   }
-
 
   renderTabs = () => {
     return this.getPanes().map(pane => {
@@ -36,7 +42,7 @@ class RoomTabs extends React.Component {
           actve
           tab={pane.title}
           key={pane.key}
-          closable={pane.closable || false}
+          closable={pane.closable || true}
         >
           <RoomForm
             saveUnfinshedBooking={this.props.saveUnfinshedBooking}

@@ -7,15 +7,14 @@ const job = mongoose.Schema({
   id: { type: String, required: true, unique: true },
   customer: { type: String },
   assignment: { type: String, required: true },
-  description: { type: String, required: true },
-  bookings: [{ type: String }]
+  description: { type: String },
+  bookings: { type: [String] }
 })
 
 const JobModel = mongoose.model('job', job)
 
-export function saveJobAsync ({ job, bookingUnfinished, onSuccess, onFailed }) {
+export function saveJob ({ job, bookingUnfinished, onSuccess, onFailed }) {
   const newJob = new JobModel(job)
-
   newJob.save((err, result) => {
     if (err) {
       onFailed()
@@ -37,7 +36,7 @@ export function saveJobAsync ({ job, bookingUnfinished, onSuccess, onFailed }) {
   })
 }
 
-export function getJobIdAsync ({ onSuccess, onFailed }) {
+export function getJobId ({ onSuccess, onFailed }) {
   JobModel.count({}, (err, result) => {
     if (err) {
       onFailed(err)
@@ -51,7 +50,7 @@ export function getJobIdAsync ({ onSuccess, onFailed }) {
   })
 }
 
-export function getAllJobAsync ({ onSuccess, onFailed }) {
+export function getAllJob ({ onSuccess, onFailed }) {
   JobModel.find({}, null, (err, result) => {
     if (err) {
       onFailed(err)

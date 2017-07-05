@@ -10,7 +10,7 @@ const equipmentSchema = mongoose.Schema({
 
 export const Equipments = mongoose.model('equipments', equipmentSchema)
 
-export function getAllEquipmentsAsync ({ onSuccess, onFailed }) {
+export function getAllEquipments ({ onSuccess, onFailed }) {
   Equipments.find({}, null, (err, result) => {
     if (err) {
       onFailed(err)

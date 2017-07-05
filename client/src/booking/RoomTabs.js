@@ -9,18 +9,16 @@ class RoomTabs extends React.Component {
 
   static propTypes = {
     selectBookingUnfinishedById: PropTypes.func,
-    saveUnfinshedBooking: PropTypes.func
+    saveUnfinshedBooking: PropTypes.func,
+    bookingUnfinished: PropTypes.object
   }
 
   constructor (props) {
     super(props)
     this.newTabIndex = 1
-
-    const panes = [{
-      title: 'room S',
-      key: '0',
-      closable: true
-    }]
+    const panes = _.values(this.props.bookingUnfinished.toJS()).map((booking, index) => {
+      return { ...booking, ...{ title: `room ${booking.room}`, key: booking.id } }
+    })
 
     this.state = {
       activeKey: '0',
@@ -46,7 +44,7 @@ class RoomTabs extends React.Component {
         >
           <RoomForm
             saveUnfinshedBooking={this.props.saveUnfinshedBooking}
-            selectBookingUnfinishedById={this.props.selectBookingUnfinishedById}
+            bookingUnfinished={this.props.selectBookingUnfinishedById(pane.key)}
             id={pane.key}
             onChangeField={this.onChangeField}
           />

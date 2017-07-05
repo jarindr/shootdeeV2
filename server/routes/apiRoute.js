@@ -9,7 +9,7 @@ router.get('/login', function (req, res, next) {
 
 router.get('/bookings/:id', function (req, res, next) {
   if (req.params.id === 'all') {
-    booking.getAllBookingsAsync({
+    booking.getAllBookings({
       onSuccess: result => {
         res.send(result)
       },
@@ -18,7 +18,7 @@ router.get('/bookings/:id', function (req, res, next) {
       }
     })
   } else {
-    booking.getBookingsAsync({
+    booking.getBookings({
       onSuccess: result => {
         res.send(result)
       },
@@ -31,7 +31,7 @@ router.get('/bookings/:id', function (req, res, next) {
 
 router.post('/bookings/', function (req, res, next) {
   const { data } = req.body
-  booking.saveBookingsAsync({
+  booking.saveBookings({
     data,
     onSuccess: result => {
       res.send(result)

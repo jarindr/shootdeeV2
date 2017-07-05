@@ -1,4 +1,3 @@
-const request = require('request-promise')
 
 export function getAllBookingsAction () {
   return {
@@ -20,15 +19,3 @@ export function getAllBookingsFailedAction (err) {
   }
 }
 
-export function getAllBookings () {
-  return (dispatch) => {
-    dispatch(getAllBookingsAction())
-    request('http://localhost:9000/api/bookings/all/', { method: 'GET' })
-      .then(bookings => {
-        dispatch(getAllBookingsSuccessAction(JSON.parse(bookings)))
-      })
-      .catch(err => {
-        dispatch(getAllBookingsFailedAction(err))
-      })
-  }
-}

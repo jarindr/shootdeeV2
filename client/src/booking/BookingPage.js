@@ -7,7 +7,10 @@ import RoomTabs from './RoomTabs'
 import { connect } from 'react-redux'
 import propTypes from 'prop-types'
 import { saveUnfinshedBooking } from '../../actions/bookingUnfinishedActions'
-import { selectGetBookingUnfinishedById } from '../../selectors/bookingUnfinishedSelectors'
+import {
+  selectGetBookingUnfinishedById,
+  selectbookingUnfinished
+} from '../../selectors/bookingUnfinishedSelectors'
 import styles from './BookingPage.sass'
 import { submitJob } from '../../actions/jobUnfinishedActions'
 const Step = Steps.Step
@@ -16,6 +19,7 @@ class BookingPage extends React.Component {
   static propTypes = {
     saveUnfinshedBooking: propTypes.func,
     selectBookingUnfinishedById: propTypes.func,
+    bookingUnfinished: propTypes.object,
     submitJob: propTypes.func,
     history: propTypes.object,
     location: propTypes.object
@@ -29,6 +33,7 @@ class BookingPage extends React.Component {
   renderRoomTabs = () => {
     return (
       <RoomTabs
+        bookingUnfinished={this.props.bookingUnfinished}
         saveUnfinshedBooking={this.props.saveUnfinshedBooking}
         selectBookingUnfinishedById={this.props.selectBookingUnfinishedById}
       />
@@ -112,5 +117,6 @@ class BookingPage extends React.Component {
 }
 
 export default withRouter(connect(state => ({
-  selectBookingUnfinishedById: selectGetBookingUnfinishedById(state)
+  selectBookingUnfinishedById: selectGetBookingUnfinishedById(state),
+  bookingUnfinished: selectbookingUnfinished(state)
 }), { saveUnfinshedBooking, submitJob })(BookingPage))

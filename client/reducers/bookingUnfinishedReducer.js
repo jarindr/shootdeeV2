@@ -1,14 +1,18 @@
 import Immutable from 'immutable'
 import _ from 'lodash'
 import moment from 'moment'
+
 const initialState = Immutable.Map({
-  0: Immutable.Map({
+  '0': Immutable.Map({
+    id: '0',
     room: 'S',
     status: 'TENTATIVE',
     date: [moment(), moment()],
     assistance: [],
     equipments: [],
-    preset: 'no'
+    preset: 'no',
+    startTime: moment('09:00', 'HH:mm'),
+    endTime: moment('09:00', 'HH:mm')
   })
 })
 

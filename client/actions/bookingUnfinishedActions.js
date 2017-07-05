@@ -20,6 +20,13 @@ export function removeUnfinshedEquipment (equipmentId, id) {
   }
 }
 
+export function addBookingRoom (id) {
+  return {
+    type: 'ADD_BOOKING_ROOM',
+    id
+  }
+}
+
 export function addDefaultEquipment (bookingId, preset) {
   return {
     type: 'ADD_DEFAULT_EQUIPMENTS',

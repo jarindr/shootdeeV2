@@ -7,7 +7,6 @@
     "build:client": "webpack --config ./webpack/webpack.prod.config.js",
     "dev:server": "nodemon server/server.js --exec babel-node --presets env --watch server",
     "dev:client": "webpack-dev-server --config webpack/webpack.dev.config.js --progress",
-    "dev": "npm run dev:client && npm run dev:server",
     "prod": "NODE_ENV='production' npm run build:client && node server/server.js"
   },
   "author": "",

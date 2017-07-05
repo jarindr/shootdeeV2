@@ -5,14 +5,13 @@ import styles from './RoomForm.sass'
 const FormItem = Form.Item
 const Option = Select.Option
 import EquipmentsSection from './EquipmentsSection'
-import moment from 'moment'
 import _ from 'lodash'
 class NormalLoginForm extends Component {
 
   static propTypes = {
     form: PropTypes.object,
     saveUnfinshedBooking: PropTypes.func, // eslint-disable-line react/no-unused-prop-types
-    selectBookingUnfinishedById: PropTypes.func, // eslint-disable-line react/no-unused-prop-types
+    bookingUnfinished: PropTypes.object, // eslint-disable-line react/no-unused-prop-types
     id: PropTypes.string // eslint-disable-line react/no-unused-prop-types
   }
 
@@ -33,8 +32,7 @@ class NormalLoginForm extends Component {
   }
 
   createSelectRoomForm = () => {
-    const bookingUnfinished = this.props.selectBookingUnfinishedById(this.props.id)
-    const initialValue = bookingUnfinished.get('room') || 'S'
+    const initialValue = this.props.bookingUnfinished.get('room')
     return (
       <FormItem
         label={'room'}
@@ -55,8 +53,7 @@ class NormalLoginForm extends Component {
     )
   }
   createSelectStatusForm = () => {
-    const bookingUnfinished = this.props.selectBookingUnfinishedById(this.props.id)
-    const initialValue = bookingUnfinished.get('status') || 'Tentative'
+    const initialValue = this.props.bookingUnfinished.get('status')
 
     return (
       <FormItem
@@ -76,8 +73,7 @@ class NormalLoginForm extends Component {
     )
   }
   renderDatePickerForm = () => {
-    const bookingUnfinished = this.props.selectBookingUnfinishedById(this.props.id)
-    const initialValue = bookingUnfinished.get('date')
+    const initialValue = this.props.bookingUnfinished.get('date')
     return (
       <FormItem
         label={'date'}
@@ -93,10 +89,9 @@ class NormalLoginForm extends Component {
       </FormItem>
     )
   }
-  onTimePickerChange = (time, x) => {
-    console.log(time, x)
-  }
+
   renderTimePickerForm = (name) => {
+    const initialValue = this.props.bookingUnfinished.get(name)
     const getFilteredRange = (hr) => {
       const result = []
       for (let i = 0; i < 60; i++) {
@@ -113,7 +108,7 @@ class NormalLoginForm extends Component {
         labelCol={{sm: {span: 4}}}
         wrapperCol={{sm: {span: 10}}}
       >
-        {this.props.form.getFieldDecorator(name, {initialValue: moment('09:00', 'HH:mm')})(
+        {this.props.form.getFieldDecorator(name, {initialValue})(
           <TimePicker
             format='HH:mm'
             hideDisabledOptions

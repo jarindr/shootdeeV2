@@ -3885,7 +3885,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 exports.format = format;
 exports.isEmptyValue = isEmptyValue;
 exports.isEmptyObject = isEmptyObject;
-exports.asyncMap = asyncMap;
+exports.Map = Map;
 exports.complementError = complementError;
 exports.deepMerge = deepMerge;
 var formatRegExp = /%[sdj%]/g;
@@ -3969,7 +3969,7 @@ function isEmptyObject(obj) {
   return Object.keys(obj).length === 0;
 }
 
-function asyncParallelArray(arr, func, callback) {
+function ParallelArray(arr, func, callback) {
   var results = [];
   var total = 0;
   var arrLength = arr.length;
@@ -3987,7 +3987,7 @@ function asyncParallelArray(arr, func, callback) {
   });
 }
 
-function asyncSerialArray(arr, func, callback) {
+function SerialArray(arr, func, callback) {
   var index = 0;
   var arrLength = arr.length;
 
@@ -4016,10 +4016,10 @@ function flattenObjArr(objArr) {
   return ret;
 }
 
-function asyncMap(objArr, option, func, callback) {
+function Map(objArr, option, func, callback) {
   if (option.first) {
     var flattenArr = flattenObjArr(objArr);
-    return asyncSerialArray(flattenArr, func, callback);
+    return SerialArray(flattenArr, func, callback);
   }
   var firstFields = option.firstFields || [];
   if (firstFields === true) {
@@ -4039,9 +4039,9 @@ function asyncMap(objArr, option, func, callback) {
   objArrKeys.forEach(function (key) {
     var arr = objArr[key];
     if (firstFields.indexOf(key) !== -1) {
-      asyncSerialArray(arr, func, next);
+      SerialArray(arr, func, next);
     } else {
-      asyncParallelArray(arr, func, next);
+      ParallelArray(arr, func, next);
     }
   });
 }
@@ -15149,18 +15149,18 @@ function cleanUpCode(out) {
 
 var ERRORS_REGEXP = /[^v\.]errors/g
   , REMOVE_ERRORS = /var errors = 0;|var vErrors = null;|validate.errors = vErrors;/g
-  , REMOVE_ERRORS_ASYNC = /var errors = 0;|var vErrors = null;/g
+  , REMOVE_ERRORS_ = /var errors = 0;|var vErrors = null;/g
   , RETURN_VALID = 'return errors === 0;'
   , RETURN_TRUE = 'validate.errors = null; return true;'
-  , RETURN_ASYNC = /if \(errors === 0\) return true;\s*else throw new ValidationError\(vErrors\);/
-  , RETURN_TRUE_ASYNC = 'return true;';
+  , RETURN_ = /if \(errors === 0\) return true;\s*else throw new ValidationError\(vErrors\);/
+  , RETURN_TRUE_ = 'return true;';
 
-function cleanUpVarErrors(out, async) {
+function cleanUpVarErrors(out, ) {
   var matches = out.match(ERRORS_REGEXP);
   if (!matches || matches.length !== 2) return out;
-  return async
-          ? out.replace(REMOVE_ERRORS_ASYNC, '')
-               .replace(RETURN_ASYNC, RETURN_TRUE_ASYNC)
+  return 
+          ? out.replace(REMOVE_ERRORS_, '')
+               .replace(RETURN_, RETURN_TRUE_)
           : out.replace(REMOVE_ERRORS, '')
                .replace(RETURN_VALID, RETURN_TRUE);
 }
@@ -16664,7 +16664,7 @@ exports.encodePayload = function (packets, supportsBinary, callback) {
 };
 
 /**
- * Async array map using after
+ *  array map using after
  */
 
 function map(ary, each, done) {
@@ -32019,7 +32019,7 @@ module.exports = ReactNoopUpdateQueue;
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function(process, setImmediate) {// A bit simpler than readable streams.
-// Implement an async ._write(chunk, encoding, cb), and it'll handle all
+// Implement an  ._write(chunk, encoding, cb), and it'll handle all
 // the drain event emission and buffering.
 
 
@@ -32031,7 +32031,7 @@ var processNextTick = __webpack_require__(188);
 /*</replacement>*/
 
 /*<replacement>*/
-var asyncWrite = !process.browser && ['v0.10', 'v0.9.'].indexOf(process.version.slice(0, 5)) > -1 ? setImmediate : processNextTick;
+var Write = !process.browser && ['v0.10', 'v0.9.'].indexOf(process.version.slice(0, 5)) > -1 ? setImmediate : processNextTick;
 /*</replacement>*/
 
 /*<replacement>*/
@@ -32398,7 +32398,7 @@ function onwrite(stream, er) {
 
     if (sync) {
       /*<replacement>*/
-      asyncWrite(afterWrite, stream, state, finished, cb);
+      Write(afterWrite, stream, state, finished, cb);
       /*</replacement>*/
     } else {
       afterWrite(stream, state, finished, cb);
@@ -32444,7 +32444,7 @@ function clearBuffer(stream, state) {
 
     doWrite(stream, state, true, state.length, buffer, '', holder.finish);
 
-    // doWrite is almost always async, defer these to save a bit of time
+    // doWrite is almost always , defer these to save a bit of time
     // as the hot path ends with doWrite
     state.pendingcb++;
     state.lastBufferedRequest = null;
@@ -33632,17 +33632,17 @@ webpackEmptyContext.id = 222;
 
 
 module.exports = {
-  setup: setupAsync,
-  compile: compileAsync
+  setup: setup,
+  compile: compile
 };
 
 
 var util = __webpack_require__(58);
 
-var ASYNC = {
+var  = {
   '*': checkGenerators,
   'co*': checkGenerators,
-  'es7': checkAsyncFunction
+  'es7': checkFunction
 };
 
 var TRANSPILE = {
@@ -33651,18 +33651,18 @@ var TRANSPILE = {
 };
 
 var MODES = [
-  { async: 'co*' },
-  { async: 'es7', transpile: 'nodent' },
-  { async: 'co*', transpile: 'regenerator' }
+  { : 'co*' },
+  { : 'es7', transpile: 'nodent' },
+  { : 'co*', transpile: 'regenerator' }
 ];
 
 
 var regenerator, nodent;
 
 
-function setupAsync(opts, required) {
+function setup(opts, required) {
   if (required !== false) required = true;
-  var async = opts.async
+  var  = opts.
     , transpile = opts.transpile
     , check;
 
@@ -33673,15 +33673,15 @@ function setupAsync(opts, required) {
       return (opts._transpileFunc = get(opts, required));
     case 'undefined':
     case 'boolean':
-      if (typeof async == 'string') {
-        check = ASYNC[async];
-        if (!check) throw new Error('bad async mode: ' + async);
+      if (typeof  == 'string') {
+        check = [];
+        if (!check) throw new Error('bad  mode: ' + );
         return (opts.transpile = check(opts, required));
       }
 
       for (var i=0; i<MODES.length; i++) {
         var _opts = MODES[i];
-        if (setupAsync(_opts, false)) {
+        if (setup(_opts, false)) {
           util.copy(_opts, opts);
           return opts.transpile;
         }
@@ -33708,14 +33708,14 @@ function checkGenerators(opts, required) {
 }
 
 
-function checkAsyncFunction(opts, required) {
+function checkFunction(opts, required) {
   /* jshint evil: true */
   try {
-    (new Function('(async function(){})()'))();
+    (new Function('( function(){})()'))();
     /* istanbul ignore next */
     return true;
   } catch(e) {
-    if (required) throw new Error('es7 async functions not supported');
+    if (required) throw new Error('es7  functions not supported');
   }
 }
 
@@ -33727,8 +33727,8 @@ function getRegenerator(opts, required) {
       regenerator = !(function webpackMissingModule() { var e = new Error("Cannot find module \".\""); e.code = 'MODULE_NOT_FOUND'; throw e; }());
       regenerator.runtime();
     }
-    if (!opts.async || opts.async === true)
-      opts.async = 'es7';
+    if (!opts. || opts. === true)
+      opts. = 'es7';
     return regeneratorTranspile;
   } catch(e) {
     /* istanbul ignore next */
@@ -33749,9 +33749,9 @@ function getNodent(opts, required) {
       var name = 'nodent';
       nodent = !(function webpackMissingModule() { var e = new Error("Cannot find module \".\""); e.code = 'MODULE_NOT_FOUND'; throw e; }())({ log: false, dontInstallRequireHook: true });
     }
-    if (opts.async != 'es7') {
-      if (opts.async && opts.async !== true) console.warn('nodent transpiles only es7 async functions');
-      opts.async = 'es7';
+    if (opts. != 'es7') {
+      if (opts. && opts. !== true) console.warn('nodent transpiles only es7  functions');
+      opts. = 'es7';
     }
     return nodentTranspile;
   } catch(e) {
@@ -33767,13 +33767,13 @@ function nodentTranspile(code) {
 
 
 /**
- * Creates validating function for passed schema with asynchronous loading of missing schemas.
+ * Creates validating function for passed schema with hronous loading of missing schemas.
  * `loadSchema` option should be a function that accepts schema uri and node-style callback.
  * @this  Ajv
  * @param {Object}   schema schema object
  * @param {Function} callback node-style callback, it is always called with 2 parameters: error (or null) and validating function.
  */
-function compileAsync(schema, callback) {
+function compile(schema, callback) {
   /* eslint no-shadow: 0 */
   /* jshint validthis: true */
   var schemaObj;
@@ -33789,11 +33789,11 @@ function compileAsync(schema, callback) {
   } else {
     if (typeof this._opts.loadSchema != 'function')
       throw new Error('options.loadSchema should be a function');
-    _compileAsync(schema, callback, true);
+    _compile(schema, callback, true);
   }
 
 
-  function _compileAsync(schema, callback, firstCall) {
+  function _compile(schema, callback, firstCall) {
     var validate;
     try { validate = self.compile(schema); }
     catch(e) {
@@ -33837,7 +33837,7 @@ function compileAsync(schema, callback) {
             return;
           }
         }
-        _compileAsync(schema, callback);
+        _compile(schema, callback);
       }
     }
 
@@ -34269,7 +34269,7 @@ module.exports = function generate__limit(it, $keyword) {
     var __err = out;
     out = $$outStack.pop();
     if (!it.compositeRule && $breakOnError) { /* istanbul ignore if */
-      if (it.async) {
+      if (it.) {
         out += ' throw new ValidationError([' + (__err) + ']); ';
       } else {
         out += ' validate.errors = [' + (__err) + ']; return false; ';
@@ -34327,7 +34327,7 @@ module.exports = function generate__limit(it, $keyword) {
   var __err = out;
   out = $$outStack.pop();
   if (!it.compositeRule && $breakOnError) { /* istanbul ignore if */
-    if (it.async) {
+    if (it.) {
       out += ' throw new ValidationError([' + (__err) + ']); ';
     } else {
       out += ' validate.errors = [' + (__err) + ']; return false; ';
@@ -34410,7 +34410,7 @@ module.exports = function generate__limitItems(it, $keyword) {
   var __err = out;
   out = $$outStack.pop();
   if (!it.compositeRule && $breakOnError) { /* istanbul ignore if */
-    if (it.async) {
+    if (it.) {
       out += ' throw new ValidationError([' + (__err) + ']); ';
     } else {
       out += ' validate.errors = [' + (__err) + ']; return false; ';
@@ -34498,7 +34498,7 @@ module.exports = function generate__limitLength(it, $keyword) {
   var __err = out;
   out = $$outStack.pop();
   if (!it.compositeRule && $breakOnError) { /* istanbul ignore if */
-    if (it.async) {
+    if (it.) {
       out += ' throw new ValidationError([' + (__err) + ']); ';
     } else {
       out += ' validate.errors = [' + (__err) + ']; return false; ';
@@ -34581,7 +34581,7 @@ module.exports = function generate__limitProperties(it, $keyword) {
   var __err = out;
   out = $$outStack.pop();
   if (!it.compositeRule && $breakOnError) { /* istanbul ignore if */
-    if (it.async) {
+    if (it.) {
       out += ' throw new ValidationError([' + (__err) + ']); ';
     } else {
       out += ' validate.errors = [' + (__err) + ']; return false; ';
@@ -34605,7 +34605,7 @@ module.exports = function generate__limitProperties(it, $keyword) {
 
 module.exports = function generate_validate(it, $keyword) {
   var out = '';
-  var $async = it.schema.$async === true;
+  var $ = it.schema.$ === true;
   if (it.isTop) {
     var $top = it.isTop,
       $lvl = it.level = 0,
@@ -34613,19 +34613,19 @@ module.exports = function generate_validate(it, $keyword) {
       $data = 'data';
     it.rootId = it.resolve.fullPath(it.root.schema.id);
     it.baseId = it.baseId || it.rootId;
-    if ($async) {
-      it.async = true;
-      var $es7 = it.opts.async == 'es7';
+    if ($) {
+      it. = true;
+      var $es7 = it.opts. == 'es7';
       it.yieldAwait = $es7 ? 'await' : 'yield';
     }
     delete it.isTop;
     it.dataPathArr = [undefined];
     out += ' var validate = ';
-    if ($async) {
+    if ($) {
       if ($es7) {
-        out += ' (async function ';
+        out += ' ( function ';
       } else {
-        if (it.opts.async == 'co*') {
+        if (it.opts. == 'co*') {
           out += 'co.wrap';
         }
         out += '(function* ';
@@ -34641,7 +34641,7 @@ module.exports = function generate_validate(it, $keyword) {
       $dataLvl = it.dataLevel,
       $data = 'data' + ($dataLvl || '');
     if (it.schema.id) it.baseId = it.resolve.url(it.baseId, it.schema.id);
-    if ($async && !it.async) throw new Error('async schema in sync schema');
+    if ($ && !it.) throw new Error(' schema in sync schema');
     out += ' var errs_' + ($lvl) + ' = errors;';
   }
   var $valid = 'valid' + $lvl,
@@ -34726,7 +34726,7 @@ module.exports = function generate_validate(it, $keyword) {
       var __err = out;
       out = $$outStack.pop();
       if (!it.compositeRule && $breakOnError) { /* istanbul ignore if */
-        if (it.async) {
+        if (it.) {
           out += ' throw new ValidationError([' + (__err) + ']); ';
         } else {
           out += ' validate.errors = [' + (__err) + ']; return false; ';
@@ -34877,7 +34877,7 @@ module.exports = function generate_validate(it, $keyword) {
               var __err = out;
               out = $$outStack.pop();
               if (!it.compositeRule && $breakOnError) { /* istanbul ignore if */
-                if (it.async) {
+                if (it.) {
                   out += ' throw new ValidationError([' + (__err) + ']); ';
                 } else {
                   out += ' validate.errors = [' + (__err) + ']; return false; ';
@@ -34937,7 +34937,7 @@ module.exports = function generate_validate(it, $keyword) {
     var __err = out;
     out = $$outStack.pop();
     if (!it.compositeRule && $breakOnError) { /* istanbul ignore if */
-      if (it.async) {
+      if (it.) {
         out += ' throw new ValidationError([' + (__err) + ']); ';
       } else {
         out += ' validate.errors = [' + (__err) + ']; return false; ';
@@ -34951,7 +34951,7 @@ module.exports = function generate_validate(it, $keyword) {
     out += ' ' + ($closingBraces2) + ' ';
   }
   if ($top) {
-    if ($async) {
+    if ($) {
       out += ' if (errors === 0) return true;           ';
       out += ' else throw new ValidationError(vErrors); ';
     } else {
@@ -34964,7 +34964,7 @@ module.exports = function generate_validate(it, $keyword) {
   }
   out = it.util.cleanUpCode(out);
   if ($top && $breakOnError) {
-    out = it.util.cleanUpVarErrors(out, $async);
+    out = it.util.cleanUpVarErrors(out, $);
   }
 
   function $shouldUseGroup($rulesGroup) {
@@ -39084,7 +39084,7 @@ var baseGetTag = __webpack_require__(282),
     isObject = __webpack_require__(644);
 
 /** `Object#toString` result references. */
-var asyncTag = '[object AsyncFunction]',
+var Tag = '[object Function]',
     funcTag = '[object Function]',
     genTag = '[object GeneratorFunction]',
     proxyTag = '[object Proxy]';
@@ -39113,7 +39113,7 @@ function isFunction(value) {
   // The use of `Object#toString` avoids issues with the `typeof` operator
   // in Safari 9 which returns 'object' for typed arrays and other constructors.
   var tag = baseGetTag(value);
-  return tag == funcTag || tag == genTag || tag == asyncTag || tag == proxyTag;
+  return tag == funcTag || tag == genTag || tag == Tag || tag == proxyTag;
 }
 
 module.exports = isFunction;
@@ -40381,9 +40381,9 @@ var _react2 = _interopRequireDefault(_react);
 
 var _utils = __webpack_require__(302);
 
-var _asyncValidator = __webpack_require__(425);
+var _Validator = __webpack_require__(425);
 
-var _asyncValidator2 = _interopRequireDefault(_asyncValidator);
+var _Validator2 = _interopRequireDefault(_Validator);
 
 var _warning = __webpack_require__(50);
 
@@ -40872,7 +40872,7 @@ function createBaseForm() {
           callback((0, _utils.isEmptyObject)(alreadyErrors) ? null : alreadyErrors, this.getFieldsValue((0, _utils.flatFieldNames)(fieldNames)));
           return;
         }
-        var validator = new _asyncValidator2["default"](allRules);
+        var validator = new _Validator2["default"](allRules);
         if (validateMessages) {
           validator.messages(validateMessages);
         }
@@ -44331,7 +44331,7 @@ function howMuchToRead(n, state) {
   return state.length;
 }
 
-// you can override either this method, or the async _read(n) below.
+// you can override either this method, or the  _read(n) below.
 Readable.prototype.read = function (n) {
   debug('read', n);
   n = parseInt(n, 10);
@@ -44369,11 +44369,11 @@ Readable.prototype.read = function (n) {
   // a read from the buffer.
   //
   // 2. If that resulting state will trigger a _read, then call _read.
-  // Note that this may be asynchronous, or synchronous.  Yes, it is
+  // Note that this may be hronous, or synchronous.  Yes, it is
   // deeply ugly to write APIs this way, but that still doesn't mean
   // that the Readable class should behave improperly, as streams are
-  // designed to be sync/async agnostic.
-  // Take note if the _read call is sync or async (ie, if the read call
+  // designed to be sync/ agnostic.
+  // Take note if the _read call is sync or  (ie, if the read call
   // has returned yet), so that we know whether or not it's safe to emit
   // 'readable' etc.
   //
@@ -44778,7 +44778,7 @@ function flow(stream) {
   while (state.flowing && stream.read() !== null) {}
 }
 
-// wrap an old-style stream as the async data source.
+// wrap an old-style stream as the  data source.
 // This is *not* part of the readable stream interface.
 // It is an ugly unfortunate mess of history.
 Readable.prototype.wrap = function (stream) {
@@ -45378,7 +45378,7 @@ function createStore(reducer, preloadedState, enhancer) {
    */
   function dispatch(action) {
     if (!__webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0_lodash_es_isPlainObject__["a" /* default */])(action)) {
-      throw new Error('Actions must be plain objects. ' + 'Use custom middleware for async actions.');
+      throw new Error('Actions must be plain objects. ' + 'Use custom middleware for  actions.');
     }
 
     if (typeof action.type === 'undefined') {
@@ -45526,7 +45526,7 @@ exports.parse = function(str) {
   return Cookie.parse(str, {loose: true})
 }
 
-// Adapt the sometimes-Async api of tough.CookieJar to our requirements
+// Adapt the sometimes- api of tough.CookieJar to our requirements
 function RequestJar(store) {
   var self = this
   self._jar = new CookieJar(store, {looseMode: true})
@@ -47728,7 +47728,7 @@ module.exports = {
 	read: read,
 	verify: verify,
 	sign: sign,
-	signAsync: signAsync,
+	sign: sign,
 	write: write
 };
 
@@ -48176,7 +48176,7 @@ function sign(cert, key) {
 	return (true);
 }
 
-function signAsync(cert, signer, done) {
+function sign(cert, signer, done) {
 	if (cert.signatures.x509 === undefined)
 		cert.signatures.x509 = {};
 	var sig = cert.signatures.x509;
@@ -49035,12 +49035,12 @@ var compileSchema = __webpack_require__(367)
   , rules = __webpack_require__(368)
   , v5 = __webpack_require__(390)
   , util = __webpack_require__(58)
-  , async = __webpack_require__(223)
+  ,  = __webpack_require__(223)
   , co = __webpack_require__(254);
 
 module.exports = Ajv;
 
-Ajv.prototype.compileAsync = async.compile;
+Ajv.prototype.compile = .compile;
 
 var customKeyword = __webpack_require__(389);
 Ajv.prototype.addKeyword = customKeyword.add;
@@ -49092,7 +49092,7 @@ function Ajv(opts) {
   this._compile = _compile;
 
   opts.loopRequired = opts.loopRequired || Infinity;
-  if (opts.async || opts.transpile) async.setup(opts);
+  if (opts. || opts.transpile) .setup(opts);
   if (opts.beautify === true) opts.beautify = { indent_size: 2 };
   if (opts.errorDataPath == 'property') opts._errorDataPathProperty = true;
   this._metaOpts = getMetaSchemaOptions();
@@ -49122,8 +49122,8 @@ function Ajv(opts) {
     }
 
     var valid = v(data);
-    if (v.$async === true)
-      return self._opts.async == '*' ? co(valid) : valid;
+    if (v.$ === true)
+      return self._opts. == '*' ? co(valid) : valid;
     self.errors = v.errors;
     return valid;
   }
@@ -49338,8 +49338,8 @@ function Ajv(opts) {
       callValidate.schema = schemaObj.schema;
       callValidate.errors = null;
       callValidate.root = root ? root : callValidate;
-      if (schemaObj.schema.$async === true)
-        callValidate.$async = true;
+      if (schemaObj.schema.$ === true)
+        callValidate.$ = true;
       return callValidate;
     }
     schemaObj.compiling = true;
@@ -49707,7 +49707,7 @@ function compareDateTime(dt1, dt2) {
 var resolve = __webpack_require__(225)
   , util = __webpack_require__(58)
   , stableStringify = __webpack_require__(184)
-  , async = __webpack_require__(223);
+  ,  = __webpack_require__(223);
 
 var beautify;
 
@@ -49729,7 +49729,7 @@ var co = __webpack_require__(254);
 var ucs2length = util.ucs2length;
 var equal = __webpack_require__(224);
 
-// this error is thrown by async schemas to return validation errors via exception
+// this error is thrown by  schemas to return validation errors via exception
 var ValidationError = __webpack_require__(227);
 
 module.exports = compile;
@@ -49777,7 +49777,7 @@ function compile(schema, root, localRefs, baseId) {
       cv.refs = v.refs;
       cv.refVal = v.refVal;
       cv.root = v.root;
-      cv.$async = v.$async;
+      cv.$ = v.$;
       if (keepSourceCode) cv.sourceCode = v.sourceCode;
     }
     return v;
@@ -49797,8 +49797,8 @@ function compile(schema, root, localRefs, baseId) {
     if (_root.schema != root.schema)
       return compile.call(self, _schema, _root, localRefs, baseId);
 
-    var $async = _schema.$async === true;
-    if ($async && !opts.transpile) async.setup(opts);
+    var $ = _schema.$ === true;
+    if ($ && !opts.transpile) .setup(opts);
 
     var sourceCode = validateGenerator({
       isTop: true,
@@ -49836,7 +49836,7 @@ function compile(schema, root, localRefs, baseId) {
     var validate, validateCode
       , transpile = opts._transpileFunc;
     try {
-      validateCode = $async && transpile
+      validateCode = $ && transpile
                       ? transpile(sourceCode)
                       : sourceCode;
 
@@ -49880,7 +49880,7 @@ function compile(schema, root, localRefs, baseId) {
     validate.refs = refs;
     validate.refVal = refVal;
     validate.root = isRoot ? validate : _root;
-    if ($async) validate.$async = true;
+    if ($) validate.$ = true;
     if (keepSourceCode) validate.sourceCode = sourceCode;
     if (opts.sourceCode === true) {
       validate.source = {
@@ -49942,7 +49942,7 @@ function compile(schema, root, localRefs, baseId) {
   function resolvedRef(refVal, code) {
     return typeof refVal == 'object'
             ? { code: code, schema: refVal, inline: true }
-            : { code: code, $async: refVal && refVal.$async };
+            : { code: code, $: refVal && refVal.$ };
   }
 
   function usePattern(regexStr) {
@@ -50247,7 +50247,7 @@ module.exports = function generate__formatLimit(it, $keyword) {
     var __err = out;
     out = $$outStack.pop();
     if (!it.compositeRule && $breakOnError) { /* istanbul ignore if */
-      if (it.async) {
+      if (it.) {
         out += ' throw new ValidationError([' + (__err) + ']); ';
       } else {
         out += ' validate.errors = [' + (__err) + ']; return false; ';
@@ -50338,7 +50338,7 @@ module.exports = function generate__formatLimit(it, $keyword) {
   var __err = out;
   out = $$outStack.pop();
   if (!it.compositeRule && $breakOnError) { /* istanbul ignore if */
-    if (it.async) {
+    if (it.) {
       out += ' throw new ValidationError([' + (__err) + ']); ';
     } else {
       out += ' validate.errors = [' + (__err) + ']; return false; ';
@@ -50519,7 +50519,7 @@ module.exports = function generate_constant(it, $keyword) {
   var __err = out;
   out = $$outStack.pop();
   if (!it.compositeRule && $breakOnError) { /* istanbul ignore if */
-    if (it.async) {
+    if (it.) {
       out += ' throw new ValidationError([' + (__err) + ']); ';
     } else {
       out += ' validate.errors = [' + (__err) + ']; return false; ';
@@ -50577,8 +50577,8 @@ module.exports = function generate_custom(it, $keyword) {
   var $ruleErrs = $validateCode + '.errors',
     $i = 'i' + $lvl,
     $ruleErr = 'ruleErr' + $lvl,
-    $asyncKeyword = $rDef.async;
-  if ($asyncKeyword && !it.async) throw new Error('async keyword in sync schema');
+    $Keyword = $rDef.;
+  if ($Keyword && !it.) throw new Error(' keyword in sync schema');
   if (!($inline || $macro)) {
     out += '' + ($ruleErrs) + ' = null;';
   }
@@ -50629,12 +50629,12 @@ module.exports = function generate_custom(it, $keyword) {
     out = $$outStack.pop();
     if ($rDef.errors === false) {
       out += ' ' + ($valid) + ' = ';
-      if ($asyncKeyword) {
+      if ($Keyword) {
         out += '' + (it.yieldAwait);
       }
       out += '' + (def_callRuleValidate) + '; ';
     } else {
-      if ($asyncKeyword) {
+      if ($Keyword) {
         $ruleErrs = 'customErrors' + $lvl;
         out += ' var ' + ($ruleErrs) + ' = null; try { ' + ($valid) + ' = ' + (it.yieldAwait) + (def_callRuleValidate) + '; } catch (e) { ' + ($valid) + ' = false; if (e instanceof ValidationError) ' + ($ruleErrs) + ' = e.errors; else throw e; } ';
       } else {
@@ -50687,7 +50687,7 @@ module.exports = function generate_custom(it, $keyword) {
     var __err = out;
     out = $$outStack.pop();
     if (!it.compositeRule && $breakOnError) { /* istanbul ignore if */
-      if (it.async) {
+      if (it.) {
         out += ' throw new ValidationError([' + (__err) + ']); ';
       } else {
         out += ' validate.errors = [' + (__err) + ']; return false; ';
@@ -50733,7 +50733,7 @@ module.exports = function generate_custom(it, $keyword) {
       }
       out += ';  if (vErrors === null) vErrors = [err]; else vErrors.push(err); errors++; ';
       if (!it.compositeRule && $breakOnError) { /* istanbul ignore if */
-        if (it.async) {
+        if (it.) {
           out += ' throw new ValidationError(vErrors); ';
         } else {
           out += ' validate.errors = vErrors; return false; ';
@@ -50837,7 +50837,7 @@ module.exports = function generate_dependencies(it, $keyword) {
       var __err = out;
       out = $$outStack.pop();
       if (!it.compositeRule && $breakOnError) { /* istanbul ignore if */
-        if (it.async) {
+        if (it.) {
           out += ' throw new ValidationError([' + (__err) + ']); ';
         } else {
           out += ' validate.errors = [' + (__err) + ']; return false; ';
@@ -50969,7 +50969,7 @@ module.exports = function generate_enum(it, $keyword) {
   var __err = out;
   out = $$outStack.pop();
   if (!it.compositeRule && $breakOnError) { /* istanbul ignore if */
-    if (it.async) {
+    if (it.) {
       out += ' throw new ValidationError([' + (__err) + ']); ';
     } else {
       out += ' validate.errors = [' + (__err) + ']; return false; ';
@@ -51019,8 +51019,8 @@ module.exports = function generate_format(it, $keyword) {
   if ($isData) {
     var $format = 'format' + $lvl;
     out += ' var ' + ($format) + ' = formats[' + ($schemaValue) + ']; var isObject' + ($lvl) + ' = typeof ' + ($format) + ' == \'object\' && !(' + ($format) + ' instanceof RegExp) && ' + ($format) + '.validate; if (isObject' + ($lvl) + ') { ';
-    if (it.async) {
-      out += ' var async' + ($lvl) + ' = ' + ($format) + '.async; ';
+    if (it.) {
+      out += ' var ' + ($lvl) + ' = ' + ($format) + '.; ';
     }
     out += ' ' + ($format) + ' = ' + ($format) + '.validate; } if (  ';
     if ($isData) {
@@ -51035,8 +51035,8 @@ module.exports = function generate_format(it, $keyword) {
       out += ') || ';
     }
     out += ' (' + ($format) + ' && !(typeof ' + ($format) + ' == \'function\' ? ';
-    if (it.async) {
-      out += ' (async' + ($lvl) + ' ? ' + (it.yieldAwait) + ' ' + ($format) + '(' + ($data) + ') : ' + ($format) + '(' + ($data) + ')) ';
+    if (it.) {
+      out += ' (' + ($lvl) + ' ? ' + (it.yieldAwait) + ' ' + ($format) + '(' + ($data) + ') : ' + ($format) + '(' + ($data) + ')) ';
     } else {
       out += ' ' + ($format) + '(' + ($data) + ') ';
     }
@@ -51059,11 +51059,11 @@ module.exports = function generate_format(it, $keyword) {
     }
     var $isObject = typeof $format == 'object' && !($format instanceof RegExp) && $format.validate;
     if ($isObject) {
-      var $async = $format.async === true;
+      var $ = $format. === true;
       $format = $format.validate;
     }
-    if ($async) {
-      if (!it.async) throw new Error('async format in sync schema');
+    if ($) {
+      if (!it.) throw new Error(' format in sync schema');
       var $formatRef = 'formats' + it.util.getProperty($schema) + '.validate';
       out += ' if (!(' + (it.yieldAwait) + ' ' + ($formatRef) + '(' + ($data) + '))) { ';
     } else {
@@ -51114,7 +51114,7 @@ module.exports = function generate_format(it, $keyword) {
   var __err = out;
   out = $$outStack.pop();
   if (!it.compositeRule && $breakOnError) { /* istanbul ignore if */
-    if (it.async) {
+    if (it.) {
       out += ' throw new ValidationError([' + (__err) + ']); ';
     } else {
       out += ' validate.errors = [' + (__err) + ']; return false; ';
@@ -51181,7 +51181,7 @@ module.exports = function generate_items(it, $keyword) {
       var __err = out;
       out = $$outStack.pop();
       if (!it.compositeRule && $breakOnError) { /* istanbul ignore if */
-        if (it.async) {
+        if (it.) {
           out += ' throw new ValidationError([' + (__err) + ']); ';
         } else {
           out += ' validate.errors = [' + (__err) + ']; return false; ';
@@ -51348,7 +51348,7 @@ module.exports = function generate_multipleOf(it, $keyword) {
   var __err = out;
   out = $$outStack.pop();
   if (!it.compositeRule && $breakOnError) { /* istanbul ignore if */
-    if (it.async) {
+    if (it.) {
       out += ' throw new ValidationError([' + (__err) + ']); ';
     } else {
       out += ' validate.errors = [' + (__err) + ']; return false; ';
@@ -51419,7 +51419,7 @@ module.exports = function generate_not(it, $keyword) {
     var __err = out;
     out = $$outStack.pop();
     if (!it.compositeRule && $breakOnError) { /* istanbul ignore if */
-      if (it.async) {
+      if (it.) {
         out += ' throw new ValidationError([' + (__err) + ']); ';
       } else {
         out += ' validate.errors = [' + (__err) + ']; return false; ';
@@ -51521,7 +51521,7 @@ module.exports = function generate_oneOf(it, $keyword) {
   var __err = out;
   out = $$outStack.pop();
   if (!it.compositeRule && $breakOnError) { /* istanbul ignore if */
-    if (it.async) {
+    if (it.) {
       out += ' throw new ValidationError([' + (__err) + ']); ';
     } else {
       out += ' validate.errors = [' + (__err) + ']; return false; ';
@@ -51602,7 +51602,7 @@ module.exports = function generate_pattern(it, $keyword) {
   var __err = out;
   out = $$outStack.pop();
   if (!it.compositeRule && $breakOnError) { /* istanbul ignore if */
-    if (it.async) {
+    if (it.) {
       out += ' throw new ValidationError([' + (__err) + ']); ';
     } else {
       out += ' validate.errors = [' + (__err) + ']; return false; ';
@@ -51797,7 +51797,7 @@ module.exports = function generate_properties(it, $keyword) {
           var __err = out;
           out = $$outStack.pop();
           if (!it.compositeRule && $breakOnError) { /* istanbul ignore if */
-            if (it.async) {
+            if (it.) {
               out += ' throw new ValidationError([' + (__err) + ']); ';
             } else {
               out += ' validate.errors = [' + (__err) + ']; return false; ';
@@ -51923,7 +51923,7 @@ module.exports = function generate_properties(it, $keyword) {
               var __err = out;
               out = $$outStack.pop();
               if (!it.compositeRule && $breakOnError) { /* istanbul ignore if */
-                if (it.async) {
+                if (it.) {
                   out += ' throw new ValidationError([' + (__err) + ']); ';
                 } else {
                   out += ' validate.errors = [' + (__err) + ']; return false; ';
@@ -52062,7 +52062,7 @@ module.exports = function generate_properties(it, $keyword) {
               var __err = out;
               out = $$outStack.pop();
               if (!it.compositeRule && $breakOnError) { /* istanbul ignore if */
-                if (it.async) {
+                if (it.) {
                   out += ' throw new ValidationError([' + (__err) + ']); ';
                 } else {
                   out += ' validate.errors = [' + (__err) + ']; return false; ';
@@ -52100,7 +52100,7 @@ module.exports = function generate_properties(it, $keyword) {
               var __err = out;
               out = $$outStack.pop();
               if (!it.compositeRule && $breakOnError) { /* istanbul ignore if */
-                if (it.async) {
+                if (it.) {
                   out += ' throw new ValidationError([' + (__err) + ']); ';
                 } else {
                   out += ' validate.errors = [' + (__err) + ']; return false; ';
@@ -52143,13 +52143,13 @@ module.exports = function generate_ref(it, $keyword) {
   var $breakOnError = !it.opts.allErrors;
   var $data = 'data' + ($dataLvl || '');
   var $valid = 'valid' + $lvl;
-  var $async, $refCode;
+  var $, $refCode;
   if ($schema == '#' || $schema == '#/') {
     if (it.isRoot) {
-      $async = it.async;
+      $ = it.;
       $refCode = 'validate';
     } else {
-      $async = it.root.schema.$async === true;
+      $ = it.root.schema.$ === true;
       $refCode = 'root.refVal[0]';
     }
   } else {
@@ -52176,7 +52176,7 @@ module.exports = function generate_ref(it, $keyword) {
         var __err = out;
         out = $$outStack.pop();
         if (!it.compositeRule && $breakOnError) { /* istanbul ignore if */
-          if (it.async) {
+          if (it.) {
             out += ' throw new ValidationError([' + (__err) + ']); ';
           } else {
             out += ' validate.errors = [' + (__err) + ']; return false; ';
@@ -52211,7 +52211,7 @@ module.exports = function generate_ref(it, $keyword) {
         out += ' if (' + ($nextValid) + ') { ';
       }
     } else {
-      $async = $refVal.$async === true;
+      $ = $refVal.$ === true;
       $refCode = $refVal.code;
     }
   }
@@ -52233,8 +52233,8 @@ module.exports = function generate_ref(it, $keyword) {
     out += ' , ' + ($parentData) + ' , ' + ($parentDataProperty) + ', rootData)  ';
     var __callValidate = out;
     out = $$outStack.pop();
-    if ($async) {
-      if (!it.async) throw new Error('async schema referenced by sync schema');
+    if ($) {
+      if (!it.) throw new Error(' schema referenced by sync schema');
       out += ' try { ';
       if ($breakOnError) {
         out += 'var ' + ($valid) + ' =';
@@ -52346,7 +52346,7 @@ module.exports = function generate_required(it, $keyword) {
         var __err = out;
         out = $$outStack.pop();
         if (!it.compositeRule && $breakOnError) { /* istanbul ignore if */
-          if (it.async) {
+          if (it.) {
             out += ' throw new ValidationError([' + (__err) + ']); ';
           } else {
             out += ' validate.errors = [' + (__err) + ']; return false; ';
@@ -52400,7 +52400,7 @@ module.exports = function generate_required(it, $keyword) {
         var __err = out;
         out = $$outStack.pop();
         if (!it.compositeRule && $breakOnError) { /* istanbul ignore if */
-          if (it.async) {
+          if (it.) {
             out += ' throw new ValidationError([' + (__err) + ']); ';
           } else {
             out += ' validate.errors = [' + (__err) + ']; return false; ';
@@ -52578,7 +52578,7 @@ module.exports = function generate_switch(it, $keyword) {
             var __err = out;
             out = $$outStack.pop();
             if (!it.compositeRule && $breakOnError) { /* istanbul ignore if */
-              if (it.async) {
+              if (it.) {
                 out += ' throw new ValidationError([' + (__err) + ']); ';
               } else {
                 out += ' validate.errors = [' + (__err) + ']; return false; ';
@@ -52618,7 +52618,7 @@ module.exports = function generate_switch(it, $keyword) {
             var __err = out;
             out = $$outStack.pop();
             if (!it.compositeRule && $breakOnError) { /* istanbul ignore if */
-              if (it.async) {
+              if (it.) {
                 out += ' throw new ValidationError([' + (__err) + ']); ';
               } else {
                 out += ' validate.errors = [' + (__err) + ']; return false; ';
@@ -52702,7 +52702,7 @@ module.exports = function generate_uniqueItems(it, $keyword) {
     var __err = out;
     out = $$outStack.pop();
     if (!it.compositeRule && $breakOnError) { /* istanbul ignore if */
-      if (it.async) {
+      if (it.) {
         out += ' throw new ValidationError([' + (__err) + ']); ';
       } else {
         out += ' validate.errors = [' + (__err) + ']; return false; ';
@@ -56369,7 +56369,7 @@ Schema.prototype = {
       });
     });
     var errorFields = {};
-    (0, _util.asyncMap)(series, options, function (data, doIt) {
+    (0, _util.Map)(series, options, function (data, doIt) {
       var rule = data.rule;
       var deep = (rule.type === 'object' || rule.type === 'array') && (_typeof(rule.fields) === 'object' || _typeof(rule.defaultField) === 'object');
       deep = deep && (rule.required || !rule.required && data.value);
@@ -56388,7 +56388,7 @@ Schema.prototype = {
           errors = [errors];
         }
         if (errors.length) {
-          (0, _util.warning)('async-validator:', errors);
+          (0, _util.warning)('-validator:', errors);
         }
         if (errors.length && rule.message) {
           errors = [].concat(rule.message);
@@ -58628,7 +58628,7 @@ var schedule = _dereq_("./schedule");
 var Queue = _dereq_("./queue");
 var util = _dereq_("./util");
 
-function Async() {
+function () {
     this._customScheduler = false;
     this._isTickUsed = false;
     this._lateQueue = new Queue(16);
@@ -58642,33 +58642,33 @@ function Async() {
     this._schedule = schedule;
 }
 
-Async.prototype.setScheduler = function(fn) {
+.prototype.setScheduler = function(fn) {
     var prev = this._schedule;
     this._schedule = fn;
     this._customScheduler = true;
     return prev;
 };
 
-Async.prototype.hasCustomScheduler = function() {
+.prototype.hasCustomScheduler = function() {
     return this._customScheduler;
 };
 
-Async.prototype.enableTrampoline = function() {
+.prototype.enableTrampoline = function() {
     this._trampolineEnabled = true;
 };
 
-Async.prototype.disableTrampolineIfNecessary = function() {
+.prototype.disableTrampolineIfNecessary = function() {
     if (util.hasDevTools) {
         this._trampolineEnabled = false;
     }
 };
 
-Async.prototype.haveItemsQueued = function () {
+.prototype.haveItemsQueued = function () {
     return this._isTickUsed || this._haveDrainedQueues;
 };
 
 
-Async.prototype.fatalError = function(e, isNode) {
+.prototype.fatalError = function(e, isNode) {
     if (isNode) {
         process.stderr.write("Fatal " + (e instanceof Error ? e.stack : e) +
             "\n");
@@ -58678,7 +58678,7 @@ Async.prototype.fatalError = function(e, isNode) {
     }
 };
 
-Async.prototype.throwLater = function(fn, arg) {
+.prototype.throwLater = function(fn, arg) {
     if (arguments.length === 1) {
         arg = fn;
         fn = function () { throw arg; };
@@ -58692,33 +58692,33 @@ Async.prototype.throwLater = function(fn, arg) {
             fn(arg);
         });
     } catch (e) {
-        throw new Error("No async scheduler available\u000a\u000a    See http://goo.gl/MqrFmX\u000a");
+        throw new Error("No  scheduler available\u000a\u000a    See http://goo.gl/MqrFmX\u000a");
     }
 };
 
-function AsyncInvokeLater(fn, receiver, arg) {
+function InvokeLater(fn, receiver, arg) {
     this._lateQueue.push(fn, receiver, arg);
     this._queueTick();
 }
 
-function AsyncInvoke(fn, receiver, arg) {
+function Invoke(fn, receiver, arg) {
     this._normalQueue.push(fn, receiver, arg);
     this._queueTick();
 }
 
-function AsyncSettlePromises(promise) {
+function SettlePromises(promise) {
     this._normalQueue._pushOne(promise);
     this._queueTick();
 }
 
 if (!util.hasDevTools) {
-    Async.prototype.invokeLater = AsyncInvokeLater;
-    Async.prototype.invoke = AsyncInvoke;
-    Async.prototype.settlePromises = AsyncSettlePromises;
+    .prototype.invokeLater = InvokeLater;
+    .prototype.invoke = Invoke;
+    .prototype.settlePromises = SettlePromises;
 } else {
-    Async.prototype.invokeLater = function (fn, receiver, arg) {
+    .prototype.invokeLater = function (fn, receiver, arg) {
         if (this._trampolineEnabled) {
-            AsyncInvokeLater.call(this, fn, receiver, arg);
+            InvokeLater.call(this, fn, receiver, arg);
         } else {
             this._schedule(function() {
                 setTimeout(function() {
@@ -58728,9 +58728,9 @@ if (!util.hasDevTools) {
         }
     };
 
-    Async.prototype.invoke = function (fn, receiver, arg) {
+    .prototype.invoke = function (fn, receiver, arg) {
         if (this._trampolineEnabled) {
-            AsyncInvoke.call(this, fn, receiver, arg);
+            Invoke.call(this, fn, receiver, arg);
         } else {
             this._schedule(function() {
                 fn.call(receiver, arg);
@@ -58738,9 +58738,9 @@ if (!util.hasDevTools) {
         }
     };
 
-    Async.prototype.settlePromises = function(promise) {
+    .prototype.settlePromises = function(promise) {
         if (this._trampolineEnabled) {
-            AsyncSettlePromises.call(this, promise);
+            SettlePromises.call(this, promise);
         } else {
             this._schedule(function() {
                 promise._settlePromises();
@@ -58749,7 +58749,7 @@ if (!util.hasDevTools) {
     };
 }
 
-Async.prototype._drainQueue = function(queue) {
+.prototype._drainQueue = function(queue) {
     while (queue.length() > 0) {
         var fn = queue.shift();
         if (typeof fn !== "function") {
@@ -58762,25 +58762,25 @@ Async.prototype._drainQueue = function(queue) {
     }
 };
 
-Async.prototype._drainQueues = function () {
+.prototype._drainQueues = function () {
     this._drainQueue(this._normalQueue);
     this._reset();
     this._haveDrainedQueues = true;
     this._drainQueue(this._lateQueue);
 };
 
-Async.prototype._queueTick = function () {
+.prototype._queueTick = function () {
     if (!this._isTickUsed) {
         this._isTickUsed = true;
         this._schedule(this.drainQueues);
     }
 };
 
-Async.prototype._reset = function () {
+.prototype._reset = function () {
     this._isTickUsed = false;
 };
 
-module.exports = Async;
+module.exports = ;
 module.exports.firstLineError = firstLineError;
 
 },{"./queue":26,"./schedule":29,"./util":36}],3:[function(_dereq_,module,exports){
@@ -58996,7 +58996,7 @@ module.exports = function(Promise, PromiseArray, apiRejection, debug) {
 var util = _dereq_("./util");
 var tryCatch = util.tryCatch;
 var errorObj = util.errorObj;
-var async = Promise._async;
+var  = Promise._;
 
 Promise.prototype["break"] = Promise.prototype.cancel = function() {
     if (!debug.cancellation()) return this._warn("cancellation is disabled");
@@ -59063,7 +59063,7 @@ Promise.prototype._cancelBranched = function() {
 Promise.prototype._cancel = function() {
     if (!this._isCancellable()) return;
     this._setCancelled();
-    async.invoke(this._cancelPromises, this, undefined);
+    .invoke(this._cancelPromises, this, undefined);
 };
 
 Promise.prototype._cancelPromises = function() {
@@ -59093,7 +59093,7 @@ Promise.prototype._doInvokeOnCancel = function(onCancelCallback, internalOnly) {
                 var e = tryCatch(onCancelCallback).call(this._boundValue());
                 if (e === errorObj) {
                     this._attachExtraTrace(e.e);
-                    async.throwLater(e.e);
+                    .throwLater(e.e);
                 }
             }
         } else {
@@ -59105,7 +59105,7 @@ Promise.prototype._doInvokeOnCancel = function(onCancelCallback, internalOnly) {
 Promise.prototype._invokeOnCancel = function() {
     var onCancelCallback = this._onCancel();
     this._unsetOnCancel();
-    async.invoke(this._doInvokeOnCancel, this, onCancelCallback);
+    .invoke(this._doInvokeOnCancel, this, onCancelCallback);
 };
 
 Promise.prototype._invokeInternalOnCancel = function() {
@@ -59240,7 +59240,7 @@ return Context;
 "use strict";
 module.exports = function(Promise, Context) {
 var getDomain = Promise._getDomain;
-var async = Promise._async;
+var  = Promise._;
 var Warning = _dereq_("./errors").Warning;
 var util = _dereq_("./util");
 var canAttachTrace = util.canAttachTrace;
@@ -59277,7 +59277,7 @@ Promise.prototype.suppressUnhandledRejections = function() {
 Promise.prototype._ensurePossibleRejectionHandled = function () {
     if ((this._bitField & 524288) !== 0) return;
     this._setRejectionIsUnhandled();
-    async.invokeLater(this._notifyUnhandledRejection, this, undefined);
+    .invokeLater(this._notifyUnhandledRejection, this, undefined);
 };
 
 Promise.prototype._notifyUnhandledRejectionIsHandled = function () {
@@ -59352,7 +59352,7 @@ Promise.onUnhandledRejectionHandled = function (fn) {
 
 var disableLongStackTraces = function() {};
 Promise.longStackTraces = function () {
-    if (async.haveItemsQueued() && !config.longStackTraces) {
+    if (.haveItemsQueued() && !config.longStackTraces) {
         throw new Error("cannot enable long stack traces after promises have been created\u000a\u000a    See http://goo.gl/MqrFmX\u000a");
     }
     if (!config.longStackTraces && longStackTracesIsSupported()) {
@@ -59360,19 +59360,19 @@ Promise.longStackTraces = function () {
         var Promise_attachExtraTrace = Promise.prototype._attachExtraTrace;
         config.longStackTraces = true;
         disableLongStackTraces = function() {
-            if (async.haveItemsQueued() && !config.longStackTraces) {
+            if (.haveItemsQueued() && !config.longStackTraces) {
                 throw new Error("cannot enable long stack traces after promises have been created\u000a\u000a    See http://goo.gl/MqrFmX\u000a");
             }
             Promise.prototype._captureStackTrace = Promise_captureStackTrace;
             Promise.prototype._attachExtraTrace = Promise_attachExtraTrace;
             Context.deactivateLongStackTraces();
-            async.enableTrampoline();
+            .enableTrampoline();
             config.longStackTraces = false;
         };
         Promise.prototype._captureStackTrace = longStackTracesCaptureStackTrace;
         Promise.prototype._attachExtraTrace = longStackTracesAttachExtraTrace;
         Context.activateLongStackTraces();
-        async.disableTrampolineIfNecessary();
+        .disableTrampolineIfNecessary();
     }
 };
 
@@ -59467,7 +59467,7 @@ var activeFireEvent = function (name) {
     try {
         globalEventFired = fireGlobalEvent.apply(null, arguments);
     } catch (e) {
-        async.throwLater(e);
+        .throwLater(e);
         globalEventFired = true;
     }
 
@@ -59476,7 +59476,7 @@ var activeFireEvent = function (name) {
         domEventFired = fireDomEvent(name,
                     eventToObjectGenerator[name].apply(null, arguments));
     } catch (e) {
-        async.throwLater(e);
+        .throwLater(e);
         domEventFired = true;
     }
 
@@ -59504,7 +59504,7 @@ Promise.config = function(opts) {
         }
     }
     if ("cancellation" in opts && opts.cancellation && !config.cancellation) {
-        if (async.haveItemsQueued()) {
+        if (.haveItemsQueued()) {
             throw new Error(
                 "cannot enable cancellation after promises are in use");
         }
@@ -59846,7 +59846,7 @@ function fireRejectionEvent(name, localHandler, reason, promise) {
             }
         }
     } catch (e) {
-        async.throwLater(e);
+        .throwLater(e);
     }
 
     if (name === "unhandledRejection") {
@@ -60771,11 +60771,11 @@ PromiseSpawn.prototype._continue = function (result) {
             this._yieldedPromise = maybePromise;
             maybePromise._proxy(this, null);
         } else if (((bitField & 33554432) !== 0)) {
-            Promise._async.invoke(
+            Promise._.invoke(
                 this._promiseFulfilled, this, maybePromise._value()
             );
         } else if (((bitField & 16777216) !== 0)) {
-            Promise._async.invoke(
+            Promise._.invoke(
                 this._promiseRejected, this, maybePromise._reason()
             );
         } else {
@@ -60824,7 +60824,7 @@ Promise.spawn = function (generatorFunction) {
 },{"./errors":12,"./util":36}],17:[function(_dereq_,module,exports){
 "use strict";
 module.exports =
-function(Promise, PromiseArray, tryConvertToPromise, INTERNAL, async,
+function(Promise, PromiseArray, tryConvertToPromise, INTERNAL, ,
          getDomain) {
 var util = _dereq_("./util");
 var canEvaluate = util.canEvaluate;
@@ -60867,12 +60867,12 @@ if (canEvaluate) {
         var name = "Holder$" + total;
 
 
-        var code = "return function(tryCatch, errorObj, Promise, async) {    \n\
+        var code = "return function(tryCatch, errorObj, Promise, ) {    \n\
             'use strict';                                                    \n\
             function [TheName](fn) {                                         \n\
                 [TheProperties]                                              \n\
                 this.fn = fn;                                                \n\
-                this.asyncNeeded = true;                                     \n\
+                this.Needed = true;                                     \n\
                 this.now = 0;                                                \n\
             }                                                                \n\
                                                                              \n\
@@ -60890,8 +60890,8 @@ if (canEvaluate) {
             [TheName].prototype.checkFulfillment = function(promise) {       \n\
                 var now = ++this.now;                                        \n\
                 if (now === [TheTotal]) {                                    \n\
-                    if (this.asyncNeeded) {                                  \n\
-                        async.invoke(this._callFunction, this, promise);     \n\
+                    if (this.Needed) {                                  \n\
+                        .invoke(this._callFunction, this, promise);     \n\
                     } else {                                                 \n\
                         this._callFunction(promise);                         \n\
                     }                                                        \n\
@@ -60904,7 +60904,7 @@ if (canEvaluate) {
             };                                                               \n\
                                                                              \n\
             return [TheName];                                                \n\
-        }(tryCatch, errorObj, Promise, async);                               \n\
+        }(tryCatch, errorObj, Promise, );                               \n\
         ";
 
         code = code.replace(/\[TheName\]/g, name)
@@ -60913,8 +60913,8 @@ if (canEvaluate) {
             .replace(/\[TheProperties\]/g, assignment)
             .replace(/\[CancellationCode\]/g, cancellationCode);
 
-        return new Function("tryCatch", "errorObj", "Promise", "async", code)
-                           (tryCatch, errorObj, Promise, async);
+        return new Function("tryCatch", "errorObj", "Promise", "", code)
+                           (tryCatch, errorObj, Promise, );
     };
 
     var holderClasses = [];
@@ -60955,7 +60955,7 @@ Promise.join = function () {
                             maybePromise._then(callbacks[i], reject,
                                                undefined, ret, holder);
                             promiseSetters[i](maybePromise, holder);
-                            holder.asyncNeeded = false;
+                            holder.Needed = false;
                         } else if (((bitField & 33554432) !== 0)) {
                             callbacks[i].call(ret,
                                               maybePromise._value(), holder);
@@ -60970,13 +60970,13 @@ Promise.join = function () {
                 }
 
                 if (!ret._isFateSealed()) {
-                    if (holder.asyncNeeded) {
+                    if (holder.Needed) {
                         var domain = getDomain();
                         if (domain !== null) {
                             holder.fn = util.domainBind(domain, holder.fn);
                         }
                     }
-                    ret._setAsyncGuaranteed();
+                    ret._setGuaranteed();
                     ret._setOnCancel(holder);
                 }
                 return ret;
@@ -61003,7 +61003,7 @@ var getDomain = Promise._getDomain;
 var util = _dereq_("./util");
 var tryCatch = util.tryCatch;
 var errorObj = util.errorObj;
-var async = Promise._async;
+var  = Promise._;
 
 function MappingPromiseArray(promises, fn, limit, _filter) {
     this.constructor$(promises);
@@ -61016,11 +61016,11 @@ function MappingPromiseArray(promises, fn, limit, _filter) {
     this._limit = limit;
     this._inFlight = 0;
     this._queue = [];
-    async.invoke(this._asyncInit, this, undefined);
+    .invoke(this._Init, this, undefined);
 }
 util.inherits(MappingPromiseArray, PromiseArray);
 
-MappingPromiseArray.prototype._asyncInit = function() {
+MappingPromiseArray.prototype._Init = function() {
     this._init$(undefined, -2);
 };
 
@@ -61275,7 +61275,7 @@ module.exports = nodebackForPromise;
 "use strict";
 module.exports = function(Promise) {
 var util = _dereq_("./util");
-var async = Promise._async;
+var  = Promise._;
 var tryCatch = util.tryCatch;
 var errorObj = util.errorObj;
 
@@ -61285,7 +61285,7 @@ function spreadAdapter(val, nodeback) {
     var ret =
         tryCatch(nodeback).apply(promise._boundValue(), [null].concat(val));
     if (ret === errorObj) {
-        async.throwLater(ret.e);
+        .throwLater(ret.e);
     }
 }
 
@@ -61296,7 +61296,7 @@ function successAdapter(val, nodeback) {
         ? tryCatch(nodeback).call(receiver, null)
         : tryCatch(nodeback).call(receiver, null, val);
     if (ret === errorObj) {
-        async.throwLater(ret.e);
+        .throwLater(ret.e);
     }
 }
 function errorAdapter(reason, nodeback) {
@@ -61308,7 +61308,7 @@ function errorAdapter(reason, nodeback) {
     }
     var ret = tryCatch(nodeback).call(promise._boundValue(), reason);
     if (ret === errorObj) {
-        async.throwLater(ret.e);
+        .throwLater(ret.e);
     }
 }
 
@@ -61362,9 +61362,9 @@ if (util.isNode) {
 util.notEnumerableProp(Promise, "_getDomain", getDomain);
 
 var es5 = _dereq_("./es5");
-var Async = _dereq_("./async");
-var async = new Async();
-es5.defineProperty(Promise, "_async", {value: async});
+var  = _dereq_("./");
+var  = new ();
+es5.defineProperty(Promise, "_", {value: });
 var errors = _dereq_("./errors");
 var TypeError = Promise.TypeError = errors.TypeError;
 Promise.RangeError = errors.RangeError;
@@ -61515,7 +61515,7 @@ Promise.fromNode = Promise.fromCallback = function(fn) {
     if (result === errorObj) {
         ret._rejectCallback(result.e, true);
     }
-    if (!ret._isFateSealed()) ret._setAsyncGuaranteed();
+    if (!ret._isFateSealed()) ret._setGuaranteed();
     return ret;
 };
 
@@ -61547,7 +61547,7 @@ Promise.setScheduler = function(fn) {
     if (typeof fn !== "function") {
         throw new TypeError("expecting a function but got " + util.classString(fn));
     }
-    return async.setScheduler(fn);
+    return .setScheduler(fn);
 };
 
 Promise.prototype._then = function (
@@ -61592,7 +61592,7 @@ Promise.prototype._then = function (
             handler = didReject;
         }
 
-        async.invoke(settler, target, {
+        .invoke(settler, target, {
             handler: domain === null ? handler
                 : (typeof handler === "function" &&
                     util.domainBind(domain, handler)),
@@ -61660,8 +61660,8 @@ Promise.prototype._setWillBeCancelled = function() {
     this._bitField = this._bitField | 8388608;
 };
 
-Promise.prototype._setAsyncGuaranteed = function() {
-    if (async.hasCustomScheduler()) return;
+Promise.prototype._setGuaranteed = function() {
+    if (.hasCustomScheduler()) return;
     this._bitField = this._bitField | 134217728;
 };
 
@@ -61876,7 +61876,7 @@ Promise.prototype._setFollowee = function(promise) {
 Promise.prototype._settlePromise = function(promise, handler, receiver, value) {
     var isPromise = promise instanceof Promise;
     var bitField = this._bitField;
-    var asyncGuaranteed = ((bitField & 134217728) !== 0);
+    var Guaranteed = ((bitField & 134217728) !== 0);
     if (((bitField & 65536) !== 0)) {
         if (isPromise) promise._invokeInternalOnCancel();
 
@@ -61899,7 +61899,7 @@ Promise.prototype._settlePromise = function(promise, handler, receiver, value) {
         if (!isPromise) {
             handler.call(receiver, value, promise);
         } else {
-            if (asyncGuaranteed) promise._setAsyncGuaranteed();
+            if (Guaranteed) promise._setGuaranteed();
             this._settlePromiseFromHandler(handler, receiver, value, promise);
         }
     } else if (receiver instanceof Proxyable) {
@@ -61911,7 +61911,7 @@ Promise.prototype._settlePromise = function(promise, handler, receiver, value) {
             }
         }
     } else if (isPromise) {
-        if (asyncGuaranteed) promise._setAsyncGuaranteed();
+        if (Guaranteed) promise._setGuaranteed();
         if (((bitField & 33554432) !== 0)) {
             promise._fulfill(value);
         } else {
@@ -61971,7 +61971,7 @@ Promise.prototype._fulfill = function (value) {
         if (((bitField & 134217728) !== 0)) {
             this._settlePromises();
         } else {
-            async.settlePromises(this);
+            .settlePromises(this);
         }
     }
 };
@@ -61983,11 +61983,11 @@ Promise.prototype._reject = function (reason) {
     this._fulfillmentHandler0 = reason;
 
     if (this._isFinal()) {
-        return async.fatalError(reason, util.isNode);
+        return .fatalError(reason, util.isNode);
     }
 
     if ((bitField & 65535) > 0) {
-        async.settlePromises(this);
+        .settlePromises(this);
     } else {
         this._ensurePossibleRejectionHandled();
     }
@@ -62065,7 +62065,7 @@ _dereq_("./cancel")(Promise, PromiseArray, apiRejection, debug);
 _dereq_("./direct_resolve")(Promise);
 _dereq_("./synchronous_inspection")(Promise);
 _dereq_("./join")(
-    Promise, PromiseArray, tryConvertToPromise, INTERNAL, async, getDomain);
+    Promise, PromiseArray, tryConvertToPromise, INTERNAL, , getDomain);
 Promise.Promise = Promise;
 Promise.version = "3.5.0";
 _dereq_('./map.js')(Promise, PromiseArray, apiRejection, tryConvertToPromise, INTERNAL, debug);
@@ -62103,12 +62103,12 @@ _dereq_('./any.js')(Promise);
     fillTypes(undefined);                                                    
     fillTypes(false);                                                        
     fillTypes(new Promise(INTERNAL));                                        
-    debug.setBounds(Async.firstLineError, util.lastLineError);               
+    debug.setBounds(.firstLineError, util.lastLineError);               
     return Promise;                                                          
 
 };
 
-},{"./any.js":1,"./async":2,"./bind":3,"./call_get.js":5,"./cancel":6,"./catch_filter":7,"./context":8,"./debuggability":9,"./direct_resolve":10,"./each.js":11,"./errors":12,"./es5":13,"./filter.js":14,"./finally":15,"./generators.js":16,"./join":17,"./map.js":18,"./method":19,"./nodeback":20,"./nodeify.js":21,"./promise_array":23,"./promisify.js":24,"./props.js":25,"./race.js":27,"./reduce.js":28,"./settle.js":30,"./some.js":31,"./synchronous_inspection":32,"./thenables":33,"./timers.js":34,"./using.js":35,"./util":36}],23:[function(_dereq_,module,exports){
+},{"./any.js":1,"./":2,"./bind":3,"./call_get.js":5,"./cancel":6,"./catch_filter":7,"./context":8,"./debuggability":9,"./direct_resolve":10,"./each.js":11,"./errors":12,"./es5":13,"./filter.js":14,"./finally":15,"./generators.js":16,"./join":17,"./map.js":18,"./method":19,"./nodeback":20,"./nodeify.js":21,"./promise_array":23,"./promisify.js":24,"./props.js":25,"./race.js":27,"./reduce.js":28,"./settle.js":30,"./some.js":31,"./synchronous_inspection":32,"./thenables":33,"./timers.js":34,"./using.js":35,"./util":36}],23:[function(_dereq_,module,exports){
 "use strict";
 module.exports = function(Promise, INTERNAL, tryConvertToPromise,
     apiRejection, Proxyable) {
@@ -62153,7 +62153,7 @@ PromiseArray.prototype._init = function init(_, resolveValueIfEmpty) {
         this._values = values;
 
         if (((bitField & 50397184) === 0)) {
-            this._promise._setAsyncGuaranteed();
+            this._promise._setGuaranteed();
             return values._then(
                 init,
                 this._reject,
@@ -62225,7 +62225,7 @@ PromiseArray.prototype._iterate = function(values) {
             isResolved = this._promiseFulfilled(maybePromise, i);
         }
     }
-    if (!isResolved) result._setAsyncGuaranteed();
+    if (!isResolved) result._setGuaranteed();
 };
 
 PromiseArray.prototype._isResolved = function () {
@@ -62305,7 +62305,7 @@ var withAppended = util.withAppended;
 var maybeWrapAsError = util.maybeWrapAsError;
 var canEvaluate = util.canEvaluate;
 var TypeError = _dereq_("./errors").TypeError;
-var defaultSuffix = "Async";
+var defaultSuffix = "";
 var defaultPromisified = {__isPromisified__: true};
 var noCopyProps = [
     "arity",    "length",
@@ -62346,9 +62346,9 @@ function checkValid(ret, suffix, suffixRegexp) {
     for (var i = 0; i < ret.length; i += 2) {
         var key = ret[i];
         if (suffixRegexp.test(key)) {
-            var keyWithoutAsyncSuffix = key.replace(suffixRegexp, "");
+            var keyWithoutSuffix = key.replace(suffixRegexp, "");
             for (var j = 0; j < ret.length; j += 2) {
-                if (ret[j] === keyWithoutAsyncSuffix) {
+                if (ret[j] === keyWithoutSuffix) {
                     throw new TypeError("Cannot promisify an API that has normal methods with '%s'-suffix\u000a\u000a    See http://goo.gl/MqrFmX\u000a"
                         .replace("%s", suffix));
                 }
@@ -62471,7 +62471,7 @@ function(callback, receiver, originalName, fn, _, multiArgs) {
             if (ret === errorObj) {                                          \n\
                 promise._rejectCallback(maybeWrapAsError(ret.e), true, true);\n\
             }                                                                \n\
-            if (!promise._isFateSealed()) promise._setAsyncGuaranteed();     \n\
+            if (!promise._isFateSealed()) promise._setGuaranteed();     \n\
             return promise;                                                  \n\
         };                                                                   \n\
         notEnumerableProp(ret, '__isPromisified__', true);                   \n\
@@ -62522,7 +62522,7 @@ function makeNodePromisifiedClosure(callback, receiver, _, fn, __, multiArgs) {
         } catch(e) {
             promise._rejectCallback(maybeWrapAsError(e), true, true);
         }
-        if (!promise._isFateSealed()) promise._setAsyncGuaranteed();
+        if (!promise._isFateSealed()) promise._setGuaranteed();
         return promise;
     }
     util.notEnumerableProp(promisified, "__isPromisified__", true);
@@ -63035,8 +63035,8 @@ function gotValue(value) {
 "use strict";
 var util = _dereq_("./util");
 var schedule;
-var noAsyncScheduler = function() {
-    throw new Error("No async scheduler available\u000a\u000a    See http://goo.gl/MqrFmX\u000a");
+var noScheduler = function() {
+    throw new Error("No  scheduler available\u000a\u000a    See http://goo.gl/MqrFmX\u000a");
 };
 var NativePromise = util.getNativePromise();
 if (util.isNode && typeof MutationObserver === "undefined") {
@@ -63090,7 +63090,7 @@ if (util.isNode && typeof MutationObserver === "undefined") {
         setTimeout(fn, 0);
     };
 } else {
-    schedule = noAsyncScheduler;
+    schedule = noScheduler;
 }
 module.exports = schedule;
 
@@ -63514,7 +63514,7 @@ var delay = Promise.delay = function (ms, value) {
         }
         ret._captureStackTrace();
     }
-    ret._setAsyncGuaranteed();
+    ret._setGuaranteed();
     return ret;
 };
 
@@ -65825,9 +65825,9 @@ Zlib.prototype._processChunk = function(chunk, flushFlag, cb) {
 
   var self = this;
 
-  var async = typeof cb === 'function';
+  var  = typeof cb === 'function';
 
-  if (!async) {
+  if (!) {
     var buffers = [];
     var nread = 0;
 
@@ -65878,7 +65878,7 @@ Zlib.prototype._processChunk = function(chunk, flushFlag, cb) {
       var out = self._buffer.slice(self._offset, self._offset + have);
       self._offset += have;
       // serve some output to the consumer.
-      if (async) {
+      if () {
         self.push(out);
       } else {
         buffers.push(out);
@@ -65901,7 +65901,7 @@ Zlib.prototype._processChunk = function(chunk, flushFlag, cb) {
       inOff += (availInBefore - availInAfter);
       availInBefore = availInAfter;
 
-      if (!async)
+      if (!)
         return true;
 
       var newReq = self._binding.write(flushFlag,
@@ -65916,7 +65916,7 @@ Zlib.prototype._processChunk = function(chunk, flushFlag, cb) {
       return;
     }
 
-    if (!async)
+    if (!)
       return false;
 
     // finished with the chunk.
@@ -67090,7 +67090,7 @@ setToStringTag(global.JSON, 'JSON', true);
 /* 514 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(159)('asyncIterator');
+__webpack_require__(159)('Iterator');
 
 /***/ }),
 /* 515 */
@@ -74102,7 +74102,7 @@ JSONPPolling.prototype.doPoll = function () {
     this.script = null;
   }
 
-  script.async = true;
+  script. = true;
   script.src = this.uri();
   script.onerror = function (e) {
     self.onError('jsonp poll error', e);
@@ -74364,7 +74364,7 @@ function Request (opts) {
   this.uri = opts.uri;
   this.xd = !!opts.xd;
   this.xs = !!opts.xs;
-  this.async = false !== opts.async;
+  this. = false !== opts.;
   this.data = undefined !== opts.data ? opts.data : null;
   this.agent = opts.agent;
   this.isBinary = opts.isBinary;
@@ -74416,7 +74416,7 @@ Request.prototype.create = function () {
 
   try {
     debug('xhr open %s: %s', this.method, this.uri);
-    xhr.open(this.method, this.uri, this.async);
+    xhr.open(this.method, this.uri, this.);
     try {
       if (this.extraHeaders) {
         xhr.setDisableHeaderCheck(true);
@@ -79315,7 +79315,7 @@ RequestSigner.prototype.writeTarget = function (method, path) {
 
 /**
  * Calculate the value for the Authorization header on this request
- * asynchronously.
+ * hronously.
  *
  * @param {Func} callback (err, authz)
  */
@@ -79387,7 +79387,7 @@ module.exports = {
   },
 
   /**
-   * Creates a request signer, used to asynchronously build a signature
+   * Creates a request signer, used to hronously build a signature
    * for a request (does not have to be an http.ClientRequest).
    *
    * @param {Object} options, either:
@@ -90763,7 +90763,7 @@ module.exports = {
 		"node": ">=0.8"
 	},
 	"devDependencies": {
-		"async": "^1.4.2",
+		"": "^1.4.2",
 		"string.prototype.repeat": "^0.2.0",
 		"vows": "^0.8.1"
 	},
@@ -91091,7 +91091,7 @@ function serializer(replacer, cycleReplacer) {
 
 /* WEBPACK VAR INJECTION */(function(module, global) {var __WEBPACK_AMD_DEFINE_RESULT__;/*! JSON v3.3.2 | http://bestiejs.github.io/json3 | Copyright 2012-2014, Kit Cambridge | http://kit.mit-license.org */
 ;(function () {
-  // Detect the `define` function exposed by asynchronous module loaders. The
+  // Detect the `define` function exposed by hronous module loaders. The
   // strict `define` check is necessary for compatibility with `r.js`.
   var isLoader = "function" === "function" && __webpack_require__(884);
 
@@ -91984,7 +91984,7 @@ function serializer(replacer, cycleReplacer) {
     };
   }
 
-  // Export for asynchronous module loaders.
+  // Export for hronous module loaders.
   if (isLoader) {
     !(__WEBPACK_AMD_DEFINE_RESULT__ = function () {
       return JSON3;
@@ -107405,7 +107405,7 @@ var HTMLDOMPropertyConfig = {
     alt: 0,
     // specifies target context for links with `preload` type
     as: 0,
-    async: HAS_BOOLEAN_VALUE,
+    : HAS_BOOLEAN_VALUE,
     autoComplete: 0,
     // autoFocus is polyfilled/normalized by AutoFocusUtils
     // autoFocus: HAS_BOOLEAN_VALUE,
@@ -113044,7 +113044,7 @@ var Mixin = {
   },
 
   /**
-   * @return {object} The queue to collect React async events.
+   * @return {object} The queue to collect React  events.
    */
   getUpdateQueue: function () {
     return ReactUpdateQueue;
@@ -113246,7 +113246,7 @@ var Mixin = {
   },
 
   /**
-   * @return {object} The queue to collect React async events.
+   * @return {object} The queue to collect React  events.
    */
   getUpdateQueue: function () {
     return this.updateQueue;
@@ -119881,11 +119881,11 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 /**
  * Creates a store enhancer that applies middleware to the dispatch method
  * of the Redux store. This is handy for a variety of tasks, such as expressing
- * asynchronous actions in a concise manner, or logging every action payload.
+ * hronous actions in a concise manner, or logging every action payload.
  *
  * See `redux-thunk` package as an example of the Redux middleware.
  *
- * Because middleware is potentially asynchronous, this should be the first
+ * Because middleware is potentially hronous, this should be the first
  * store enhancer in the composition chain.
  *
  * Note that each middleware will be given the `dispatch` and `getState` functions
@@ -122399,7 +122399,7 @@ Request.prototype.init = function (options) {
     }
 
     if (self._form && !self.hasHeader('content-length')) {
-      // Before ending the request, we had to compute the length of the whole form, asyncly
+      // Before ending the request, we had to compute the length of the whole form, ly
       self.setHeader(self._form.getHeaders(), true)
       self._form.getLength(function (err, length) {
         if (!err && !isNaN(length)) {
@@ -123780,14 +123780,14 @@ module.exports = ripemd160
         // The test against `importScripts` prevents this implementation from being installed inside a web worker,
         // where `global.postMessage` means something completely different and can't be used for this purpose.
         if (global.postMessage && !global.importScripts) {
-            var postMessageIsAsynchronous = true;
+            var postMessageIshronous = true;
             var oldOnMessage = global.onmessage;
             global.onmessage = function() {
-                postMessageIsAsynchronous = false;
+                postMessageIshronous = false;
             };
             global.postMessage("", "*");
             global.onmessage = oldOnMessage;
-            return postMessageIsAsynchronous;
+            return postMessageIshronous;
         }
     }
 
@@ -123831,7 +123831,7 @@ module.exports = ripemd160
     function installReadyStateChangeImplementation() {
         var html = doc.documentElement;
         registerImmediate = function(handle) {
-            // Create a <script> element; its readystatechange event will be fired asynchronously once it is inserted
+            // Create a <script> element; its readystatechange event will be fired hronously once it is inserted
             // into the document. Do so, thus queuing up the task. Remember to clean up once it's been called.
             var script = doc.createElement("script");
             script.onreadystatechange = function () {
@@ -124519,7 +124519,7 @@ exports.reconstructPacket = function(packet, buffers) {
 };
 
 /**
- * Asynchronously removes Blobs or Files from data via
+ * hronously removes Blobs or Files from data via
  * FileReader's readAsArrayBuffer method. Used before encoding
  * data as msgpack. Calls callback with the blobless data.
  *
@@ -124537,7 +124537,7 @@ exports.removeBlobs = function(data, callback) {
         (global.File && obj instanceof File)) {
       pendingBlobs++;
 
-      // async filereader
+      //  filereader
       var fileReader = new FileReader();
       fileReader.onload = function() { // this.result == arraybuffer
         if (containingObject) {
@@ -125263,7 +125263,7 @@ module.exports = {
 	read: read,
 	verify: verify,
 	sign: sign,
-	signAsync: signAsync,
+	sign: sign,
 	write: write,
 
 	/* Internal private API */
@@ -125448,7 +125448,7 @@ function sign(cert, key) {
 	return (true);
 }
 
-function signAsync(cert, signer, done) {
+function sign(cert, signer, done) {
 	if (cert.signatures.openssh === undefined)
 		cert.signatures.openssh = {};
 	try {
@@ -127966,7 +127966,7 @@ CookieJar.deserializeSync = function(strOrObj, store) {
 
   // catch this mistake early:
   if (!jar.store.synchronous) {
-    throw new Error('CookieJar store is not synchronous; use async API instead.');
+    throw new Error('CookieJar store is not synchronous; use  API instead.');
   }
 
   jar._importCookiesSync(serialized);
@@ -127993,7 +127993,7 @@ CookieJar.prototype.clone = function(newStore, cb) {
 function syncWrap(method) {
   return function() {
     if (!this.store.synchronous) {
-      throw new Error('CookieJar store is not synchronous; use async API instead.');
+      throw new Error('CookieJar store is not synchronous; use  API instead.');
     }
 
     var args = Array.prototype.slice.call(arguments);

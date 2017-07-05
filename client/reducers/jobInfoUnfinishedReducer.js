@@ -1,10 +1,11 @@
 import Immutable from 'immutable'
 const initialState = Immutable.Map({
-  bookings: [0],
   id: 'getting id...',
   customer: '',
-  assignment: 'Studio rental'
+  assignment: 'Studio rental',
+  description: ''
 })
+
 const jobInfoUnfinishedReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'SAVE_UNFINISHED_JOB': {

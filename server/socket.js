@@ -16,26 +16,28 @@ export function initSocketHandler (server) {
 function handleTopicRecieved (socket, io) {
   const topics = {
     'equipments:get': () => {
-      EquipmentsModel.getAllEquipmentsAsync({
+      EquipmentsModel.getAllEquipments({
         onSuccess: (data) => {
           io.emit('equipments:get', { data })
         }
       })
     },
     'job:get:id': () => {
-      jobModel.getJobIdAsync({
+      jobModel.getJobId({
         onSuccess: (data) => {
           io.emit('job:get:id', data)
         }
       })
     },
-    'job:save': ({job, bookingUnfinished}) => {
-      const bookings = _.values(bookingUnfinished).map((booking, index) => {
-        return Object.assign({}, booking, {id: `${job.id}-${index}`})
+    'job:save': ({ job, bookingUnfinished }) => {
+      const bookingsData = _.values(bookingUnfinished).map((booking, index) => {
+        return Object.assign({}, booking, { id: `${job.id}-${index}` })
       })
-      jobModel.saveJobAsync({
-        job,
-        bookingUnfinished: bookings,
+      const jobData = Object.assign({}, job, { bookings: bookingsData.map(x => x.id) })
+
+      jobModel.saveJob({
+        job: jobData,
+        bookingUnfinished: bookingsData,
         onSuccess: (response) => {
           io.emit('job:save', response)
         },

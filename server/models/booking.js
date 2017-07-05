@@ -22,8 +22,7 @@ const bookingSchema = mongoose.Schema({
 })
 
 export const Booking = mongoose.model('bookings', bookingSchema)
-
-export function saveBookingsAsync ({ data, onSuccess, onFailed }) {
+export function saveBookings ({ data, onSuccess, onFailed }) {
   const booking = new Booking(data)
   booking.save((err, result) => {
     if (err) {
@@ -36,7 +35,7 @@ export function saveBookingsAsync ({ data, onSuccess, onFailed }) {
   })
 }
 
-export function getAllBookingsAsync ({ onSuccess, onFailed }) {
+export function getAllBookings ({ onSuccess, onFailed }) {
   Booking.find({}, null, (err, result) => {
     if (err) {
       onFailed(err)

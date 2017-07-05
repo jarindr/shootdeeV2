@@ -10,43 +10,38 @@ class RoomTabs extends React.Component {
   static propTypes = {
     selectBookingUnfinishedById: PropTypes.func,
     saveUnfinshedBooking: PropTypes.func,
+    addBookingRoom: PropTypes.func,
     bookingUnfinished: PropTypes.object
   }
 
   constructor (props) {
     super(props)
     this.newTabIndex = 1
-    const panes = _.values(this.props.bookingUnfinished.toJS()).map((booking, index) => {
+    this.state = {
+      activeKey: '0'
+    }
+  }
+
+  getPanes = () => {
+    return _.values(this.props.bookingUnfinished.toJS()).map((booking, index) => {
       return { ...booking, ...{ title: `room ${booking.room}`, key: booking.id } }
     })
-
-    this.state = {
-      activeKey: '0',
-      panes
-    }
   }
 
-  onChangeField = (value) => {
-    const index = _.findIndex(this.state.panes, (pane) => pane.key === value.id)
-    if (value.name === 'room') {
-      this.state.panes[index].title = `Room ${value.value}`
-    }
-  }
 
   renderTabs = () => {
-    return this.state.panes.map(pane => {
+    return this.getPanes().map(pane => {
       return (
         <TabPane
           actve
           tab={pane.title}
           key={pane.key}
-          closable={pane.closable}
+          closable={pane.closable || false}
         >
           <RoomForm
             saveUnfinshedBooking={this.props.saveUnfinshedBooking}
             bookingUnfinished={this.props.selectBookingUnfinishedById(pane.key)}
             id={pane.key}
-            onChangeField={this.onChangeField}
           />
         </TabPane>
       )
@@ -55,17 +50,15 @@ class RoomTabs extends React.Component {
   onChange = (activeKey) => {
     this.setState({ activeKey })
   }
+
   onEdit = (targetKey, action) => {
     this[action](targetKey)
   }
+
   add = () => {
-    const panes = this.state.panes
-    const activeKey = `${this.newTabIndex++}`
-    panes.push({
-      title: 'Room S',
-      key: activeKey
-    })
-    this.setState({ panes, activeKey })
+    const id = `${this.newTabIndex++}`
+    this.props.addBookingRoom(id)
+    this.setState({activeKey: id})
   }
   remove = (targetKey) => {
     let activeKey = this.state.activeKey

@@ -2,9 +2,9 @@ import Immutable from 'immutable'
 import _ from 'lodash'
 import moment from 'moment'
 
-const initialState = Immutable.Map({
-  '0': Immutable.Map({
-    id: '0',
+function getInitialRoomState (id) {
+  return Immutable.Map({
+    id,
     room: 'S',
     status: 'TENTATIVE',
     date: [moment(), moment()],
@@ -14,6 +14,9 @@ const initialState = Immutable.Map({
     startTime: moment('09:00', 'HH:mm'),
     endTime: moment('09:00', 'HH:mm')
   })
+}
+const initialState = Immutable.Map({
+  '0': getInitialRoomState('0')
 })
 
 const bookingsUnfinishedReducer = (state = initialState, action) => {
@@ -31,6 +34,9 @@ const bookingsUnfinishedReducer = (state = initialState, action) => {
         }
       }
       return state.setIn([id, name], value)
+    }
+    case 'ADD_BOOKING_ROOM': {
+      return state.set(action.id, getInitialRoomState(action.id))
     }
 
     case 'REMOVE_EQUIPMENT_UNFINISHED_BOOKING': {

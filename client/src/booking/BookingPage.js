@@ -6,14 +6,25 @@ import React from 'react'
 import RoomTabs from './RoomTabs'
 import { connect } from 'react-redux'
 import propTypes from 'prop-types'
-import { saveUnfinshedBooking } from '../../actions/bookingUnfinishedActions'
+import { saveUnfinshedBooking, addBookingRoom } from '../../actions/bookingUnfinishedActions'
 import {
   selectGetBookingUnfinishedById,
   selectbookingUnfinished
 } from '../../selectors/bookingUnfinishedSelectors'
 import styles from './BookingPage.sass'
 import { submitJob } from '../../actions/jobUnfinishedActions'
+import { compose } from 'recompose'
 const Step = Steps.Step
+
+const enhance = compose(
+  withRouter,
+  connect(state => ({
+    selectBookingUnfinishedById: selectGetBookingUnfinishedById(state),
+    bookingUnfinished: selectbookingUnfinished(state)
+  }),
+    { saveUnfinshedBooking, submitJob, addBookingRoom })
+)
+
 class BookingPage extends React.Component {
 
   static propTypes = {
@@ -21,6 +32,7 @@ class BookingPage extends React.Component {
     selectBookingUnfinishedById: propTypes.func,
     bookingUnfinished: propTypes.object,
     submitJob: propTypes.func,
+    addBookingRoom: propTypes.func,
     history: propTypes.object,
     location: propTypes.object
   }
@@ -36,6 +48,7 @@ class BookingPage extends React.Component {
         bookingUnfinished={this.props.bookingUnfinished}
         saveUnfinshedBooking={this.props.saveUnfinshedBooking}
         selectBookingUnfinishedById={this.props.selectBookingUnfinishedById}
+        addBookingRoom={this.props.addBookingRoom}
       />
     )
   }
@@ -116,7 +129,4 @@ class BookingPage extends React.Component {
   }
 }
 
-export default withRouter(connect(state => ({
-  selectBookingUnfinishedById: selectGetBookingUnfinishedById(state),
-  bookingUnfinished: selectbookingUnfinished(state)
-}), { saveUnfinshedBooking, submitJob })(BookingPage))
+export default enhance(BookingPage)

@@ -168,7 +168,6 @@ class NormalLoginForm extends Component {
 function onFieldsChange (props, field) {
   const updateField = _.map(field, (value) => value)[0]
   const entity = { ...updateField, ...{ id: props.id } }
-  props.onChangeField(entity)
   props.saveUnfinshedBooking(entity)
 }
 

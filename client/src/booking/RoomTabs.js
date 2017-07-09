@@ -9,7 +9,6 @@ import moment from 'moment'
 class RoomTabs extends React.Component {
 
   static propTypes = {
-    selectBookingUnfinishedById: PropTypes.func,
     saveUnfinshedBooking: PropTypes.func,
     addBookingRoom: PropTypes.func,
     bookingUnfinished: PropTypes.object
@@ -44,7 +43,7 @@ class RoomTabs extends React.Component {
         >
           <RoomForm
             saveUnfinshedBooking={this.props.saveUnfinshedBooking}
-            bookingUnfinished={this.props.selectBookingUnfinishedById(pane.key)}
+            bookingUnfinished={this.props.bookingUnfinished.get(pane.key)}
             id={pane.key}
           />
         </TabPane>

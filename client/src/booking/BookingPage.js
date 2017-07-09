@@ -1,6 +1,6 @@
 import { Button, Icon, Steps } from 'antd'
 import { Route, withRouter } from 'react-router-dom'
-
+import ConfirmJob from './ConfirmJob'
 import JobInformationForms from './JobInformationForms'
 import React from 'react'
 import RoomTabs from './RoomTabs'
@@ -61,11 +61,20 @@ class BookingPage extends React.Component {
     )
   }
 
+  renderConfirm = () => {
+    return (
+      <ConfirmJob
+        bookingUnfinished={this.props.bookingUnfinished}
+      />
+    )
+  }
+
   renderPageStep = () => {
     return (
       <div>
         <Route render={this.renderRoomTabs} path='/booking/rooms/' />
         <Route render={this.renderJobInformation} path='/booking/job/' />
+        <Route render={this.renderConfirm} path='/booking/confirm/' />
       </div>
     )
   }
@@ -74,7 +83,8 @@ class BookingPage extends React.Component {
     const page = this.props.location.pathname
     const pageIndex = {
       '/booking/job/': 0,
-      '/booking/rooms/': 1
+      '/booking/rooms/': 1,
+      '/booking/confirm/': 2
     }
 
     return (
@@ -91,9 +101,9 @@ class BookingPage extends React.Component {
             icon={<Icon type='switcher' onClick={this.onClickStep('/booking/rooms/')} />}
           />
           <Step
-            title={<span onClick={this.onClickStep(2)}>confirm</span>}
-            description={<span onClick={this.onClickStep(2)}>confirm job</span>}
-            icon={<Icon type='check' onClick={this.onClickStep(2)} />}
+            title={<span onClick={this.onClickStep('/booking/confirm/')}>confirm</span>}
+            description={<span onClick={this.onClickStep('/booking/confirm/')}>confirm job</span>}
+            icon={<Icon type='check' onClick={this.onClickStep('/booking/confirm/')} />}
           />
         </Steps>
       </div>

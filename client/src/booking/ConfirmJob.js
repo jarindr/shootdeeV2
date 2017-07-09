@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
-import styles from './ConfirmJob.styl'
+import styles from './ConfirmJob.sass'
 import { Row, Col } from 'antd'
 class ConfirmJob extends Component {
 
@@ -36,23 +36,23 @@ class ConfirmJob extends Component {
       <div>
         {_.values(this.props.bookingUnfinished.toJS()).map(booking => {
           return (
-            <div>
-              <div>
-                {booking.room}
-              </div>
-              <div>
-                {booking.date.map(d => d.toString()).join(' ')}
-              </div>
-              <div>
-                {booking.assistants}
-              </div>
-              <div>
-                {booking.status}
-              </div>
-              <div>
-                {this.renderAddedEquipments(booking.equipments)}
-              </div>
-            </div>
+            <Row className={styles.bookingRow}>
+              <Col sm={16}>
+                <div>
+                  {booking.room}
+                </div>
+                <div>
+                  {booking.date.map(d => d.toString()).join(' ')}
+                </div>
+                <div>
+                  {booking.assistants}
+                </div>
+                <div>
+                  {booking.status}
+                </div>
+              </Col>
+              <Col sm={8}>{this.renderAddedEquipments(booking.equipments)}</Col>
+            </Row>
           )
         })}
 

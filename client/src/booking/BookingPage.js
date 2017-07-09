@@ -36,10 +36,17 @@ class BookingPage extends React.Component {
     history: propTypes.object,
     location: propTypes.object
   }
-  onClickStep = (route) => {
-    return (e) => {
-      this.props.history.push(route)
+
+  constructor (props) {
+    super(props)
+    this.state = {
+      step: 0
     }
+    this.pageIndex = [
+      '/booking/job/',
+      '/booking/rooms/',
+      '/booking/confirm/'
+    ]
   }
 
   renderRoomTabs = () => {
@@ -80,16 +87,9 @@ class BookingPage extends React.Component {
   }
 
   renderSteps = () => {
-    const page = this.props.location.pathname
-    const pageIndex = {
-      '/booking/job/': 0,
-      '/booking/rooms/': 1,
-      '/booking/confirm/': 2
-    }
-
     return (
       <div className={styles.stepContainer}>
-        <Steps current={pageIndex[page]}>
+        <Steps current={this.state.step}>
           <Step
             title={<span onClick={this.onClickStep('/booking/job/')}>job</span>}
             description={<span onClick={this.onClickStep('/booking/job/')}>job information</span>}
@@ -112,6 +112,28 @@ class BookingPage extends React.Component {
   onClickSubmitBooking = () => {
     this.props.submitJob()
   }
+  onClickStep = (route) => {
+    return (e) => {
+      this.setState({ step: this.pageIndex.indexOf(route) })
+      this.props.history.push(route)
+    }
+  }
+  onClickNext = () => {
+    this.setState((prevState) => {
+      if (prevState.step + 1 <= 2) {
+        this.props.history.push(this.pageIndex[prevState.step + 1])
+        return { step: prevState.step + 1 }
+      }
+    })
+  }
+  onClickPrev = () => {
+    this.setState((prevState) => {
+      if (prevState.step - 1 >= 0) {
+        this.props.history.push(this.pageIndex[prevState.step - 1])
+        return { step: prevState.step - 1 }
+      }
+    })
+  }
   render () {
     return (
       <div className={styles.container}>
@@ -121,19 +143,22 @@ class BookingPage extends React.Component {
             <h4 className={styles.subTitle}>quotation: Q0000001</h4>
           </div>
           <div className={styles.stepNavigationContainer}>
-            <Button onClick={this.onClickSubmitBooking} type='primary' icon='select' className={styles.submitButton}>Submit</Button>
+
+            <Button.Group className={styles.stepNavigationButtons}>
+              <Button type='primary' onClick={this.onClickPrev}>
+                <Icon type='left' title='hello' />previous
+          </Button>
+              <Button onClick={this.onClickSubmitBooking} type='primary' icon='select' className={styles.submitButton}>Submit</Button>
+              <Button type='primary' onClick={this.onClickNext}>
+            next<Icon type='right' />
+              </Button>
+
+            </Button.Group>
+
           </div>
         </div>
         {this.renderSteps()}
         {this.renderPageStep()}
-        <Button.Group className={styles.stepNavigationButtons}>
-          <Button type='primary'>
-            <Icon type='left' title='hello' />previous
-              </Button>
-          <Button type='primary'>
-            next<Icon type='right' />
-          </Button>
-        </Button.Group>
       </div>
     )
   }

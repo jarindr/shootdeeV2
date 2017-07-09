@@ -1,4 +1,4 @@
-import bookingsReducer from './bookingsReducer'
+import bookingReducer from './bookingReducer'
 import equipmentsReducer from './equipmentsReducer'
 import bookingUnfinishedReducer from './bookingUnfinishedReducer'
 import jobInfoUnfinishedReducer from './jobInfoUnfinishedReducer'
@@ -7,7 +7,7 @@ import { combineReducers } from 'redux'
 import userReducer from './userReducer'
 export default combineReducers({
   user: userReducer,
-  bookings: bookingsReducer,
+  bookings: bookingReducer,
   bookingUnfinished: bookingUnfinishedReducer,
   equipments: equipmentsReducer,
   jobUnfinished: jobInfoUnfinishedReducer,

@@ -6,8 +6,8 @@ export const jobIdRecievedFromBackend = (jobId) => ({ type: 'SET_BOOKING_ID', jo
 
 export function submitJob () {
   return (dispatch, getState) => {
-    const { job, bookingUnfinished } = getState()
-    bc.publish('job:save', { job, bookingUnfinished })
+    const { jobUnfinished, bookingUnfinished } = getState()
+    bc.publish('job:save', { jobUnfinished, bookingUnfinished })
     dispatch({ type: 'SUBMIT_JOB' })
   }
 }

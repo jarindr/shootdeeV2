@@ -94,7 +94,7 @@ class LayoutApp extends Component {
           <Icon type='down' /><span style={{marginLeft: '5px'}}>Jarindr</span> <Icon type='user' />
         </Header>
         <Row className={styles.innerContentContainer}>
-          <Col span={20} offset={2}>
+          <Col span={22} offset={1}>
             {this.props.children}
           </Col>
         </Row>

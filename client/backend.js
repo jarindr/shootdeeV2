@@ -1,5 +1,6 @@
 import * as equipmentActions from './actions/equipmentActions'
 import * as jobActions from './actions/jobActions'
+import * as bookingActions from './actions/bookingAction'
 import * as jobUnfinishedActions from './actions/jobUnfinishedActions'
 import _ from 'lodash'
 import store from './store'
@@ -20,7 +21,7 @@ export function publish (topic, data) {
 }
 
 function getStarter (socket) {
-  const topics = ['equipments:get', 'job:get:id', 'job:get:all']
+  const topics = ['equipments:get', 'job:get:id', 'job:get:all', 'booking:get:all']
   for (const topic of topics) {
     socket.emit(topic)
   }
@@ -36,6 +37,9 @@ function handleBackendRecieved (socket) {
     },
     'job:get:all': (data) => {
       store.dispatch(jobActions.jobsRecievedFromBackend(data))
+    },
+    'booking:get:all': (data) => {
+      store.dispatch(bookingActions.bookingsRecievedFromBackend(data))
     }
   }
   // loop and create socket event handler

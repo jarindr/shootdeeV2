@@ -10,8 +10,6 @@ class ConfirmJob extends Component {
   }
   renderAddedEquipments = (equipments) => {
     const group = _.groupBy(equipments, 'type')
-    console.log(group)
-
     if (equipments) {
       return _.map(group, (value, key) => (
         <div key={key}>
@@ -22,8 +20,8 @@ class ConfirmJob extends Component {
               className={styles.equipmentName}
             >
               <Row>
-                <Col xs={10}>{eq.equipment}</Col>
-                <Col xs={1}>{eq.amount}</Col>
+                <Col xs={20}>{eq.equipment}</Col>
+                <Col xs={4}>{eq.amount}</Col>
               </Row>
             </div>
           ))}
@@ -37,7 +35,7 @@ class ConfirmJob extends Component {
         {_.values(this.props.bookingUnfinished.toJS()).map(booking => {
           return (
             <Row className={styles.bookingRow}>
-              <Col sm={16}>
+              <Col sm={14}>
                 <div>
                   {booking.room}
                 </div>
@@ -51,7 +49,7 @@ class ConfirmJob extends Component {
                   {booking.status}
                 </div>
               </Col>
-              <Col sm={8}>{this.renderAddedEquipments(booking.equipments)}</Col>
+              <Col sm={10}>{this.renderAddedEquipments(booking.equipments)}</Col>
             </Row>
           )
         })}

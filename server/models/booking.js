@@ -35,7 +35,7 @@ export function saveBookings ({ data, onSuccess, onFailed }) {
   })
 }
 
-export function getAllBookings ({ onSuccess, onFailed }) {
+export function getAll ({ onSuccess, onFailed }) {
   Booking.find({}, null, (err, result) => {
     if (err) {
       onFailed(err)

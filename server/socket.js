@@ -1,6 +1,6 @@
 import * as EquipmentsModel from './models/equipments'
 import * as jobModel from './models/job'
-
+import * as bookingModel from './models/booking'
 import _ from 'lodash'
 import log4js from 'log4js'
 
@@ -22,6 +22,13 @@ function handleTopicRecieved (socket, io) {
         }
       })
     },
+    'booking:get:all': () => {
+      bookingModel.getAll({
+        onSuccess: (data) => {
+          io.emit('booking:get:all', data)
+        }
+      })
+    },
     'job:get:all': () => {
       jobModel.getAll({
         onSuccess: (data) => {
@@ -29,7 +36,6 @@ function handleTopicRecieved (socket, io) {
         }
       })
     },
-
     'job:get:id': () => {
       jobModel.getJobId({
         onSuccess: (data) => {
@@ -37,12 +43,11 @@ function handleTopicRecieved (socket, io) {
         }
       })
     },
-    'job:save': ({ job, bookingUnfinished }) => {
+    'job:save': ({ jobUnfinished, bookingUnfinished }) => {
       const bookingsData = _.values(bookingUnfinished).map((booking, index) => {
-        return Object.assign({}, booking, { id: `${job.id}-${index}` })
+        return Object.assign({}, booking, { id: `${jobUnfinished.id}-${index}` })
       })
-      const jobData = Object.assign({}, job, { bookings: bookingsData.map(x => x.id) })
-
+      const jobData = Object.assign({}, jobUnfinished, { bookings: bookingsData.map(x => x.id) })
       jobModel.saveJob({
         job: jobData,
         bookingUnfinished: bookingsData,

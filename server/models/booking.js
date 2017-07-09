@@ -6,7 +6,7 @@ const bookingSchema = mongoose.Schema({
   status: {
     type: String,
     required: true,
-    enum: ['CONFIRMED', 'TENTATIVE', 'CANCLE']
+    enum: ['CONFIRM', 'TENTATIVE', 'CANCLE']
   },
   room: {
     type: String,
@@ -17,8 +17,8 @@ const bookingSchema = mongoose.Schema({
   date: { type: [Date] },
   startTime: { type: String },
   endTime: { type: String },
-  assistants: [{ type: String }],
-  equipments: [ {type: Object} ]
+  assistants: { type: [String] },
+  equipments: { type: Array }
 })
 
 export const Booking = mongoose.model('bookings', bookingSchema)

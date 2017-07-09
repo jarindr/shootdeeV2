@@ -23,14 +23,12 @@ class RoomTabs extends React.Component {
     }
   }
   formatDate (date) {
-    const moments = _.uniq(date.map(x => moment(x).format('DD/MM'))).join(' - ')
+    const moments = _.uniq(date.map(x => moment(x).format('ddd DD/MM'))).join(' - ')
     return moments
   }
 
   getPanes = () => {
     return _.values(this.props.bookingUnfinished.toJS()).map((booking, index) => {
-      console.log(booking.date)
-
       return { ...booking, ...{ title: `[${booking.room}] ${this.formatDate(booking.date)}`, key: booking.id } }
     })
   }

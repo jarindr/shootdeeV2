@@ -120,13 +120,14 @@ class NormalLoginForm extends Component {
     )
   }
   renderAssistantForm = () => {
+    const initialValue = this.props.bookingUnfinished.get('assistants')
     return (
       <FormItem
         label='assistant'
         labelCol={{sm: {span: 4}}}
         wrapperCol={{sm: {span: 10}}}
       >
-        {this.props.form.getFieldDecorator('assistants')(
+        {this.props.form.getFieldDecorator('assistants', {initialValue})(
           <Select
             mode='multiple'
             placeholder='Please select assistants'

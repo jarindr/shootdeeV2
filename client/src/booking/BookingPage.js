@@ -135,8 +135,6 @@ class BookingPage extends React.Component {
     })
   }
   render () {
-    console.log(this.state)
-    
     return (
       <div className={styles.container}>
         <div className={styles.topSectionContainer}>
@@ -146,13 +144,9 @@ class BookingPage extends React.Component {
           </div>
           <div className={styles.stepNavigationContainer}>
             <Button.Group className={styles.stepNavigationButtons}>
-              <Button type='primary' onClick={this.onClickPrev}>
-                <Icon type='left' title='hello' />previous
-          </Button>
+              <Button type='primary' onClick={this.onClickPrev}><Icon type='left' />previous</Button>
               <Button onClick={this.onClickSubmitBooking} type='primary' icon='select' className={styles.submitButton}>Submit</Button>
-              <Button type='primary' onClick={this.onClickNext}>
-            next<Icon type='right' />
-              </Button>
+              <Button type='primary' onClick={this.onClickNext}>next<Icon type='right' /></Button>
             </Button.Group>
 
           </div>

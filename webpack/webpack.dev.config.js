@@ -44,7 +44,8 @@ module.exports = {
     new HtmlWebpackPlugin({template: path.resolve(__dirname, './index.html')}),
     new webpack.ProvidePlugin({
       $: 'jquery',
-      jQuery: 'jquery'
+      jQuery: 'jquery',
+      _: 'lodash'
     }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.LoaderOptionsPlugin({ options: { postcss: [ autoprefixer ] } })

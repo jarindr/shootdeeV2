@@ -5,6 +5,7 @@ import _ from 'lodash'
 import log4js from 'log4js'
 
 const logger = log4js.getLogger()
+
 export function initSocketHandler (server) {
   const io = require('socket.io')(server)
   io.on('connection', function (socket) {

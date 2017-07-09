@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { Table } from 'antd'
+import { connect } from 'react-redux'
+import { compose } from 'recompose'
 
 class SchedulePage extends Component {
   render () {
@@ -7,10 +10,6 @@ class SchedulePage extends Component {
       <div />
     )
   }
-}
-
-SchedulePage.propTypes = {
-
 }
 
 export default SchedulePage

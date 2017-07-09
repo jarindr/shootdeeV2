@@ -50,7 +50,7 @@ export function getJobId ({ onSuccess, onFailed }) {
   })
 }
 
-export function getAllJob ({ onSuccess, onFailed }) {
+export function getAll ({ onSuccess, onFailed }) {
   JobModel.find({}, null, (err, result) => {
     if (err) {
       onFailed(err)

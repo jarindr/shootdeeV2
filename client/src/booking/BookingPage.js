@@ -1,5 +1,5 @@
 import { Button, Icon, Steps } from 'antd'
-import { Route, withRouter } from 'react-router-dom'
+import { Route, withRouter, Redirect } from 'react-router-dom'
 import ConfirmJob from './ConfirmJob'
 import JobInformationForms from './JobInformationForms'
 import React from 'react'
@@ -34,19 +34,19 @@ class BookingPage extends React.Component {
     submitJob: propTypes.func,
     addBookingRoom: propTypes.func,
     history: propTypes.object,
-    location: propTypes.object
+    location: propTypes.string
   }
 
   constructor (props) {
     super(props)
-    this.state = {
-      step: 0
-    }
     this.pageIndex = [
       '/booking/job/',
       '/booking/rooms/',
       '/booking/confirm/'
     ]
+    this.state = {
+      step: this.pageIndex.indexOf(this.props.location.pathname)
+    }
   }
 
   renderRoomTabs = () => {
@@ -80,8 +80,8 @@ class BookingPage extends React.Component {
     return (
       <div>
         <Route render={this.renderRoomTabs} path='/booking/rooms/' />
-        <Route render={this.renderJobInformation} path='/booking/job/' />
         <Route render={this.renderConfirm} path='/booking/confirm/' />
+        <Route render={this.renderJobInformation} path='/booking/job/' />
       </div>
     )
   }
@@ -135,6 +135,8 @@ class BookingPage extends React.Component {
     })
   }
   render () {
+    console.log(this.state)
+    
     return (
       <div className={styles.container}>
         <div className={styles.topSectionContainer}>
@@ -143,7 +145,6 @@ class BookingPage extends React.Component {
             <h4 className={styles.subTitle}>quotation: Q0000001</h4>
           </div>
           <div className={styles.stepNavigationContainer}>
-
             <Button.Group className={styles.stepNavigationButtons}>
               <Button type='primary' onClick={this.onClickPrev}>
                 <Icon type='left' title='hello' />previous
@@ -152,7 +153,6 @@ class BookingPage extends React.Component {
               <Button type='primary' onClick={this.onClickNext}>
             next<Icon type='right' />
               </Button>
-
             </Button.Group>
 
           </div>

@@ -7,7 +7,8 @@ import styles from './Layout.sass'
 class LayoutApp extends Component {
   static propTypes = {
     children: PropTypes.node,
-    location: PropTypes.object
+    location: PropTypes.object,
+    history: PropTypes.object
   }
 
   constructor (props) {
@@ -42,6 +43,15 @@ class LayoutApp extends Component {
     )
   }
 
+  onClickMenu = ({item, key, keypath}) => {
+    if (this.props.location.pathname.split('/')[1] !== key) {
+      if (key === 'booking') {
+        this.props.history.push(`/booking/job/`)
+      } else {
+        this.props.history.push(`/${key}/`)
+      }
+    }
+  }
   renderSideNav = () => {
     return (
       <Sider
@@ -58,6 +68,7 @@ class LayoutApp extends Component {
           mode='inline'
           selectedKeys={[this.getActiveMenu()]}
           theme='dark'
+          onClick={this.onClickMenu}
         >
           <Menu.Item key='schedules'>
             <Icon type='calendar' /><span className='nav-text'>Schedules</span>

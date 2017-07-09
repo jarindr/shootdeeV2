@@ -22,6 +22,14 @@ function handleTopicRecieved (socket, io) {
         }
       })
     },
+    'job:get:all': () => {
+      jobModel.getAll({
+        onSuccess: (data) => {
+          io.emit('job:get:all', data)
+        }
+      })
+    },
+
     'job:get:id': () => {
       jobModel.getJobId({
         onSuccess: (data) => {

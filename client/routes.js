@@ -1,7 +1,8 @@
 import BookingPage from './src/booking/BookingPage'
 import React from 'react'
-import { Route, Redirect, Switch, BrowserRouter as Router } from 'react-router-dom'
+import { Route, Switch, Redirect, BrowserRouter as Router } from 'react-router-dom'
 import LoginPage from './src/login/LoginPage'
+import SchedulePage from './src/schedules/SchedulePage'
 import Layout from './src/misc/Layout'
 export default(
   <Router>
@@ -10,7 +11,7 @@ export default(
       <Layout>
         <Route exact path='/' render={() => <Redirect to='/booking/rooms/' />} />
         <Route path='/booking/' component={BookingPage} />
-        <Route path='/schedules/' component={BookingPage} />
+        <Route path='/schedules/' component={SchedulePage} />
       </Layout>
     </Switch>
   </Router>

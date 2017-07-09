@@ -1,3 +1,3 @@
 export const selectjobInfoUnfinished = (state) => {
-  return state.job
+  return state.jobUnfinished
 }

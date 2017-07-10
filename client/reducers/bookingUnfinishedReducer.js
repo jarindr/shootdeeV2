@@ -4,7 +4,6 @@ import moment from 'moment'
 
 function getInitialRoomState (id, assignment) {
   const room = assignment === 'Onscreen room' ? 'O' : 'S'
-  console.log(room)
 
   return Immutable.Map({
     id,
@@ -43,7 +42,7 @@ const bookingsUnfinishedReducer = (state = initialState, action) => {
     }
     case 'SAVE_UNFINISHED_JOB': {
       if (action.job.name === 'assignment') {
-        return Immutable.Map({'0': getInitialRoomState('0', action.job.value)})
+        return Immutable.Map({ '0': getInitialRoomState('0', action.job.value) })
       }
       break
     }

@@ -30,7 +30,7 @@ class SchedulePage extends Component {
     } else {
       search.week = 1
     }
-    this.props.history.push({search: queryString.stringify(search)})
+    this.props.history.push({ search: queryString.stringify(search) })
   }
 
   onClickPrev = () => {
@@ -40,7 +40,7 @@ class SchedulePage extends Component {
     } else {
       search.week = -1
     }
-    this.props.history.push({search: queryString.stringify(search)})
+    this.props.history.push({ search: queryString.stringify(search) })
   }
 
   render () {
@@ -58,6 +58,8 @@ class SchedulePage extends Component {
     ]
     const start = moment().add(filterWeek, 'weeks').startOf('week')
     const end = moment().add(filterWeek, 'weeks').endOf('week')
+    const weeks = [1, 2, 3, 4, 5, 6, 0]
+
     const dataSource = this.props.jobs
       .reduce((prev, job, index) => {
         _.uniq(job.date).forEach((d, i) => {
@@ -68,7 +70,7 @@ class SchedulePage extends Component {
               customer: job.customer,
               key: `${index}-${i}`,
               assignment: job.assignment,
-              date: momentDate.format('DD/MM/YYYY'),
+              date: momentDate,
               time: moment(job.startTime).format('HH:mm'),
               room: job.room,
               status: job.status
@@ -77,11 +79,20 @@ class SchedulePage extends Component {
         })
         return prev
       }, [])
+
+    weeks.forEach(week => {
+      const date = dataSource.map(d => d.date.day())
+      if (!_.includes(date, week)) {
+        dataSource.push({date: moment().day(week).add(filterWeek, 'weeks')})
+      }
+    })
+    const data = _.sortBy(dataSource, d => d.date).map(x => ({...x, ...{date: x.date.format('DD/MM/YYYY')}}))
+
     return (
       <div>
         <Table
           columns={columns}
-          dataSource={dataSource}
+          dataSource={data}
           pagination={false}
         />
         <div className={styles.stepNavigationContainer}>

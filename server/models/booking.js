@@ -11,7 +11,7 @@ const bookingSchema = mongoose.Schema({
   room: {
     type: String,
     required: true,
-    enum: ['S', 'M', 'L', 'XL', 'G', 'ONSCREEN']
+    enum: ['S', 'M', 'L', 'XL', 'G', 'O']
   },
   photographer: { type: String },
   date: { type: [Date] },

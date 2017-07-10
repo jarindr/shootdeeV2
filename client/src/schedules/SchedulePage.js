@@ -46,52 +46,37 @@ class SchedulePage extends Component {
   render () {
     const week = queryString.parse(this.props.location.search).week
     const filterWeek = week ? Number(week) : 0
-
     const columns = [
       { title: 'date', dataIndex: 'date', key: 'date' },
       { title: 'time', dataIndex: 'time', key: 'time' },
-      { title: 'quotation', dataIndex: 'quotation', key: 'quotation' },
+      { title: 'room', dataIndex: 'room', key: 'room' },
       { title: 'customer', dataIndex: 'customer', key: 'customer' },
       { title: 'assignment', dataIndex: 'assignment', key: 'assignment' },
-      { title: 'room', dataIndex: 'room', key: 'room' },
-      { title: 'status', dataIndex: 'status', key: 'status' }
+      { title: 'status', dataIndex: 'status', key: 'status' },
+      { title: 'quotation', dataIndex: 'quotation', key: 'quotation' }
 
     ]
+    const start = moment().add(filterWeek, 'weeks').startOf('week')
+    const end = moment().add(filterWeek, 'weeks').endOf('week')
     const dataSource = this.props.jobs
-      .map((job, index) => {
-        return {
-          quotation: job.id,
-          customer: job.customer,
-          key: index,
-          assignment: job.assignment,
-          date: job.date.map(d => moment(d)),
-          time: moment(job.startTime).format('HH:mm'),
-          room: job.room,
-          status: job.status
-        }
-      })
-      .filter(booking => {
-        const start = moment().add(filterWeek, 'weeks').startOf('week')
-        const end = moment().add(filterWeek, 'weeks').endOf('week')
-        console.log(start)
-
-        if (booking.length === 1) {
-          return booking.date[0] >= start && booking.date[0] <= end
-        } else {
-          return (booking.date[0] >= start && booking.date[0] <= end) ||
-            (booking.date[1] >= start && booking.date[1] <= end)
-        }
-      })
-      .map(d => (
-        {
-          ...d,
-          ...{
-            date: _.uniq(d.date.map(x => {
-              return x.format('DD/MM/YY')
-            })).join(' - ')
+      .reduce((prev, job, index) => {
+        _.uniq(job.date).forEach((d, i) => {
+          const momentDate = moment(d)
+          if (momentDate >= start && momentDate <= end) {
+            prev.push({
+              quotation: job.id,
+              customer: job.customer,
+              key: `${index}-${i}`,
+              assignment: job.assignment,
+              date: momentDate.format('DD/MM/YYYY'),
+              time: moment(job.startTime).format('HH:mm'),
+              room: job.room,
+              status: job.status
+            })
           }
-        }))
-
+        })
+        return prev
+      }, [])
     return (
       <div>
         <Table

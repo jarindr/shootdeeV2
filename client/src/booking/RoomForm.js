@@ -12,7 +12,8 @@ class NormalLoginForm extends Component {
     form: PropTypes.object,
     saveUnfinshedBooking: PropTypes.func, // eslint-disable-line react/no-unused-prop-types
     bookingUnfinished: PropTypes.object, // eslint-disable-line react/no-unused-prop-types
-    id: PropTypes.string // eslint-disable-line react/no-unused-prop-types
+    id: PropTypes.string, // eslint-disable-line react/no-unused-prop-types
+    assignment: PropTypes.string
   }
 
   constructor (props) {
@@ -32,28 +33,35 @@ class NormalLoginForm extends Component {
   }
 
   createSelectRoomForm = () => {
-    const initialValue = this.props.bookingUnfinished.get('room')
-    return (
+    const initialValue = this.props.bookingUnfinished.room
+    const selectSet = {
+      'Studio rental': ['S', 'M', 'L', 'XL', 'G'],
+      'Equipment rental': ['NOTHING'],
+      'Studio rental + Location': ['S', 'M', 'L', 'XL', 'G', 'O'],
+      'Onscreen room': ['O'],
+      'Production': ['S', 'M', 'L', 'XL', 'G', 'O']
+    }
+    return this.props.assignment !== 'Equipment rental' ? (
       <FormItem
         label={'room'}
         labelCol={{sm: {span: 4}}}
         wrapperCol={{sm: {span: 10}}}
       >
-        {this.props.form.getFieldDecorator('room', {initialValue})(
+        {this.props.form.getFieldDecorator('room', { initialValue })(
           <Select>
-            <Option value='S'>Studio room S</Option>
-            <Option value='M'>Studio room M</Option>
-            <Option value='L'>Studio room L</Option>
-            <Option value='XL'>Studio room XL</Option>
-            <Option value='G'>Studio room G</Option>
+            {selectSet[this.props.assignment].map(r => {
+              return (
+                <Option value={r}>
+                  {r === 'O' ? 'Onscreen room' : `Studio room ${r}`}
+                </Option>)
+            })}
           </Select>
       )}
       </FormItem>
-
-    )
+    ) : null
   }
   createSelectStatusForm = () => {
-    const initialValue = this.props.bookingUnfinished.get('status')
+    const initialValue = this.props.bookingUnfinished.status
 
     return (
       <FormItem
@@ -73,7 +81,7 @@ class NormalLoginForm extends Component {
     )
   }
   renderDatePickerForm = () => {
-    const initialValue = this.props.bookingUnfinished.get('date')
+    const initialValue = this.props.bookingUnfinished.date
     return (
       <FormItem
         label={'date'}
@@ -91,7 +99,7 @@ class NormalLoginForm extends Component {
   }
 
   renderTimePickerForm = (name) => {
-    const initialValue = this.props.bookingUnfinished.get(name)
+    const initialValue = this.props.bookingUnfinished[name]
     const getFilteredRange = (hr) => {
       const result = []
       for (let i = 0; i < 60; i++) {
@@ -120,7 +128,7 @@ class NormalLoginForm extends Component {
     )
   }
   renderAssistantForm = () => {
-    const initialValue = this.props.bookingUnfinished.get('assistants')
+    const initialValue = this.props.bookingUnfinished.assistants
     return (
       <FormItem
         label='assistant'

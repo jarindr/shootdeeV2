@@ -2,10 +2,13 @@ import Immutable from 'immutable'
 import _ from 'lodash'
 import moment from 'moment'
 
-function getInitialRoomState (id) {
+function getInitialRoomState (id, assignment) {
+  const room = assignment === 'Onscreen room' ? 'O' : 'S'
+  console.log(room)
+
   return Immutable.Map({
     id,
-    room: 'S',
+    room: room,
     status: 'TENTATIVE',
     date: [moment(), moment()],
     assistance: [],
@@ -38,7 +41,12 @@ const bookingsUnfinishedReducer = (state = initialState, action) => {
     case 'ADD_BOOKING_ROOM': {
       return state.set(action.id, getInitialRoomState(action.id))
     }
-
+    case 'SAVE_UNFINISHED_JOB': {
+      if (action.job.name === 'assignment') {
+        return Immutable.Map({'0': getInitialRoomState('0', action.job.value)})
+      }
+      break
+    }
     case 'REMOVE_EQUIPMENT_UNFINISHED_BOOKING': {
       const { bookingId, equipmentId } = action
       return state.updateIn([bookingId, 'equipments'], arr => {

@@ -2,20 +2,11 @@ import { Col, Form, Input, Row, Select } from 'antd'
 import React, { Component } from 'react'
 
 import _ from 'lodash'
-import { compose } from 'redux'
-import { connect } from 'react-redux'
 import propTypes from 'prop-types'
-import { saveUnfinshedJob } from '../../actions/jobUnfinishedActions'
-import { selectjobInfoUnfinished } from '../../selectors/jobUnfinishedSelectors'
 import styles from './JobInformationForms.sass'
 
 const FormItem = Form.Item
 const Option = Select.Option
-
-const enhance = compose(
-  connect(createSelectors, { saveUnfinshedJob }),
-  Form.create({onFieldsChange})
-)
 
 class NormalLoginForm extends Component {
 
@@ -30,10 +21,10 @@ class NormalLoginForm extends Component {
     return (
       <FormItem
         label='client'
-        labelCol={{sm: {span: 4}}}
-        wrapperCol={{sm: {span: 10}}}
+        labelCol={{ sm: { span: 4 } }}
+        wrapperCol={{ sm: { span: 10 } }}
       >
-        {getFieldDecorator('customer', {initialValue: this.props.job.get('customer')})(
+        {getFieldDecorator('customer', { initialValue: this.props.job.get('customer') })(
           <Input
             size='large'
             placeholder='client'
@@ -50,8 +41,8 @@ class NormalLoginForm extends Component {
     return (
       <FormItem
         label={'assignment'}
-        labelCol={{sm: {span: 4}}}
-        wrapperCol={{sm: {span: 10}}}
+        labelCol={{ sm: { span: 4 } }}
+        wrapperCol={{ sm: { span: 10 } }}
       >
         {getFieldDecorator('assignment', { initialValue: this.props.job.get('assignment') })(
           <Select>
@@ -61,7 +52,7 @@ class NormalLoginForm extends Component {
             <Option value='Onscreen room'>Onscreen room</Option>
             <Option value='Production'>Production</Option>
           </Select>
-      )}
+        )}
       </FormItem>
 
     )
@@ -71,17 +62,17 @@ class NormalLoginForm extends Component {
     return (
       <FormItem
         label={'job description'}
-        labelCol={{sm: {span: 4}}}
-        wrapperCol={{sm: {span: 10}}}
+        labelCol={{ sm: { span: 4 } }}
+        wrapperCol={{ sm: { span: 10 } }}
       >
-        {getFieldDecorator('description', {initialValue: this.props.job.get('description')})(
+        {getFieldDecorator('description', { initialValue: this.props.job.get('description') })(
           <Input
             size='large'
             placeholder={name}
             type='textarea'
-            autosize={{minRows: 5, maxRows: 10}}
+            autosize={{ minRows: 5, maxRows: 10 }}
           />
-            )}
+        )}
       </FormItem>
     )
   }
@@ -93,8 +84,8 @@ class NormalLoginForm extends Component {
           <Col>
             <Form onSubmit={this.handleSubmit}>
               <FormItem
-                labelCol={{sm: {span: 4}}}
-                wrapperCol={{sm: {span: 10}}}
+                labelCol={{ sm: { span: 4 } }}
+                wrapperCol={{ sm: { span: 10 } }}
                 label='quotation'
               >
                 <span>{this.props.job.get('id')}</span>
@@ -116,10 +107,4 @@ function onFieldsChange (props, field) {
   props.saveUnfinshedJob(updateField)
 }
 
-function createSelectors () {
-  return (state) => (
-    { job: selectjobInfoUnfinished(state) }
-  )
-}
-
-export default enhance(NormalLoginForm)
+export default Form.create({ onFieldsChange })(NormalLoginForm)

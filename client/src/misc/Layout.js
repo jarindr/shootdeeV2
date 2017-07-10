@@ -55,7 +55,6 @@ class LayoutApp extends Component {
   renderSideNav = () => {
     return (
       <Sider
-        width={200}
         trigger={this.renderTriggerSideNav()}
         collapsible
         collapsed={this.state.collapsed}
@@ -70,17 +69,20 @@ class LayoutApp extends Component {
           theme='dark'
           onClick={this.onClickMenu}
         >
+          <Menu.Item key='calendar'>
+            <Icon type='calendar' />{!this.state.collapsed && <span className='nav-text'>Calendar</span>}
+          </Menu.Item>
           <Menu.Item key='schedules'>
-            <Icon type='calendar' /><span className='nav-text'>Schedules</span>
+            <Icon type='calendar' />{!this.state.collapsed && <span className='nav-text'>Schedules</span>}
           </Menu.Item>
           <Menu.Item key='booking'>
-            <Icon type='plus-circle-o' /><span className='nav-text'>Booking</span>
+            <Icon type='plus-circle-o' />{!this.state.collapsed && <span className='nav-text'>Booking</span>}
           </Menu.Item>
           <Menu.Item key='equipments'>
-            <Icon type='tool' /><span className='nav-text'>Equipments</span>
+            <Icon type='tool' />{!this.state.collapsed && <span className='nav-text'>Equipments</span>}
           </Menu.Item>
           <Menu.Item key='customer'>
-            <Icon type='user' /><span className='nav-text'>Customer</span>
+            <Icon type='user' />{!this.state.collapsed && <span className='nav-text'>Customer</span>}
           </Menu.Item>
         </Menu>
       </Sider>

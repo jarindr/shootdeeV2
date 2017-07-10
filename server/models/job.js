@@ -57,7 +57,7 @@ export function getAll ({ onSuccess, onFailed }) {
       logger.error(err)
     } else {
       onSuccess(result)
-      logger.info('get all bookings completed.')
+      logger.info('get all jobs completed.')
     }
   })
 }

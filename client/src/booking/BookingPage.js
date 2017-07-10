@@ -1,5 +1,5 @@
 import { Button, Icon, Steps } from 'antd'
-import { Route, withRouter, Redirect } from 'react-router-dom'
+import { Route, withRouter } from 'react-router-dom'
 import ConfirmJob from './ConfirmJob'
 import JobInformationForms from './JobInformationForms'
 import React from 'react'
@@ -7,34 +7,35 @@ import RoomTabs from './RoomTabs'
 import { connect } from 'react-redux'
 import propTypes from 'prop-types'
 import { saveUnfinshedBooking, addBookingRoom } from '../../actions/bookingUnfinishedActions'
-import {
-  selectGetBookingUnfinishedById,
-  selectbookingUnfinished
-} from '../../selectors/bookingUnfinishedSelectors'
+import { selectbookingUnfinished } from '../../selectors/bookingUnfinishedSelectors'
+import { selectjobInfoUnfinished } from '../../selectors/jobUnfinishedSelectors'
 import styles from './BookingPage.sass'
-import { submitJob } from '../../actions/jobUnfinishedActions'
+import { submitJob, saveUnfinshedJob } from '../../actions/jobUnfinishedActions'
 import { compose } from 'recompose'
 const Step = Steps.Step
 
 const enhance = compose(
   withRouter,
   connect(state => ({
-    selectBookingUnfinishedById: selectGetBookingUnfinishedById(state),
-    bookingUnfinished: selectbookingUnfinished(state)
+    bookingUnfinished: selectbookingUnfinished(state),
+    job: selectjobInfoUnfinished(state)
   }),
-    { saveUnfinshedBooking, submitJob, addBookingRoom })
+  { saveUnfinshedJob, saveUnfinshedBooking, submitJob, addBookingRoom }),
 )
 
 class BookingPage extends React.Component {
 
   static propTypes = {
     saveUnfinshedBooking: propTypes.func,
-    selectBookingUnfinishedById: propTypes.func,
     bookingUnfinished: propTypes.object,
-    submitJob: propTypes.func,
     addBookingRoom: propTypes.func,
+
     history: propTypes.object,
-    location: propTypes.string
+    location: propTypes.string,
+
+    job: propTypes.object,
+    submitJob: propTypes.func,
+    saveUnfinshedJob: propTypes.func
   }
 
   constructor (props) {
@@ -54,8 +55,8 @@ class BookingPage extends React.Component {
       <RoomTabs
         bookingUnfinished={this.props.bookingUnfinished}
         saveUnfinshedBooking={this.props.saveUnfinshedBooking}
-        selectBookingUnfinishedById={this.props.selectBookingUnfinishedById}
         addBookingRoom={this.props.addBookingRoom}
+        assignment={this.props.job.get('assignment')}
       />
     )
   }
@@ -64,6 +65,9 @@ class BookingPage extends React.Component {
     return (
       <JobInformationForms
         saveUnfinshedBooking={this.props.saveUnfinshedBooking}
+        job={this.props.job}
+        saveUnfinshedJob={this.props.saveUnfinshedJob}
+
       />
     )
   }

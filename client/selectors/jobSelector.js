@@ -5,3 +5,7 @@ export const selectjobs = (state) => {
     return Object.assign({}, booking, byKeyJob[id])
   })
 }
+
+export const selectjobById = (state) => (id) => {
+  return state.jobs.filter(x => x.id === id)[0]
+}

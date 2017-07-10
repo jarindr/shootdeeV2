@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Menu, Icon, Layout, Row, Col } from 'antd'
 const { Sider, Header } = Layout
-import { withRouter } from 'react-router'
+import { withRouter, Route } from 'react-router'
 import styles from './Layout.sass'
+import ViewJob from '../components/ViewJob'
 class LayoutApp extends Component {
   static propTypes = {
     children: PropTypes.node,
@@ -95,6 +96,7 @@ class LayoutApp extends Component {
         <Header className={styles.topNav}>
           <Icon type='down' /><span style={{marginLeft: '5px'}}>Jarindr</span> <Icon type='user' />
         </Header>
+        <Route path='/' component={ViewJob} />
         <Row className={styles.innerContentContainer}>
           <Col span={22} offset={1}>
             {this.props.children}

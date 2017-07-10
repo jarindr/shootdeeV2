@@ -83,7 +83,10 @@ class SchedulePage extends Component {
         break
     }
   }
-
+  onRowClick = (record, index, a) => {
+    const search = queryString.stringify({showBooking: record.quotation})
+    this.props.history.push({ search })
+  }
   render () {
     const week = queryString.parse(this.props.location.search).week
     const filterWeek = week ? Number(week) : 0
@@ -131,6 +134,7 @@ class SchedulePage extends Component {
           pagination={false}
           rowClassName={this.getRowClassName}
           className={styles.table}
+          onRowClick={this.onRowClick}
           title={() => (
             <div style={{fontSize: 24}}>
               <b>

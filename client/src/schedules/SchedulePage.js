@@ -16,7 +16,14 @@ const enhance = compose(
   ))
 )
 const columns = [
-  { title: 'date', dataIndex: 'date', key: 'date' },
+  {
+    dataIndex: 'date',
+    key: 'date',
+    render: (text, record, index) => {
+      return (<div className={styles.date}>{text}</div>)
+    },
+    title: (<div className={styles.date}>{'date'}</div>)
+  },
   { title: 'time', dataIndex: 'time', key: 'time' },
   { title: 'room', dataIndex: 'room', key: 'room' },
   { title: 'customer', dataIndex: 'customer', key: 'customer' },
@@ -109,12 +116,20 @@ class SchedulePage extends Component {
     const data = _.sortBy(dataSource, d => d.date).map(x => ({ ...x, ...{ date: x.date.format('DD/MM/YYYY') } }))
 
     return (
-      <div>
+      <div className={styles.container}>
         <Table
           columns={columns}
           dataSource={data}
           pagination={false}
           rowClassName={this.getRowClassName}
+          className={styles.table}
+          title={() => (
+            <div style={{fontSize: 24}}>
+              <b>
+                {`${start.format('dddd, DD/MM/YYYY')} - ${end.format('dddd, DD/MM/YYYY')}`}
+              </b>
+            </div>
+          )}
         />
         <div className={styles.stepNavigationContainer}>
           <Button.Group className={styles.stepNavigationButtons}>

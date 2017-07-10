@@ -4,11 +4,13 @@ import { Table, Button, Icon } from 'antd'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
 import { selectjobs } from '../../selectors/jobSelector'
-import moment from 'moment'
+import Moment from 'moment'
+import { extendMoment } from 'moment-range'
 import _ from 'lodash'
 import styles from './SchedulePage.sass'
 import { withRouter } from 'react-router-dom'
 import queryString from 'query-string'
+const moment = extendMoment(Moment)
 const enhance = compose(
   withRouter,
   connect((state) => (
@@ -89,7 +91,10 @@ class SchedulePage extends Component {
     const end = moment().add(filterWeek, 'weeks').endOf('isoweek')
     const dataSource = this.props.jobs
       .reduce((prev, job, index) => {
-        _.uniq(job.date).forEach((d, i) => {
+        const datesArr = _.uniq(job.date)
+        const s = datesArr[0]
+        const n = datesArr[1]
+        Array.from(moment.range(s, n).by('day')).forEach((d, i) => {
           const momentDate = moment(d)
           if (momentDate > start && momentDate <= end) {
             prev.push({
@@ -108,16 +113,18 @@ class SchedulePage extends Component {
       }, [])
 
     weeks.forEach(week => {
-      const date = dataSource.map(d => d.date.day())
+      const date = dataSource.map(d => d.date.isoWeekday())
       if (!_.includes(date, week)) {
-        dataSource.push({ date: moment().add(filterWeek, 'weeks').isoWeekday(week) })
+        dataSource.push({ date: moment().add(filterWeek, 'weeks').isoWeekday(week), key: `dummy ${week}` })
       }
     })
     const data = _.sortBy(dataSource, d => d.date).map(x => ({ ...x, ...{ date: x.date.format('DD/MM/YYYY') } }))
+    console.log(this.props.jobs)
 
     return (
       <div className={styles.container}>
         <Table
+          loading={_.isEmpty(this.props.jobs)}
           columns={columns}
           dataSource={data}
           pagination={false}

@@ -44,7 +44,7 @@ const bookingsUnfinishedReducer = (state = initialState, action) => {
       if (action.job.name === 'assignment') {
         return Immutable.Map({ '0': getInitialRoomState('0', action.job.value) })
       }
-      break
+      return state
     }
     case 'REMOVE_EQUIPMENT_UNFINISHED_BOOKING': {
       const { bookingId, equipmentId } = action

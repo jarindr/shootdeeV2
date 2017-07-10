@@ -15,6 +15,18 @@ const enhance = compose(
     { jobs: selectjobs(state) }
   ))
 )
+const columns = [
+  { title: 'date', dataIndex: 'date', key: 'date' },
+  { title: 'time', dataIndex: 'time', key: 'time' },
+  { title: 'room', dataIndex: 'room', key: 'room' },
+  { title: 'customer', dataIndex: 'customer', key: 'customer' },
+  { title: 'assignment', dataIndex: 'assignment', key: 'assignment' },
+  { title: 'status', dataIndex: 'status', key: 'status' },
+  { title: 'quotation', dataIndex: 'quotation', key: 'quotation' }
+
+]
+const weeks = [1, 2, 3, 4, 5, 6, 7]
+
 class SchedulePage extends Component {
 
   static propTypes = {
@@ -42,29 +54,37 @@ class SchedulePage extends Component {
     }
     this.props.history.push({ search: queryString.stringify(search) })
   }
+  getRowClassName = (record, index) => {
+    switch (moment(record.date, 'DD-MM-YYYY').day()) {
+      case 1:
+        return styles.mon
+      case 2:
+        return styles.tue
+      case 3:
+        return styles.wed
+      case 4:
+        return styles.thu
+      case 5:
+        return styles.fri
+      case 6:
+        return styles.sat
+      case 0:
+        return styles.sun
+      default:
+        break
+    }
+  }
 
   render () {
     const week = queryString.parse(this.props.location.search).week
     const filterWeek = week ? Number(week) : 0
-    const columns = [
-      { title: 'date', dataIndex: 'date', key: 'date' },
-      { title: 'time', dataIndex: 'time', key: 'time' },
-      { title: 'room', dataIndex: 'room', key: 'room' },
-      { title: 'customer', dataIndex: 'customer', key: 'customer' },
-      { title: 'assignment', dataIndex: 'assignment', key: 'assignment' },
-      { title: 'status', dataIndex: 'status', key: 'status' },
-      { title: 'quotation', dataIndex: 'quotation', key: 'quotation' }
-
-    ]
-    const start = moment().add(filterWeek, 'weeks').startOf('week')
-    const end = moment().add(filterWeek, 'weeks').endOf('week')
-    const weeks = [1, 2, 3, 4, 5, 6, 0]
-
+    const start = moment().add(filterWeek, 'weeks').startOf('isoweek')
+    const end = moment().add(filterWeek, 'weeks').endOf('isoweek')
     const dataSource = this.props.jobs
       .reduce((prev, job, index) => {
         _.uniq(job.date).forEach((d, i) => {
           const momentDate = moment(d)
-          if (momentDate >= start && momentDate <= end) {
+          if (momentDate > start && momentDate <= end) {
             prev.push({
               quotation: job.id,
               customer: job.customer,
@@ -83,10 +103,10 @@ class SchedulePage extends Component {
     weeks.forEach(week => {
       const date = dataSource.map(d => d.date.day())
       if (!_.includes(date, week)) {
-        dataSource.push({date: moment().day(week).add(filterWeek, 'weeks')})
+        dataSource.push({ date: moment().add(filterWeek, 'weeks').isoWeekday(week) })
       }
     })
-    const data = _.sortBy(dataSource, d => d.date).map(x => ({...x, ...{date: x.date.format('DD/MM/YYYY')}}))
+    const data = _.sortBy(dataSource, d => d.date).map(x => ({ ...x, ...{ date: x.date.format('DD/MM/YYYY') } }))
 
     return (
       <div>
@@ -94,6 +114,7 @@ class SchedulePage extends Component {
           columns={columns}
           dataSource={data}
           pagination={false}
+          rowClassName={this.getRowClassName}
         />
         <div className={styles.stepNavigationContainer}>
           <Button.Group className={styles.stepNavigationButtons}>

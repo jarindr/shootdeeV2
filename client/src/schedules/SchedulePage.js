@@ -96,6 +96,8 @@ class SchedulePage extends Component {
         const n = datesArr[1]
         Array.from(moment.range(s, n).by('day')).forEach((d, i) => {
           const momentDate = moment(d)
+          console.log(momentDate.toString())
+
           if (momentDate > start && momentDate <= end) {
             prev.push({
               quotation: job.id,
@@ -119,7 +121,6 @@ class SchedulePage extends Component {
       }
     })
     const data = _.sortBy(dataSource, d => d.date).map(x => ({ ...x, ...{ date: x.date.format('DD/MM/YYYY') } }))
-    console.log(this.props.jobs)
 
     return (
       <div className={styles.container}>

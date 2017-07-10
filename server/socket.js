@@ -19,28 +19,28 @@ function handleTopicRecieved (socket, io) {
     'equipments:get': () => {
       EquipmentsModel.getAllEquipments({
         onSuccess: (data) => {
-          io.emit('equipments:get', { data })
+          socket.emit('equipments:get', { data })
         }
       })
     },
     'booking:get:all': () => {
       bookingModel.getAll({
         onSuccess: (data) => {
-          io.emit('booking:get:all', data)
+          socket.emit('booking:get:all', data)
         }
       })
     },
     'job:get:all': () => {
       jobModel.getAll({
         onSuccess: (data) => {
-          io.emit('job:get:all', data)
+          socket.emit('job:get:all', data)
         }
       })
     },
     'job:get:id': () => {
       jobModel.getJobId({
         onSuccess: (data) => {
-          io.emit('job:get:id', data)
+          socket.emit('job:get:id', data)
         }
       })
     },
@@ -53,7 +53,22 @@ function handleTopicRecieved (socket, io) {
         job: jobData,
         bookingUnfinished: bookingsData,
         onSuccess: (response) => {
-          io.emit('job:save', response)
+          socket.emit('job:save', response)
+          bookingModel.getAll({
+            onSuccess: (data) => {
+              io.emit('booking:get:all', data)
+            }
+          })
+          jobModel.getAll({
+            onSuccess: (data) => {
+              io.emit('job:get:all', data)
+            }
+          })
+          jobModel.getJobId({
+            onSuccess: (data) => {
+              socket.emit('job:get:id', data)
+            }
+          })
         },
         onFailed: (response) => {
         }

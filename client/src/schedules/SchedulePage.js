@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Table, Button, Icon } from 'antd'
 import { connect } from 'react-redux'
 import { compose } from 'recompose'
-import { selectjobs } from '../../selectors/jobSelector'
+import { selectBookingsWithJobDetail } from '../../selectors/bookingsSelectors'
 import Moment from 'moment'
 import { extendMoment } from 'moment-range'
 import _ from 'lodash'
@@ -14,7 +14,7 @@ const moment = extendMoment(Moment)
 const enhance = compose(
   withRouter,
   connect((state) => (
-    { jobs: selectjobs(state) }
+    { bookings: selectBookingsWithJobDetail(state) }
   ))
 )
 const columns = [
@@ -31,7 +31,14 @@ const columns = [
   { title: 'customer', dataIndex: 'customer', key: 'customer' },
   { title: 'assignment', dataIndex: 'assignment', key: 'assignment' },
   { title: 'status', dataIndex: 'status', key: 'status' },
-  { title: 'quotation', dataIndex: 'quotation', key: 'quotation' }
+  {
+    dataIndex: 'quotation',
+    key: 'quotation',
+    render: (text, record, index) => {
+      return (<div>{text}</div>)
+    },
+    title: 'quotation'
+  }
 
 ]
 const weeks = [1, 2, 3, 4, 5, 6, 7]
@@ -39,7 +46,7 @@ const weeks = [1, 2, 3, 4, 5, 6, 7]
 class SchedulePage extends Component {
 
   static propTypes = {
-    jobs: PropTypes.array,
+    bookings: PropTypes.array,
     history: PropTypes.object,
     location: PropTypes.object
   }
@@ -84,7 +91,7 @@ class SchedulePage extends Component {
     }
   }
   onRowClick = (record, index, a) => {
-    const search = queryString.stringify({showBooking: record.quotation})
+    const search = queryString.stringify({showBooking: record.bookingId})
     this.props.history.push({ search })
   }
   render () {
@@ -92,25 +99,25 @@ class SchedulePage extends Component {
     const filterWeek = week ? Number(week) : 0
     const start = moment().add(filterWeek, 'weeks').startOf('isoweek')
     const end = moment().add(filterWeek, 'weeks').endOf('isoweek')
-    const dataSource = this.props.jobs
-      .reduce((prev, job, index) => {
-        const datesArr = _.uniq(job.date)
+
+    const dataSource = this.props.bookings
+      .reduce((prev, booking, index) => {
+        const datesArr = _.uniq(booking.date)
         const s = datesArr[0]
         const n = datesArr[1]
         Array.from(moment.range(s, n).by('day')).forEach((d, i) => {
           const momentDate = moment(d)
-          console.log(momentDate.toString())
-
           if (momentDate > start && momentDate <= end) {
             prev.push({
-              quotation: job.id,
-              customer: job.customer,
-              key: `${index}-${i}`,
-              assignment: job.assignment,
+              quotation: booking.id.split('-')[0],
+              bookingId: booking.id,
+              customer: booking.customer,
+              key: `${booking.id}-${i}`,
+              assignment: booking.assignment,
               date: momentDate,
-              time: moment(job.startTime).format('HH:mm'),
-              room: job.room,
-              status: job.status
+              time: moment(booking.startTime).format('HH:mm'),
+              room: booking.room,
+              status: booking.status
             })
           }
         })
@@ -128,7 +135,7 @@ class SchedulePage extends Component {
     return (
       <div className={styles.container}>
         <Table
-          loading={_.isEmpty(this.props.jobs)}
+          loading={_.isEmpty(this.props.bookings)}
           columns={columns}
           dataSource={data}
           pagination={false}

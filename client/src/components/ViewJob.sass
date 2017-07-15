@@ -4,7 +4,34 @@
   bottom: 0
   right: 0
   z-index: 1000
-  width: 700px
+  width: 40vw
   background-color: lighten(lightgrey, 10%)
   box-shadow: -7px 0px 17px -6px rgba(0,0,0,0.53);
-  padding: 20px
+  .innerContainer
+    position: relative
+    height: 100%
+    padding: 20px
+    .closeModal
+      cursor: pointer
+      position: absolute
+      left: -30px
+      top: 0
+      width: 30px
+      height: 40px
+      font-size: 20px
+      background-color: lighten(lightgrey, 10%)
+      box-shadow: 0 0 0 0 rgba(0,0,0,0.53);
+      i
+        position: absolute
+        top: 50%
+        transform: translateY(-50%)
+        left: 0
+        right: 0
+        margin: 0 auto
+  .row
+    padding: 5px 0
+    font-size: 14px
+    .label
+      margin-right: 10px
+      font-size: 16px
+      font-weight: 600

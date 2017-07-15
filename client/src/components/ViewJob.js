@@ -77,10 +77,10 @@ class ViewJobPane extends Component {
             <span className={styles.label}>Room: </span>{job.room}
           </div>
           <div className={styles.row}>
-            <span className={styles.label}>Start time: </span>{job.startTime}
+            <span className={styles.label}>Start time: </span>{moment(job.startTime).format('HH:mm')}
           </div>
           <div className={styles.row}>
-            <span className={styles.label}>End time: </span>{job.endTime}
+            <span className={styles.label}>End time: </span>{moment(job.endTime).format('HH:mm')}
           </div>
           <div className={styles.row}>
             <span className={styles.label}>Assistants: </span>{job.assistants}

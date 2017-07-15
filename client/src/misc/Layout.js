@@ -62,7 +62,10 @@ class LayoutApp extends Component {
         style={{overflow: 'hidden'}}
       >
         <div className={styles.logo}>
-          <img src={require('../login/images/logo_C2.png')} />
+          {this.state.collapsed
+          ? <img src={require('../login/images/small.png')} />
+          : <img src={require('../login/images/logo_C2.png')} />
+          }
         </div>
         <Menu
           mode='inline'

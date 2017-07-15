@@ -4,7 +4,6 @@ import moment from 'moment'
 
 function getInitialRoomState (id, assignment) {
   const room = assignment === 'Onscreen room' ? 'O' : 'S'
-
   return Immutable.Map({
     id,
     room: room,

@@ -1,18 +1,13 @@
-import { Button, Icon, Steps } from 'antd'
-import { Route, withRouter } from 'react-router-dom'
-import ConfirmJob from './ConfirmJob'
-import JobInformationForms from './JobInformationForms'
+import { withRouter } from 'react-router-dom'
 import React from 'react'
-import RoomTabs from './RoomTabs'
 import { connect } from 'react-redux'
 import propTypes from 'prop-types'
 import { saveUnfinshedBooking, addBookingRoom } from '../../actions/bookingUnfinishedActions'
 import { selectbookingUnfinished } from '../../selectors/bookingUnfinishedSelectors'
 import { selectjobInfoUnfinished } from '../../selectors/jobUnfinishedSelectors'
-import styles from './BookingPage.sass'
 import { submitJob, saveUnfinshedJob } from '../../actions/jobUnfinishedActions'
 import { compose } from 'recompose'
-const Step = Steps.Step
+import BookingForm from './BookingForm'
 
 const enhance = compose(
   withRouter,
@@ -20,7 +15,7 @@ const enhance = compose(
     bookingUnfinished: selectbookingUnfinished(state),
     job: selectjobInfoUnfinished(state)
   }),
-  { saveUnfinshedJob, saveUnfinshedBooking, submitJob, addBookingRoom }),
+    { saveUnfinshedJob, saveUnfinshedBooking, submitJob, addBookingRoom }),
 )
 
 class BookingPage extends React.Component {
@@ -31,133 +26,28 @@ class BookingPage extends React.Component {
     addBookingRoom: propTypes.func,
 
     history: propTypes.object,
-    location: propTypes.string,
+    location: propTypes.object,
 
     job: propTypes.object,
     submitJob: propTypes.func,
     saveUnfinshedJob: propTypes.func
   }
 
-  constructor (props) {
-    super(props)
-    this.pageIndex = [
-      '/booking/job/',
-      '/booking/rooms/',
-      '/booking/confirm/'
-    ]
-    this.state = {
-      step: this.pageIndex.indexOf(this.props.location.pathname)
-    }
-  }
-
-  renderRoomTabs = () => {
-    return (
-      <RoomTabs
-        bookingUnfinished={this.props.bookingUnfinished}
-        saveUnfinshedBooking={this.props.saveUnfinshedBooking}
-        addBookingRoom={this.props.addBookingRoom}
-        assignment={this.props.job.get('assignment')}
-      />
-    )
-  }
-
-  renderJobInformation = () => {
-    return (
-      <JobInformationForms
-        saveUnfinshedBooking={this.props.saveUnfinshedBooking}
-        job={this.props.job}
-        saveUnfinshedJob={this.props.saveUnfinshedJob}
-
-      />
-    )
-  }
-
-  renderConfirm = () => {
-    return (
-      <ConfirmJob
-        bookingUnfinished={this.props.bookingUnfinished}
-      />
-    )
-  }
-
-  renderPageStep = () => {
-    return (
-      <div>
-        <Route render={this.renderRoomTabs} path='/booking/rooms/' />
-        <Route render={this.renderConfirm} path='/booking/confirm/' />
-        <Route render={this.renderJobInformation} path='/booking/job/' />
-      </div>
-    )
-  }
-
-  renderSteps = () => {
-    return (
-      <div className={styles.stepContainer}>
-        <Steps current={this.state.step}>
-          <Step
-            title={<span onClick={this.onClickStep('/booking/job/')}>job</span>}
-            description={<span onClick={this.onClickStep('/booking/job/')}>job information</span>}
-            icon={<Icon type='solution' onClick={this.onClickStep('/booking/job/')} />}
-          />
-          <Step
-            title={<span onClick={this.onClickStep('/booking/rooms/')}>rooms</span>}
-            description={<span onClick={this.onClickStep('/booking/rooms/')}>rooms, dates</span>}
-            icon={<Icon type='switcher' onClick={this.onClickStep('/booking/rooms/')} />}
-          />
-          <Step
-            title={<span onClick={this.onClickStep('/booking/confirm/')}>confirm</span>}
-            description={<span onClick={this.onClickStep('/booking/confirm/')}>confirm job</span>}
-            icon={<Icon type='check' onClick={this.onClickStep('/booking/confirm/')} />}
-          />
-        </Steps>
-      </div>
-    )
-  }
-  onClickSubmitBooking = () => {
-    this.props.submitJob()
-  }
-  onClickStep = (route) => {
-    return (e) => {
-      this.setState({ step: this.pageIndex.indexOf(route) })
-      this.props.history.push(route)
-    }
-  }
-  onClickNext = () => {
-    this.setState((prevState) => {
-      if (prevState.step + 1 <= 2) {
-        this.props.history.push(this.pageIndex[prevState.step + 1])
-        return { step: prevState.step + 1 }
-      }
-    })
-  }
-  onClickPrev = () => {
-    this.setState((prevState) => {
-      if (prevState.step - 1 >= 0) {
-        this.props.history.push(this.pageIndex[prevState.step - 1])
-        return { step: prevState.step - 1 }
-      }
-    })
-  }
   render () {
     return (
-      <div className={styles.container}>
-        <div className={styles.topSectionContainer}>
-          <div className={styles.titleContainer}>
-            <h1>New booking</h1>
-            <h4 className={styles.subTitle}>quotation: Q0000001</h4>
-          </div>
-          <div className={styles.stepNavigationContainer}>
-            <Button.Group className={styles.stepNavigationButtons}>
-              <Button type='primary' onClick={this.onClickPrev}><Icon type='left' />previous</Button>
-              <Button onClick={this.onClickSubmitBooking} type='primary' icon='select' className={styles.submitButton}>Submit</Button>
-              <Button type='primary' onClick={this.onClickNext}>next<Icon type='right' /></Button>
-            </Button.Group>
-
-          </div>
-        </div>
-        {this.renderSteps()}
-        {this.renderPageStep()}
-      </div>
+      <BookingForm
+        saveUnfinshedBooking={this.props.saveUnfinshedBooking}
+        bookingUnfinished={this.props.bookingUnfinished}
+        addBookingRoom={this.props.addBookingRoom}
+        history={this.props.history}
+        location={this.props.location}
+        job={this.props.job}
+        submitJob={this.props.submitJob}
+        saveUnfinshedJob={this.props.saveUnfinshedJob}
+        stepUrls={['/booking/job/',
+          '/booking/rooms/',
+          '/booking/confirm/']}
+      />
     )
   }
 }

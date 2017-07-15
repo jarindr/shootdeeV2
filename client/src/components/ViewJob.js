@@ -29,10 +29,10 @@ class ViewJobPane extends Component {
   renderModal = () => {
     return (
       <div className={styles.container}>
+        <div className={styles.closeModal} onClick={this.onClickCloseModal}>
+          <Icon type='close' />
+        </div>
         <div className={styles.innerContainer}>
-          <div className={styles.closeModal} onClick={this.onClickCloseModal}>
-            <Icon type='close' />
-          </div>
           {this.renderButtons()}
           {this.renderRows()}
         </div>
@@ -71,7 +71,7 @@ class ViewJobPane extends Component {
         </div>
         <div>
           <div className={styles.row}>
-            <span className={styles.label}>Date: </span>{_.uniq(job.date).map(x => moment(x).format('DD/MM/YYYY')).join(' - ')}
+            <span className={styles.label}>Date: </span>{_.uniq(job.date).map(x => moment(x).format('dddd, DD/MM/YYYY')).join(' - ')}
           </div>
           <div className={styles.row}>
             <span className={styles.label}>Room: </span>{job.room}

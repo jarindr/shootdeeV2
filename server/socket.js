@@ -16,6 +16,29 @@ export function initSocketHandler (server) {
 
 function handleTopicRecieved (socket, io) {
   const topics = {
+    'starter:get': () => {
+      bookingModel.getAll({
+        onSuccess: (data) => {
+          socket.emit('booking:get:all', data)
+          EquipmentsModel.getAllEquipments({
+            onSuccess: (data) => {
+              socket.emit('equipments:get', { data })
+              jobModel.getJobId({
+                onSuccess: (data) => {
+                  socket.emit('job:get:id', data)
+                  jobModel.getAll({
+                    onSuccess: (data) => {
+                      socket.emit('job:get:all', data)
+                      socket.emit('starter:get', true)
+                    }
+                  })
+                }
+              })
+            }
+          })
+        }
+      })
+    },
     'equipments:get': () => {
       EquipmentsModel.getAllEquipments({
         onSuccess: (data) => {

@@ -1,6 +1,9 @@
 export const selectBookingsByJobId = (state) => (id) => {
   return state.bookings.toArray().filter(x => x.id.split('-')[0] === id)
 }
+export const selectBookingById = (state) => (id) => {
+  return state.bookings.get(id)
+}
 
 export const selectBookingWithJobDetail = (state) => (id) => {
   const jobId = id.split('-')[0]

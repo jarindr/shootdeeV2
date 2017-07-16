@@ -12,7 +12,6 @@ export default(
       <Switch>
         <Route path='/authentication/' component={LoginPage} />
         <Layout>
-
           <Route exact path='/' render={() => <Redirect to='/booking/rooms/' />} />
           <Route path='/booking/' component={BookingPage} />
           <Route path='/edit/' component={EditBookingPage} />

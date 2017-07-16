@@ -19,13 +19,6 @@ class EquipmentSection extends Component {
     preset: propTypes.string
   }
 
-  constructor (props) {
-    super(props)
-    this.state = {
-      activeCheckbox: 'NO_LIGHTING'
-    }
-  }
-
   onAddEquipment = (data) => {
     const { equipment, type } = JSON.parse(data.equipment)
     this.props.saveUnfinshedBooking({

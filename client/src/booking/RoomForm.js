@@ -20,22 +20,6 @@ class RoomForm extends Component {
     equipments: PropTypes.array
   }
 
-  constructor (props) {
-    super(props)
-    this.state = {
-      loginState: false
-    }
-  }
-
-  handleSubmit = (e) => {
-    e.preventDefault()
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        this.setState({ loginState: true })
-      }
-    })
-  }
-
   createSelectRoomForm = () => {
     const initialValue = this.props.bookingUnfinished.room
     const selectSet = {
@@ -154,8 +138,6 @@ class RoomForm extends Component {
     )
   }
   render () {
-    console.log(this.props.bookingUnfinished)
-
     return (
       <div>
         <Row className={styles.container}>

@@ -5,11 +5,13 @@ import jobInfoUnfinishedReducer from './jobInfoUnfinishedReducer'
 import jobReducer from './jobReducer'
 import { combineReducers } from 'redux'
 import userReducer from './userReducer'
+import appReducers from './appReducers'
 export default combineReducers({
   user: userReducer,
   bookings: bookingReducer,
   bookingUnfinished: bookingUnfinishedReducer,
   equipments: equipmentsReducer,
   jobUnfinished: jobInfoUnfinishedReducer,
-  jobs: jobReducer
+  jobs: jobReducer,
+  app: appReducers
 })

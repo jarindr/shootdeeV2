@@ -5,11 +5,22 @@ const { Sider, Header } = Layout
 import { withRouter, Route } from 'react-router'
 import styles from './Layout.sass'
 import ViewJob from '../components/ViewJob'
+import {compose} from 'recompose'
+import {connect} from 'react-redux'
+const enhance = compose(
+  withRouter,
+  connect((state) => {
+    return {
+      starterRecieved: state.app.starterRecieved
+    }
+  })
+)
 class LayoutApp extends Component {
   static propTypes = {
     children: PropTypes.node,
     location: PropTypes.object,
-    history: PropTypes.object
+    history: PropTypes.object,
+    starterRecieved: PropTypes.bool
   }
 
   constructor (props) {
@@ -111,12 +122,17 @@ class LayoutApp extends Component {
 
   render () {
     return (
-      <Layout style={{height: '100%'}}>
-        {this.renderSideNav()}
-        {this.renderContent()}
-      </Layout>
+      this.props.starterRecieved
+      ? (
+        <Layout style={{height: '100%'}}>
+          {this.renderSideNav()}
+          {this.renderContent()}
+        </Layout>
+      )
+      : <div>loading starter...</div>
+
     )
   }
 }
 
-export default withRouter(LayoutApp)
+export default enhance(LayoutApp)

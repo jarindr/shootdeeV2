@@ -26,6 +26,11 @@ class ViewJobPane extends Component {
     this.props.history.push({search: queryString.stringify(removedBookingSearch)})
   }
 
+  onClickEdit = () => {
+    const { showBooking } = queryString.parse(this.props.location.search)
+    this.props.history.push({pathname: '/edit/job/', search: queryString.stringify({bookingId: showBooking})})
+  }
+
   renderModal = () => {
     return (
       <div className={styles.container}>
@@ -43,7 +48,7 @@ class ViewJobPane extends Component {
     return (
       <div>
         <Button.Group style={{float: 'right'}}>
-          <Button type='primary'>Edit</Button>
+          <Button type='primary' onClick={this.onClickEdit}>Edit</Button>
           <Button type='danger'>Close job</Button>
         </Button.Group>
       </div>

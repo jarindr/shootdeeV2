@@ -26,6 +26,7 @@ class BookingForm extends React.Component {
 
   constructor (props) {
     super(props)
+
     this.state = {
       step: this.props.stepUrls.indexOf(this.props.location.pathname)
     }
@@ -37,7 +38,7 @@ class BookingForm extends React.Component {
         bookingUnfinished={this.props.bookingUnfinished}
         saveUnfinshedBooking={this.props.saveUnfinshedBooking}
         addBookingRoom={this.props.addBookingRoom}
-        assignment={this.props.job.get('assignment')}
+        assignment={this.props.job.assignment}
       />
     )
   }
@@ -64,9 +65,9 @@ class BookingForm extends React.Component {
   renderPageStep = () => {
     return (
       <div>
-        <Route render={this.renderRoomTabs} path='/booking/rooms/' />
-        <Route render={this.renderConfirm} path='/booking/confirm/' />
-        <Route render={this.renderJobInformation} path='/booking/job/' />
+        <Route render={this.renderJobInformation} path={this.props.stepUrls[0]} />
+        <Route render={this.renderRoomTabs} path={this.props.stepUrls[1]} />
+        <Route render={this.renderConfirm} path={this.props.stepUrls[2]} />
       </div>
     )
   }
@@ -76,19 +77,19 @@ class BookingForm extends React.Component {
       <div className={styles.stepContainer}>
         <Steps current={this.state.step}>
           <Step
-            title={<span onClick={this.onClickStep('/booking/job/')}>job</span>}
-            description={<span onClick={this.onClickStep('/booking/job/')}>job information</span>}
-            icon={<Icon type='solution' onClick={this.onClickStep('/booking/job/')} />}
+            title={<span onClick={this.onClickStep(this.props.stepUrls[0])}>job</span>}
+            description={<span onClick={this.onClickStep(this.props.stepUrls[0])}>job information</span>}
+            icon={<Icon type='solution' onClick={this.onClickStep(this.props.stepUrls[0])} />}
           />
           <Step
-            title={<span onClick={this.onClickStep('/booking/rooms/')}>rooms</span>}
-            description={<span onClick={this.onClickStep('/booking/rooms/')}>rooms, dates</span>}
-            icon={<Icon type='switcher' onClick={this.onClickStep('/booking/rooms/')} />}
+            title={<span onClick={this.onClickStep(this.props.stepUrls[1])}>rooms</span>}
+            description={<span onClick={this.onClickStep(this.props.stepUrls[1])}>rooms, dates</span>}
+            icon={<Icon type='switcher' onClick={this.onClickStep(this.props.stepUrls[1])} />}
           />
           <Step
-            title={<span onClick={this.onClickStep('/booking/confirm/')}>confirm</span>}
-            description={<span onClick={this.onClickStep('/booking/confirm/')}>confirm job</span>}
-            icon={<Icon type='check' onClick={this.onClickStep('/booking/confirm/')} />}
+            title={<span onClick={this.onClickStep(this.props.stepUrls[2])}>confirm</span>}
+            description={<span onClick={this.onClickStep(this.props.stepUrls[2])}>confirm job</span>}
+            icon={<Icon type='check' onClick={this.onClickStep(this.props.stepUrls[2])} />}
           />
         </Steps>
       </div>

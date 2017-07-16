@@ -4,7 +4,7 @@ import moment from 'moment'
 
 function getInitialRoomState (id, assignment) {
   const room = assignment === 'Onscreen room' ? 'O' : 'S'
-  return Immutable.Map({
+  return {
     id,
     room: room,
     status: 'TENTATIVE',
@@ -14,7 +14,7 @@ function getInitialRoomState (id, assignment) {
     preset: 'no',
     startTime: moment('09:00', 'HH:mm'),
     endTime: moment('09:00', 'HH:mm')
-  })
+  }
 }
 const initialState = Immutable.Map({
   '0': getInitialRoomState('0')
@@ -24,17 +24,18 @@ const bookingsUnfinishedReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'SAVE_UNFINISHED_BOOKING': {
       const { id, name, value } = action.bookingUnfinished
+      const equipmentsArr = state.get(id).equipments
       if (name === 'equipments') {
-        if (!state.getIn([id, name])) {
-          return state.setIn([id, name], [value])
+        const index = _.findIndex(equipmentsArr, x => x.equipment === value.equipment)
+        if (index === -1) {
+          return state.set(id, {...state.get(id), ...{ equipments: [...equipmentsArr, value] }})
         } else {
-          return state.updateIn([id, name], arr => {
-            const index = _.findIndex(arr, x => x.equipment === value.equipment)
-            return index === -1 ? [...arr, value] : arr.map((x, i) => i === index ? value : x)
-          })
+          equipmentsArr.splice(index, 0, value)
         }
+        return state.set(id, {...state.get(id), ...{ equipments: [...equipmentsArr, value] }})
       }
-      return state.setIn([id, name], value)
+
+      return state.set(id, {...state.get(id), ...{[name]: value}})
     }
     case 'ADD_BOOKING_ROOM': {
       return state.set(action.id, getInitialRoomState(action.id))
@@ -47,14 +48,10 @@ const bookingsUnfinishedReducer = (state = initialState, action) => {
     }
     case 'REMOVE_EQUIPMENT_UNFINISHED_BOOKING': {
       const { bookingId, equipmentId } = action
-      return state.updateIn([bookingId, 'equipments'], arr => {
-        const index = _.findIndex(arr, x => x.equipment === equipmentId)
-        if (arr.length === 1 && index === 0) {
-          return []
-        }
-        _.pullAt(arr, [index])
-        return [...arr]
-      })
+      const equipmentsArr = state.get(bookingId).equipments
+      const index = _.findIndex(equipmentsArr, x => x.equipment === equipmentId)
+      _.pullAt(equipmentsArr, [index])
+      return state.set(bookingId, {...state.get(bookingId), ...{ equipments: equipmentsArr }})
     }
 
     case 'ADD_DEFAULT_EQUIPMENTS': {
@@ -73,9 +70,7 @@ const bookingsUnfinishedReducer = (state = initialState, action) => {
           { equipment: 'Transceiver RSF2 Broncolor', amount: 1, type: 'broncolor' }
         ]
       }
-      return state.updateIn([bookingId, 'equipments'], arr => {
-        return presetsMap[preset]
-      })
+      return state.set(bookingId, {...state.get(bookingId), ...{ equipments: presetsMap[preset] }})
     }
 
     default: {

@@ -12,6 +12,7 @@ import {
 } from '../../actions/bookingUnfinishedActions'
 import propTypes from 'prop-types'
 import styles from './EquipmentsSection.sass'
+import {Tag} from 'antd'
 import _ from 'lodash'
 class EquipmentSection extends Component {
 
@@ -45,30 +46,24 @@ class EquipmentSection extends Component {
   }
   renderAddedEquipments = () => {
     const equipments = this.props.selectUnfinishedEquipmentsById(this.props.id)
-    const group = _.groupBy(equipments, 'type')
     if (equipments) {
-      return _.map(group, (value, key) => (
-        <div key={key}>
-          <div className={styles.equipmentGroup}>[ {key} ]</div>
-          {_.map(value, eq => (
-            <div
-              key={eq.equipment}
-              className={styles.equipmentName}
-            >
-              <Row>
-                <Col xs={10}>{eq.equipment}</Col>
-                <Col xs={1}>{eq.amount}</Col>
-                <Col xs={1}>
-                  <span
-                    onClick={this.onClickRemoveEquipment(eq.equipment, this.props.id)}
-                    className={styles.removeEquipmentIcon}
-                  >
-                    <Icon type='close-circle-o' />
-                  </span>
-                </Col>
-              </Row>
-            </div>
-          ))}
+      return _.map(equipments, (value, key) => (
+        <div
+          key={value.equipment}
+          className={styles.equipmentName}
+        >
+          <Row>
+            <Col xs={10}><Tag color='pink'>{value.type}</Tag>{value.equipment}</Col>
+            <Col xs={1}>{value.amount}</Col>
+            <Col xs={1}>
+              <span
+                onClick={this.onClickRemoveEquipment(value.equipment, this.props.id)}
+                className={styles.removeEquipmentIcon}
+              >
+                <Icon type='close-circle-o' />
+              </span>
+            </Col>
+          </Row>
         </div>
       ))
     }

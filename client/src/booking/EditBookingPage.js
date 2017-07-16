@@ -7,7 +7,8 @@ import { selectjobById } from '../../selectors/jobSelector'
 import { submitJob, saveUnfinshedJob } from '../../actions/jobUnfinishedActions'
 import { compose } from 'recompose'
 import BookingForm from './BookingForm'
-
+import queryString from 'query-string'
+import Immutable from 'immutable'
 const enhance = compose(
   withRouter,
   connect(state => ({
@@ -24,14 +25,14 @@ class EditBookingPage extends React.Component {
     history: propTypes.object,
     location: propTypes.object,
 
-    selectjobById: propTypes.object,
-    selectBookingsByJobId: propTypes.object,
+    selectjobById: propTypes.func,
+    selectBookingsByJobId: propTypes.func,
     submitJob: propTypes.func
   }
 
   constructor (props) {
     super(props)
-    this.stepsUrl = [
+    this.stepUrls = [
       '/edit/job/',
       '/edit/rooms/',
       '/edit/confirm/'
@@ -47,17 +48,22 @@ class EditBookingPage extends React.Component {
   }
 
   render () {
+    const { bookingId } = queryString.parse(this.props.location.search)
+    const jobId = bookingId.split('-')[0]
+    const bookings = this.props.selectBookingsByJobId(jobId)
+    const job = Immutable.Map(this.props.selectjobById(jobId))
+
     return (
       <BookingForm
         saveUnfinshedBooking={this.saveUnfinshedBooking}
         saveUnfinshedJob={this.saveUnfinshedJob}
-        bookingUnfinished={this.state.booking}
-        job={this.state.job}
+        bookingUnfinished={bookings}
+        job={job}
         addBookingRoom={this.addBookingRoom}
         submitJob={this.props.submitJob}
         history={this.props.history}
         location={this.props.location}
-        stepsUrl={this.stepsUrl}
+        stepUrls={this.stepUrls}
       />
     )
   }

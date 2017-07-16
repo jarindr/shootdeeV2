@@ -28,7 +28,7 @@ class RoomTabs extends React.Component {
   }
 
   getPanes = () => {
-    return _.values(this.props.bookingUnfinished.toJS()).map((booking, index) => {
+    return this.props.bookingUnfinished.map((booking, index) => {
       return { ...booking, ...{ title: `[${booking.room}] ${this.formatDate(booking.date)}`, key: booking.id } }
     })
   }

@@ -24,7 +24,7 @@ class NormalLoginForm extends Component {
         labelCol={{ sm: { span: 4 } }}
         wrapperCol={{ sm: { span: 10 } }}
       >
-        {getFieldDecorator('customer', { initialValue: this.props.job.get('customer') })(
+        {getFieldDecorator('customer', { initialValue: this.props.job.customer })(
           <Input
             size='large'
             placeholder='client'
@@ -44,7 +44,7 @@ class NormalLoginForm extends Component {
         labelCol={{ sm: { span: 4 } }}
         wrapperCol={{ sm: { span: 10 } }}
       >
-        {getFieldDecorator('assignment', { initialValue: this.props.job.get('assignment') })(
+        {getFieldDecorator('assignment', { initialValue: this.props.job.assignment })(
           <Select>
             <Option value='Studio rental'>Studio rental</Option>
             <Option value='Studio rental + Location'>Studio rental + Location</Option>
@@ -65,7 +65,7 @@ class NormalLoginForm extends Component {
         labelCol={{ sm: { span: 4 } }}
         wrapperCol={{ sm: { span: 10 } }}
       >
-        {getFieldDecorator('description', { initialValue: this.props.job.get('description') })(
+        {getFieldDecorator('description', { initialValue: this.props.job.description })(
           <Input
             size='large'
             placeholder={name}
@@ -88,7 +88,7 @@ class NormalLoginForm extends Component {
                 wrapperCol={{ sm: { span: 10 } }}
                 label='quotation'
               >
-                <span>{this.props.job.get('id')}</span>
+                <span>{this.props.job.id}</span>
               </FormItem>
               {this.createInputForm()}
               {this.createSelectForm()}

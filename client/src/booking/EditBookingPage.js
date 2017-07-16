@@ -52,7 +52,7 @@ class EditBookingPage extends React.Component {
     const bookings = this.props.selectBookingsByJobId(jobId)
     const job = this.props.selectjobById(jobId)
 
-    return job ? (
+    return (job && !_.isEmpty(bookings)) ? (
       <BookingForm
         saveUnfinshedBooking={this.saveUnfinshedBooking}
         saveUnfinshedJob={this.saveUnfinshedJob}

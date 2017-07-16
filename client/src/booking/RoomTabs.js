@@ -19,17 +19,16 @@ class RoomTabs extends React.Component {
     super(props)
     this.newTabIndex = 1
     this.state = {
-      activeKey: 'Q17100000-0'
+      activeKey: this.props.bookingUnfinished[0].id
     }
   }
+
   formatDate (date) {
     const moments = _.uniq(date.map(x => moment(x).format('ddd DD/MM'))).join(' - ')
     return moments
   }
 
   getPanes = () => {
-    console.log(this.props.bookingUnfinished)
-
     return this.props.bookingUnfinished.map((booking, index) => {
       return { ...booking, ...{ title: `[${booking.room}] ${this.formatDate(booking.date)}`, key: booking.id } }
     })

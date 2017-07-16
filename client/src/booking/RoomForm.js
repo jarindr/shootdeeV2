@@ -151,6 +151,8 @@ class RoomForm extends Component {
     )
   }
   render () {
+    console.log(this.props.bookingUnfinished)
+
     return (
       <div>
         <Row className={styles.container}>
@@ -168,7 +170,11 @@ class RoomForm extends Component {
         </Row>
         <h2 className={styles.equipmentHeader}>Equipments</h2>
         <Row>
-          {/* <EquipmentsSection id={this.props.id} /> */}
+          <EquipmentsSection
+            id={this.props.id}
+            saveUnfinshedBooking={this.props.saveUnfinshedBooking}
+            bookingUnfinishedEquipments={this.props.bookingUnfinished.equipments}
+          />
         </Row>
       </div>
     )

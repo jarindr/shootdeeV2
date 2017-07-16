@@ -1,10 +1,9 @@
-import { Col, Row, Icon, Select, Form } from 'antd'
+import { Col, Row, Icon, Select, Form, Tag } from 'antd'
 import React, { Component } from 'react'
 
 import EquipmentsSearch from '../components/EquipmentsSearch'
 import { connect } from 'react-redux'
 import { getAllEquipments } from '../../selectors/equipmentsSelectors'
-import { selectGetBookingUnfinishedEquipmentsById } from '../../selectors/bookingUnfinishedSelectors'
 import {
   saveUnfinshedBooking,
   removeUnfinshedEquipment,
@@ -12,7 +11,6 @@ import {
 } from '../../actions/bookingUnfinishedActions'
 import propTypes from 'prop-types'
 import styles from './EquipmentsSection.sass'
-import {Tag} from 'antd'
 import _ from 'lodash'
 class EquipmentSection extends Component {
 
@@ -22,8 +20,8 @@ class EquipmentSection extends Component {
     equipments: propTypes.number,
     saveUnfinshedBooking: propTypes.func,
     removeUnfinshedEquipment: propTypes.func,
-    selectUnfinishedEquipmentsById: propTypes.func,
-    addDefaultEquipment: propTypes.func
+    addDefaultEquipment: propTypes.func,
+    bookingUnfinishedEquipments: propTypes.array
   }
 
   constructor (props) {
@@ -45,9 +43,8 @@ class EquipmentSection extends Component {
     this.props.removeUnfinshedEquipment(equipmentId, bookingId)
   }
   renderAddedEquipments = () => {
-    const equipments = this.props.selectUnfinishedEquipmentsById(this.props.id)
-    if (equipments) {
-      return _.map(equipments, (value, key) => (
+    if (this.props.bookingUnfinishedEquipments) {
+      return _.map(this.props.bookingUnfinishedEquipments, (value, key) => (
         <div
           key={value.equipment}
           className={styles.equipmentName}
@@ -132,8 +129,7 @@ EquipmentSection.propTypes = {
 export default connect(
   (state) => {
     return {
-      equipments: getAllEquipments(state),
-      selectUnfinishedEquipmentsById: selectGetBookingUnfinishedEquipmentsById(state)
+      equipments: getAllEquipments(state)
     }
   },
   { saveUnfinshedBooking, removeUnfinshedEquipment, addDefaultEquipment }

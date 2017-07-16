@@ -6,7 +6,7 @@ import { Row, Col } from 'antd'
 class ConfirmJob extends Component {
 
   static propTypes = {
-    bookingUnfinished: PropTypes.object
+    bookingUnfinished: PropTypes.array
   }
   renderAddedEquipments = (equipments) => {
     const group = _.groupBy(equipments, 'type')
@@ -30,13 +30,11 @@ class ConfirmJob extends Component {
     }
   }
   render () {
-    console.log(this.props.bookingUnfinished)
-
     return (
       <div>
         {_.values(this.props.bookingUnfinished).map(booking => {
           return (
-            <Row className={styles.bookingRow}>
+            <Row className={styles.bookingRow} key={booking.id}>
               <Col sm={14}>
                 <div>
                   {booking.room}

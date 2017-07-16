@@ -6,7 +6,6 @@ import React from 'react'
 import RoomTabs from './RoomTabs'
 import propTypes from 'prop-types'
 import styles from './BookingPage.sass'
-import queryString from 'query-string'
 const Step = Steps.Step
 
 class BookingForm extends React.Component {

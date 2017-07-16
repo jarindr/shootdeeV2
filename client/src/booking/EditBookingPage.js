@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import propTypes from 'prop-types'
 import { selectBookingsByJobId } from '../../selectors/bookingsSelectors'
 import { selectjobById } from '../../selectors/jobSelector'
+import { selecun } from '../../selectors/jobUnfinishedSelectors'
 import { submitJob, saveUnfinshedJob } from '../../actions/jobUnfinishedActions'
 import { compose } from 'recompose'
 import BookingForm from './BookingForm'
@@ -57,9 +58,10 @@ class EditBookingPage extends React.Component {
   render () {
     const { bookingId } = queryString.parse(this.props.location.search)
     const jobId = bookingId.split('-')[0]
-    const bookings = this.props.selectBookingsByJobId(jobId)
-    const job = this.props.selectjobById(jobId)
-    console.log(this.state)
+    const bookings = this.props.selectBookingsByJobId(jobId).map(x => {
+      return {...x, ...this.state.bookings[x.id]}
+    })
+    const job = {...this.props.selectjobById(jobId), ...this.state.job}
     return (job && !_.isEmpty(bookings)) ? (
       <BookingForm
         saveUnfinshedBooking={this.saveUnfinshedBooking}

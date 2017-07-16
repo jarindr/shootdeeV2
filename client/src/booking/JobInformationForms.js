@@ -8,7 +8,7 @@ import styles from './JobInformationForms.sass'
 const FormItem = Form.Item
 const Option = Select.Option
 
-class NormalLoginForm extends Component {
+class JobInformationForm extends Component {
 
   static propTypes = {
     form: propTypes.object,
@@ -107,4 +107,4 @@ function onFieldsChange (props, field) {
   props.saveUnfinshedJob(updateField)
 }
 
-export default Form.create({ onFieldsChange })(NormalLoginForm)
+export default Form.create({ onFieldsChange })(JobInformationForm)

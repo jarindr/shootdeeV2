@@ -8,7 +8,6 @@ import { submitJob, saveUnfinshedJob } from '../../actions/jobUnfinishedActions'
 import { compose } from 'recompose'
 import BookingForm from './BookingForm'
 import queryString from 'query-string'
-import Immutable from 'immutable'
 const enhance = compose(
   withRouter,
   connect(state => ({
@@ -33,7 +32,7 @@ class EditBookingPage extends React.Component {
   constructor (props) {
     super(props)
     this.stepUrls = [
-      '/edit/job/',
+      `/edit/job/`,
       '/edit/rooms/',
       '/edit/confirm/'
     ]
@@ -51,9 +50,9 @@ class EditBookingPage extends React.Component {
     const { bookingId } = queryString.parse(this.props.location.search)
     const jobId = bookingId.split('-')[0]
     const bookings = this.props.selectBookingsByJobId(jobId)
-    const job = Immutable.Map(this.props.selectjobById(jobId))
+    const job = this.props.selectjobById(jobId)
 
-    return (
+    return job ? (
       <BookingForm
         saveUnfinshedBooking={this.saveUnfinshedBooking}
         saveUnfinshedJob={this.saveUnfinshedJob}
@@ -65,7 +64,7 @@ class EditBookingPage extends React.Component {
         location={this.props.location}
         stepUrls={this.stepUrls}
       />
-    )
+    ) : null
   }
 }
 

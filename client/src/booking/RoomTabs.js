@@ -11,7 +11,7 @@ class RoomTabs extends React.Component {
   static propTypes = {
     saveUnfinshedBooking: PropTypes.func,
     addBookingRoom: PropTypes.func,
-    bookingUnfinished: PropTypes.object,
+    bookingUnfinished: PropTypes.array,
     assignment: PropTypes.string
   }
 
@@ -19,7 +19,7 @@ class RoomTabs extends React.Component {
     super(props)
     this.newTabIndex = 1
     this.state = {
-      activeKey: '0'
+      activeKey: 'Q17100000-0'
     }
   }
   formatDate (date) {
@@ -28,6 +28,8 @@ class RoomTabs extends React.Component {
   }
 
   getPanes = () => {
+    console.log(this.props.bookingUnfinished)
+
     return this.props.bookingUnfinished.map((booking, index) => {
       return { ...booking, ...{ title: `[${booking.room}] ${this.formatDate(booking.date)}`, key: booking.id } }
     })
@@ -37,7 +39,6 @@ class RoomTabs extends React.Component {
     return this.getPanes().map(pane => {
       return (
         <TabPane
-          actve
           tab={pane.title}
           key={pane.key}
           closable={pane.closable || true}

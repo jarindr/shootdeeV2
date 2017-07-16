@@ -22,7 +22,7 @@ class BookingPage extends React.Component {
 
   static propTypes = {
     saveUnfinshedBooking: propTypes.func,
-    bookingUnfinished: propTypes.object,
+    bookingUnfinished: propTypes.array,
     addBookingRoom: propTypes.func,
 
     history: propTypes.object,

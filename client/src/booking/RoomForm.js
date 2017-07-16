@@ -6,7 +6,8 @@ const FormItem = Form.Item
 const Option = Select.Option
 import EquipmentsSection from './EquipmentsSection'
 import _ from 'lodash'
-class NormalLoginForm extends Component {
+import moment from 'moment'
+class RoomForm extends Component {
 
   static propTypes = {
     form: PropTypes.object,
@@ -51,7 +52,7 @@ class NormalLoginForm extends Component {
           <Select>
             {selectSet[this.props.assignment].map(r => {
               return (
-                <Option value={r}>
+                <Option value={r} key={r}>
                   {r === 'O' ? 'Onscreen room' : `Studio room ${r}`}
                 </Option>)
             })}
@@ -81,7 +82,7 @@ class NormalLoginForm extends Component {
     )
   }
   renderDatePickerForm = () => {
-    const initialValue = this.props.bookingUnfinished.date
+    const initialValue = this.props.bookingUnfinished.date.map(x => moment(x))
     return (
       <FormItem
         label={'date'}
@@ -99,7 +100,7 @@ class NormalLoginForm extends Component {
   }
 
   renderTimePickerForm = (name) => {
-    const initialValue = this.props.bookingUnfinished[name]
+    const initialValue = moment(this.props.bookingUnfinished[name])
     const getFilteredRange = (hr) => {
       const result = []
       for (let i = 0; i < 60; i++) {
@@ -167,7 +168,7 @@ class NormalLoginForm extends Component {
         </Row>
         <h2 className={styles.equipmentHeader}>Equipments</h2>
         <Row>
-          <EquipmentsSection id={this.props.id} />
+          {/* <EquipmentsSection id={this.props.id} /> */}
         </Row>
       </div>
     )
@@ -180,4 +181,4 @@ function onFieldsChange (props, field) {
   props.saveUnfinshedBooking(entity)
 }
 
-export default Form.create({onFieldsChange})(NormalLoginForm)
+export default Form.create({onFieldsChange})(RoomForm)

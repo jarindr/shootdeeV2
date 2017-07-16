@@ -30,9 +30,11 @@ class ConfirmJob extends Component {
     }
   }
   render () {
+    console.log(this.props.bookingUnfinished)
+
     return (
       <div>
-        {_.values(this.props.bookingUnfinished.toJS()).map(booking => {
+        {_.values(this.props.bookingUnfinished).map(booking => {
           return (
             <Row className={styles.bookingRow}>
               <Col sm={14}>

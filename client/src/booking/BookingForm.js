@@ -6,6 +6,7 @@ import React from 'react'
 import RoomTabs from './RoomTabs'
 import propTypes from 'prop-types'
 import styles from './BookingPage.sass'
+import queryString from 'query-string'
 const Step = Steps.Step
 
 class BookingForm extends React.Component {
@@ -103,7 +104,7 @@ class BookingForm extends React.Component {
   onClickStep = (route) => {
     return (e) => {
       this.setState({ step: this.props.stepUrls.indexOf(route) })
-      this.props.history.push(route)
+      this.props.history.push({ pathname: route, search: this.props.location.search })
     }
   }
   onClickNext = () => {

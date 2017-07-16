@@ -14,7 +14,7 @@ const enhance = compose(
     selectBookingsByJobId: selectBookingsByJobId(state),
     selectjobById: selectjobById(state)
   }),
-  { saveUnfinshedJob, submitJob }),
+    { saveUnfinshedJob, submitJob }),
 )
 
 class EditBookingPage extends React.Component {
@@ -36,14 +36,22 @@ class EditBookingPage extends React.Component {
       '/edit/rooms/',
       '/edit/confirm/'
     ]
+    this.state = {
+      job: {},
+      bookings: []
+    }
   }
 
   saveUnfinshedJob = (entity) => {
-    this.setState({job: {...this.props.job, ...entity}})
+    this.setState(oldState => {
+      return { job: { ...oldState.job, ...{ [entity.name]: entity.value } } }
+    })
   }
 
   saveUnfinshedBooking = (entity) => {
-    this.setState({...this.props.bookings, ...entity})
+    this.setState(oldState => {
+      return { bookings: { [entity.id]: { ...oldState.bookings[entity.id], ...{[entity.name]: entity.value} } } }
+    })
   }
 
   render () {
@@ -51,7 +59,7 @@ class EditBookingPage extends React.Component {
     const jobId = bookingId.split('-')[0]
     const bookings = this.props.selectBookingsByJobId(jobId)
     const job = this.props.selectjobById(jobId)
-
+    console.log(this.state)
     return (job && !_.isEmpty(bookings)) ? (
       <BookingForm
         saveUnfinshedBooking={this.saveUnfinshedBooking}

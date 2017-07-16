@@ -2,26 +2,21 @@ import { Col, Row, Icon, Select, Form, Tag } from 'antd'
 import React, { Component } from 'react'
 
 import EquipmentsSearch from '../components/EquipmentsSearch'
-import { connect } from 'react-redux'
-import { getAllEquipments } from '../../selectors/equipmentsSelectors'
-import {
-  saveUnfinshedBooking,
-  removeUnfinshedEquipment,
-  addDefaultEquipment
-} from '../../actions/bookingUnfinishedActions'
+
 import propTypes from 'prop-types'
 import styles from './EquipmentsSection.sass'
 import _ from 'lodash'
 class EquipmentSection extends Component {
 
   static propTypes = {
-    form: propTypes.func,
+    form: propTypes.object,
     id: propTypes.string,
-    equipments: propTypes.number,
+    equipments: propTypes.array,
     saveUnfinshedBooking: propTypes.func,
     removeUnfinshedEquipment: propTypes.func,
     addDefaultEquipment: propTypes.func,
-    bookingUnfinishedEquipments: propTypes.array
+    bookingUnfinishedEquipments: propTypes.array,
+    preset: propTypes.string
   }
 
   constructor (props) {
@@ -39,9 +34,20 @@ class EquipmentSection extends Component {
       value: { equipment, amount: data.amount, type }
     })
   }
+
   onClickRemoveEquipment = (equipmentId, bookingId) => (e) => {
     this.props.removeUnfinshedEquipment(equipmentId, bookingId)
   }
+
+  onSelectPreset = (preset) => {
+    this.props.saveUnfinshedBooking({
+      id: this.props.id,
+      name: 'preset',
+      value: preset
+    })
+    this.props.addDefaultEquipment(this.props.id, preset)
+  }
+
   renderAddedEquipments = () => {
     if (this.props.bookingUnfinishedEquipments) {
       return _.map(this.props.bookingUnfinishedEquipments, (value, key) => (
@@ -67,19 +73,15 @@ class EquipmentSection extends Component {
     return null
   }
 
-  onSelectPreset = (preset) => {
-    this.props.addDefaultEquipment(this.props.id, preset)
-  }
-
   renderPresetSelect = () => {
     const getFieldDecorator = this.props.form.getFieldDecorator
     return (
       <Form.Item
         label='preset'
-        labelCol={{sm: {span: 2}}}
-        wrapperCol={{sm: {span: 6}}}
+        labelCol={{ sm: { span: 2 } }}
+        wrapperCol={{ sm: { span: 6 } }}
       >
-        {getFieldDecorator('preset', {initialValue: 'no'})(
+        {getFieldDecorator('preset', { initialValue: this.props.preset })(
           <Select
             showSearch
             placeholder='Please select preset'
@@ -122,15 +124,4 @@ class EquipmentSection extends Component {
   }
 }
 
-EquipmentSection.propTypes = {
-
-}
-
-export default connect(
-  (state) => {
-    return {
-      equipments: getAllEquipments(state)
-    }
-  },
-  { saveUnfinshedBooking, removeUnfinshedEquipment, addDefaultEquipment }
-  )(Form.create({})(EquipmentSection))
+export default (Form.create({})(EquipmentSection))

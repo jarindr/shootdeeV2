@@ -1,3 +1,3 @@
-export const getAllEquipments = (state) => {
+export const selectEquipmentList = (state) => {
   return state.equipments
 }

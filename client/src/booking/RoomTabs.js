@@ -12,7 +12,10 @@ class RoomTabs extends React.Component {
     saveUnfinshedBooking: PropTypes.func,
     addBookingRoom: PropTypes.func,
     bookingUnfinished: PropTypes.array,
-    assignment: PropTypes.string
+    assignment: PropTypes.string,
+    removeUnfinshedEquipment: PropTypes.func,
+    addDefaultEquipment: PropTypes.func,
+    equipments: PropTypes.equipments
   }
 
   constructor (props) {
@@ -46,7 +49,9 @@ class RoomTabs extends React.Component {
             saveUnfinshedBooking={this.props.saveUnfinshedBooking}
             bookingUnfinished={pane}
             assignment={this.props.assignment}
-            id={pane.key}
+            removeUnfinshedEquipment={this.props.removeUnfinshedEquipment}
+            addDefaultEquipment={this.props.addDefaultEquipment}
+            equipments={this.props.equipments}
           />
         </TabPane>
       )

@@ -21,7 +21,10 @@ class BookingForm extends React.Component {
     job: propTypes.object,
     submitJob: propTypes.func,
     saveUnfinshedJob: propTypes.func,
-    stepUrls: propTypes.array
+    removeUnfinshedEquipment: propTypes.func,
+    addDefaultEquipment: propTypes.func,
+    stepUrls: propTypes.array,
+    equipments: propTypes.array
   }
 
   constructor (props) {
@@ -37,8 +40,12 @@ class BookingForm extends React.Component {
       <RoomTabs
         bookingUnfinished={this.props.bookingUnfinished}
         saveUnfinshedBooking={this.props.saveUnfinshedBooking}
+        removeUnfinshedEquipment={this.props.removeUnfinshedEquipment}
+        addDefaultEquipment={this.props.addDefaultEquipment}
         addBookingRoom={this.props.addBookingRoom}
         assignment={this.props.job.assignment}
+        equipments={this.props.equipments}
+
       />
     )
   }

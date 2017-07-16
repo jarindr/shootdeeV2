@@ -14,7 +14,10 @@ class RoomForm extends Component {
     saveUnfinshedBooking: PropTypes.func, // eslint-disable-line react/no-unused-prop-types
     bookingUnfinished: PropTypes.object, // eslint-disable-line react/no-unused-prop-types
     id: PropTypes.string, // eslint-disable-line react/no-unused-prop-types
-    assignment: PropTypes.string
+    assignment: PropTypes.string,
+    removeUnfinshedEquipment: PropTypes.func,
+    addDefaultEquipment: PropTypes.func,
+    equipments: PropTypes.array
   }
 
   constructor (props) {
@@ -171,9 +174,13 @@ class RoomForm extends Component {
         <h2 className={styles.equipmentHeader}>Equipments</h2>
         <Row>
           <EquipmentsSection
-            id={this.props.id}
+            id={this.props.bookingUnfinished.id}
             saveUnfinshedBooking={this.props.saveUnfinshedBooking}
             bookingUnfinishedEquipments={this.props.bookingUnfinished.equipments}
+            preset={this.props.bookingUnfinished.preset}
+            removeUnfinshedEquipment={this.props.removeUnfinshedEquipment}
+            addDefaultEquipment={this.props.addDefaultEquipment}
+            equipments={this.props.equipments}
           />
         </Row>
       </div>
@@ -183,7 +190,7 @@ class RoomForm extends Component {
 
 function onFieldsChange (props, field) {
   const updateField = _.map(field, (value) => value)[0]
-  const entity = { ...updateField, ...{ id: props.id } }
+  const entity = { ...updateField, ...{ id: props.bookingUnfinished.id } }
   props.saveUnfinshedBooking(entity)
 }
 

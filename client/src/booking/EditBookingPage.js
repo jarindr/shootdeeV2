@@ -40,9 +40,11 @@ class EditBookingPage extends React.Component {
       '/edit/rooms/',
       '/edit/confirm/'
     ]
+    const { bookingId } = queryString.parse(this.props.location.search)
+    const jobId = bookingId.split('-')[0]
     this.state = {
-      job: {},
-      bookings: []
+      job: this.props.selectjobById(jobId),
+      bookings: this.props.selectBookingsByJobId(jobId)
     }
   }
 
@@ -52,29 +54,36 @@ class EditBookingPage extends React.Component {
     })
   }
 
-  saveUnfinshedBooking = (entity) => {
-    const { bookingId } = queryString.parse(this.props.location.search)
-    const { equipments } = this.props.selectBookingById(bookingId)
+  updateBookingState = (id, entity) => {
+    const index = _.findIndex(this.state.bookings, (x) => x.id === id)
 
     if (entity.name === 'equipments') {
-      this.setState(oldState => {
-        return { bookings: { [entity.id]: { ...oldState.bookings[entity.id], ...{ equipments: [...equipments, entity.value] } } } }
+      this.setState((oldState) => {
+        const booking = oldState.bookings[index]
+        const indexEq = _.findIndex(booking.equipments, (x) => x.equipment === entity.value.equipment)
+        if (indexEq === -1) {
+          oldState.bookings.splice(index, 1, {...booking, ...{equipments: [...booking.equipments, entity.value]}})
+        } else {
+          booking.equipments[indexEq] = entity.value
+        }
+        return { bookings: oldState.bookings }
       })
     } else {
-      this.setState(oldState => {
-        return { bookings: { [entity.id]: { ...oldState.bookings[entity.id], ...{ [entity.name]: entity.value } } } }
+      this.setState((oldState) => {
+        const booking = oldState.bookings[index]
+        oldState.bookings.splice(index, 1, {...booking, ...{[entity.name]: entity.value}})
+        return { bookings: oldState.bookings }
       })
     }
   }
 
-  render () {
+  saveUnfinshedBooking = (entity) => {
     const { bookingId } = queryString.parse(this.props.location.search)
-    const jobId = bookingId.split('-')[0]
-    const bookings = this.props.selectBookingsByJobId(jobId).map(x => {
-      return { ...x, ...this.state.bookings[x.id] }
-    })
-    const job = { ...this.props.selectjobById(jobId), ...this.state.job }
-    console.log(bookings)
+    this.updateBookingState(bookingId, entity)
+  }
+
+  render () {
+    console.log(this.state)
 
     return (
       <BookingForm
@@ -83,8 +92,8 @@ class EditBookingPage extends React.Component {
         addBookingRoom={this.addBookingRoom}
         removeUnfinshedEquipment={this.removeUnfinshedEquipment}
         addDefaultEquipment={this.addDefaultEquipment}
-        bookingUnfinished={bookings}
-        job={job}
+        bookingUnfinished={this.state.bookings}
+        job={this.state.job}
         submitJob={this.props.submitJob}
         history={this.props.history}
         location={this.props.location}

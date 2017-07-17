@@ -54,15 +54,25 @@ class EditBookingPage extends React.Component {
     })
   }
 
-  updateBookingState = (id, entity) => {
-    const index = _.findIndex(this.state.bookings, (x) => x.id === id)
+  removeUnfinshedEquipment = (equipmentId, bookingId) => {
+    const index = _.findIndex(this.state.bookings, (x) => x.id === bookingId)
+    const booking = this.state.bookings[index]
+    const indexEq = _.findIndex(booking.equipments, (x) => x.equipment === equipmentId)
+    this.setState((oldState) => {
+      _.pullAt(oldState.bookings[index].equipments, [indexEq])
+      return { bookings: oldState.bookings }
+    })
+  }
 
+  saveUnfinshedBooking = (entity) => {
+    const { bookingId } = queryString.parse(this.props.location.search)
+    const index = _.findIndex(this.state.bookings, (x) => x.id === bookingId)
     if (entity.name === 'equipments') {
       this.setState((oldState) => {
         const booking = oldState.bookings[index]
         const indexEq = _.findIndex(booking.equipments, (x) => x.equipment === entity.value.equipment)
         if (indexEq === -1) {
-          oldState.bookings.splice(index, 1, {...booking, ...{equipments: [...booking.equipments, entity.value]}})
+          oldState.bookings.splice(index, 1, { ...booking, ...{ equipments: [...booking.equipments, entity.value] } })
         } else {
           booking.equipments[indexEq] = entity.value
         }
@@ -71,20 +81,13 @@ class EditBookingPage extends React.Component {
     } else {
       this.setState((oldState) => {
         const booking = oldState.bookings[index]
-        oldState.bookings.splice(index, 1, {...booking, ...{[entity.name]: entity.value}})
+        oldState.bookings.splice(index, 1, { ...booking, ...{ [entity.name]: entity.value } })
         return { bookings: oldState.bookings }
       })
     }
   }
 
-  saveUnfinshedBooking = (entity) => {
-    const { bookingId } = queryString.parse(this.props.location.search)
-    this.updateBookingState(bookingId, entity)
-  }
-
   render () {
-    console.log(this.state)
-
     return (
       <BookingForm
         saveUnfinshedBooking={this.saveUnfinshedBooking}

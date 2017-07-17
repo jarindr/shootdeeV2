@@ -6,6 +6,13 @@ import PropTypes from 'prop-types'
 import _ from 'lodash'
 import styles from './RoomTabs.sass'
 import moment from 'moment'
+import { compose } from 'recompose'
+import { withRouter } from 'react-router-dom'
+import queryString from 'query-string'
+const enhance = compose(
+  withRouter,
+  Form.create()
+)
 class RoomTabs extends React.Component {
 
   static propTypes = {
@@ -15,14 +22,17 @@ class RoomTabs extends React.Component {
     assignment: PropTypes.string,
     removeUnfinshedEquipment: PropTypes.func,
     addDefaultEquipment: PropTypes.func,
-    equipments: PropTypes.array
+    equipments: PropTypes.array,
+    location: PropTypes.object,
+    history: PropTypes.object
   }
 
   constructor (props) {
     super(props)
     this.newTabIndex = 1
+    const search = queryString.parse(this.props.location.search)
     this.state = {
-      activeKey: this.props.bookingUnfinished[0].id
+      activeKey: search.bookingId || this.props.bookingUnfinished[0].id
     }
   }
 
@@ -58,7 +68,10 @@ class RoomTabs extends React.Component {
     })
   }
   onChange = (activeKey) => {
-    this.setState({ activeKey })
+    this.setState({ activeKey }, () => {
+      const search = queryString.stringify({bookingId: this.state.activeKey})
+      this.props.history.push({search})
+    })
   }
 
   onEdit = (targetKey, action) => {
@@ -99,4 +112,4 @@ class RoomTabs extends React.Component {
   }
 }
 
-export default Form.create()(RoomTabs)
+export default enhance(RoomTabs)

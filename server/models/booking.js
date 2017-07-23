@@ -23,27 +23,11 @@ const bookingSchema = mongoose.Schema({
 })
 
 export const Booking = mongoose.model('bookings', bookingSchema)
-export function saveBookings ({ data, onSuccess, onFailed }) {
+export async function saveBookings ({ data }) {
   const booking = new Booking(data)
-  booking.save((err, result) => {
-    if (err) {
-      onFailed()
-      logger.error(err)
-    } else {
-      onSuccess()
-      logger.info(`job ${data.id} completely saved to database`)
-    }
-  })
+  await booking.save()
 }
 
-export function getAll ({ onSuccess, onFailed }) {
-  Booking.find({}, null, (err, result) => {
-    if (err) {
-      onFailed(err)
-      logger.error(err)
-    } else {
-      onSuccess(result)
-      logger.info('get all bookings completed.')
-    }
-  })
+export async function getAll () {
+  return Booking.find({}, null)
 }

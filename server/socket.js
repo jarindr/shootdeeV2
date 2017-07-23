@@ -16,106 +16,55 @@ export function initSocketHandler (server) {
 
 function handleTopicRecieved (socket, io) {
   const topics = {
-    'starter:get': () => {
-      bookingModel.getAll({
-        onSuccess: (data) => {
-          socket.emit('booking:get:all', data)
-          EquipmentsModel.getAllEquipments({
-            onSuccess: (data) => {
-              socket.emit('equipments:get', { data })
-              jobModel.getJobId({
-                onSuccess: (data) => {
-                  socket.emit('job:get:id', data)
-                  jobModel.getAll({
-                    onSuccess: (data) => {
-                      socket.emit('job:get:all', data)
-                      socket.emit('starter:get', true)
-                    }
-                  })
-                }
-              })
-            }
-          })
-        }
-      })
+    'starter:get': async () => {
+      const bookings = await bookingModel.getAll()
+      const equipments = await EquipmentsModel.getAllEquipments()
+      const jobId = await jobModel.getJobId()
+      const jobs = await jobModel.getAll()
+      socket.emit('booking:get:all', bookings)
+      socket.emit('equipments:get', equipments)
+      socket.emit('job:get:id', jobId)
+      socket.emit('job:get:all', jobs)
+      socket.emit('starter:get', true)
     },
-    'equipments:get': () => {
-      EquipmentsModel.getAllEquipments({
-        onSuccess: (data) => {
-          socket.emit('equipments:get', { data })
-        }
-      })
+    'equipments:get': async () => {
+      const data = await EquipmentsModel.getAllEquipments()
+      socket.emit('equipments:get', data)
     },
-    'booking:get:all': () => {
-      bookingModel.getAll({
-        onSuccess: (data) => {
-          socket.emit('booking:get:all', data)
-        }
-      })
+    'booking:get:all': async () => {
+      const bookings = await bookingModel.getAll()
+      socket.emit('booking:get:all', bookings)
     },
-    'job:get:all': () => {
-      jobModel.getAll({
-        onSuccess: (data) => {
-          socket.emit('job:get:all', data)
-        }
-      })
+    'job:get:all': async () => {
+      const jobs = await jobModel.getAll()
+      socket.emit('job:get:all', jobs)
     },
-    'job:get:id': () => {
-      jobModel.getJobId({
-        onSuccess: (data) => {
-          socket.emit('job:get:id', data)
-        }
-      })
+    'job:get:id': async () => {
+      const id = await jobModel.getJobId()
+      socket.emit('job:get:id', id)
     },
-    'job:edit:save': ({job, bookings}) => {
-      jobModel.saveEditJob({
-        job,
-        bookings,
-        onSuccess: () => {
-          jobModel.getAll({
-            onSuccess: (data) => {
-              io.emit('job:get:all', data)
-            }
-          })
-          bookingModel.getAll({
-            onSuccess: (data) => {
-              io.emit('booking:get:all', data)
-            }
-          })
-          jobModel.getJobId({
-            onSuccess: (data) => {
-              io.emit('job:get:id', data)
-            }
-          })
-        }})
+    'job:edit:save': async ({job, bookings}) => {
+      await jobModel.saveEditJob({job, bookings})
+      const updateBookings = await bookingModel.getAll()
+      const jobId = await jobModel.getJobId()
+      const jobs = await jobModel.getAll()
+      io.emit('booking:get:all', updateBookings)
+      io.emit('job:get:id', jobId)
+      io.emit('job:get:all', jobs)
     },
-    'job:save': ({ jobUnfinished, bookingUnfinished }) => {
+    'job:save': async ({ jobUnfinished, bookingUnfinished }) => {
       const bookingsData = _.values(bookingUnfinished).map((booking, index) => {
         return Object.assign({}, booking, { id: `${jobUnfinished.id}-${index}` })
       })
       const jobData = Object.assign({}, jobUnfinished, { bookings: bookingsData.map(x => x.id) })
-      jobModel.saveJob({
-        job: jobData,
-        bookingUnfinished: bookingsData,
-        onSuccess: (response) => {
-          socket.emit('job:save', response)
-          bookingModel.getAll({
-            onSuccess: (data) => {
-              io.emit('booking:get:all', data)
-            }
-          })
-          jobModel.getAll({
-            onSuccess: (data) => {
-              io.emit('job:get:all', data)
-            }
-          })
-          jobModel.getJobId({
-            onSuccess: (data) => {
-              io.emit('job:get:id', data)
-            }
-          })
-        }
-      })
+      await jobModel.saveJob({job: jobData, bookingUnfinished: bookingsData })
+      const updateBookings = await bookingModel.getAll()
+      const jobId = await jobModel.getJobId()
+      const jobs = await jobModel.getAll()
+      socket.emit('job:save')
+      io.emit('booking:get:all', updateBookings)
+      io.emit('job:get:id', jobId)
+      io.emit('job:get:all', jobs)
     }
   }
   _.forOwn(topics, (callback, topic) => {

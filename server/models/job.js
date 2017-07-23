@@ -13,71 +13,34 @@ const job = mongoose.Schema({
 
 const JobModel = mongoose.model('job', job)
 
-export function saveJob ({ job, bookingUnfinished, onSuccess, onFailed }) {
+export async function saveJob ({ job, bookingUnfinished}) {
   const newJob = new JobModel(job)
-  newJob.save((err, result) => {
-    if (err) {
-      onFailed()
-      logger.error(err)
-    } else {
-      onSuccess()
-      logger.info(`job ${job.id} completely saved to database`)
-    }
+  await newJob.save()
+  await Booking.insertMany(bookingUnfinished)
+}
+
+export async function saveEditJob ({ job, bookings }) {
+  const jobPromise = new Promise((resolve, reject) => {
+    JobModel.findOneAndUpdate({ id: job.id }, job, { upsert: true })
+    .then(() => resolve())
   })
 
-  Booking.insertMany(bookingUnfinished, (err, docs) => {
-    if (err) {
-      onFailed()
-      logger.error(err)
-    } else {
-      onSuccess()
-      logger.info(`bookings completely saved to database`)
-    }
-  })
-}
-export function saveEditJob ({ job, bookings, onSuccess }) {
-  JobModel.findOneAndUpdate({ id: job.id }, job, { upsert: true }, (err, result) => {
-    if (err) {
-      logger.error(err)
-    } else {
-      logger.info(`job ${job.id} completely updated`)
-      onSuccess()
-    }
-  })
-  bookings.forEach(booking => {
-    Booking.findOneAndUpdate({ id: booking.id }, booking, { upsert: true }, (err, result) => {
-      if (err) {
-        logger.error(err)
-      } else {
-        logger.info(`bookings ${booking.id} completely updated`)
-        onSuccess()
-      }
+  const bookingPromise = bookings.map(booking => {
+    return new Promise((resolve, reject) => {
+      Booking.findOneAndUpdate({ id: booking.id }, booking, { upsert: true })
+      .then(() => resolve())
     })
   })
+  return Promise.all([jobPromise, ...bookingPromise])
 }
 
-export function getJobId ({ onSuccess, onFailed }) {
-  JobModel.count({}, (err, result) => {
-    if (err) {
-      onFailed(err)
-      logger.error(err)
-    } else {
-      let count = `000${result}`
-      count = count.substr(count.length - 4)
-      const id = `Q${moment().format('YYDD')}${count}`
-      onSuccess(id)
-    }
-  })
+export async function getJobId () {
+  const result = await JobModel.count({})
+  let count = `000${result}`
+  count = count.substr(count.length - 4)
+  return `Q${moment().format('YYDD')}${count}`
 }
 
-export function getAll ({ onSuccess, onFailed }) {
-  JobModel.find({}, null, (err, result) => {
-    if (err) {
-      onFailed(err)
-      logger.error(err)
-    } else {
-      onSuccess(result)
-      logger.info('get all jobs completed.')
-    }
-  })
+export async function getAll () {
+  return JobModel.find({}, null)
 }

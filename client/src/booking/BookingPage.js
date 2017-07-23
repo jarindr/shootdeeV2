@@ -9,6 +9,7 @@ import { selectEquipmentList } from '../../selectors/equipmentsSelectors'
 import {
   saveUnfinshedBooking,
   addBookingRoom,
+  removeBookingRoom,
   removeUnfinshedEquipment,
   addDefaultEquipment
 } from '../../actions/bookingUnfinishedActions'
@@ -27,6 +28,7 @@ const enhance = compose(
       saveUnfinshedBooking,
       submitJob,
       addBookingRoom,
+      removeBookingRoom,
       removeUnfinshedEquipment,
       addDefaultEquipment
     }),
@@ -38,6 +40,7 @@ class BookingPage extends React.Component {
     saveUnfinshedBooking: propTypes.func,
     bookingUnfinished: propTypes.array,
     addBookingRoom: propTypes.func,
+    removeBookingRoom: propTypes.func,
     equipments: propTypes.array,
     history: propTypes.object,
     location: propTypes.object,
@@ -68,8 +71,9 @@ class BookingPage extends React.Component {
     return (
       <BookingForm
         saveUnfinshedBooking={this.props.saveUnfinshedBooking}
-        bookingUnfinished={this.props.bookingUnfinished}
+        bookingUnfinished={this.props.bookingUnfinished.filter(x => !x.deleted)}
         addBookingRoom={this.addBookingRoom}
+        removeBookingRoom={this.props.removeBookingRoom}
         history={this.props.history}
         location={this.props.location}
         job={this.props.job}

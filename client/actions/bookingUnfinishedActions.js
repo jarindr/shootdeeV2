@@ -7,6 +7,10 @@ export const removeUnfinshedEquipment = (equipmentId, bookingId) => (
 export const addBookingRoom = (id) => (
   { type: 'ADD_BOOKING_ROOM', id }
 )
+
+export const removeBookingRoom = (id) => (
+  { type: 'REMOVE_BOOKING_ROOM', id }
+)
 export const addDefaultEquipment = (bookingId, preset) => (
   { type: 'ADD_DEFAULT_EQUIPMENTS', bookingId, preset }
 )

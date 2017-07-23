@@ -14,7 +14,7 @@ class BookingForm extends React.Component {
     saveUnfinshedBooking: propTypes.func,
     bookingUnfinished: propTypes.array,
     addBookingRoom: propTypes.func,
-
+    removeBookingRoom: propTypes.func,
     history: propTypes.object,
     location: propTypes.object,
 
@@ -43,6 +43,7 @@ class BookingForm extends React.Component {
         removeUnfinshedEquipment={this.props.removeUnfinshedEquipment}
         addDefaultEquipment={this.props.addDefaultEquipment}
         addBookingRoom={this.props.addBookingRoom}
+        removeBookingRoom={this.props.removeBookingRoom}
         assignment={this.props.job.assignment}
         equipments={this.props.equipments}
 

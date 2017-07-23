@@ -28,13 +28,19 @@ const bookingsUnfinishedReducer = (state = initialState, action) => {
       if (name === 'equipments') {
         const index = _.findIndex(equipmentsArr, x => x.equipment === value.equipment)
         if (index !== -1) equipmentsArr.splice(index, 0, value)
-        return state.set(id, {...state.get(id), ...{ equipments: [...equipmentsArr, value] }})
+        return state.set(id, { ...state.get(id), ...{ equipments: [...equipmentsArr, value] } })
       }
-      return state.set(id, {...state.get(id), ...{[name]: value}})
+      return state.set(id, { ...state.get(id), ...{ [name]: value } })
     }
     case 'ADD_BOOKING_ROOM': {
       return state.set(action.id, getInitialRoomState(action.id))
     }
+
+    case 'REMOVE_BOOKING_ROOM': {
+      const id = action.id
+      return state.set(id, { ...state.get(id), ...{ deleted: true } })
+    }
+
     case 'SAVE_UNFINISHED_JOB': {
       if (action.job.name === 'assignment') {
         return Immutable.Map({ '0': getInitialRoomState('0', action.job.value) })
@@ -46,12 +52,12 @@ const bookingsUnfinishedReducer = (state = initialState, action) => {
       const equipmentsArr = state.get(bookingId).equipments
       const index = _.findIndex(equipmentsArr, x => x.equipment === equipmentId)
       _.pullAt(equipmentsArr, [index])
-      return state.set(bookingId, {...state.get(bookingId), ...{ equipments: equipmentsArr }})
+      return state.set(bookingId, { ...state.get(bookingId), ...{ equipments: equipmentsArr } })
     }
 
     case 'ADD_DEFAULT_EQUIPMENTS': {
       const { bookingId, preset } = action
-      return state.set(bookingId, {...state.get(bookingId), ...{ equipments: PRESETS[preset] }})
+      return state.set(bookingId, { ...state.get(bookingId), ...{ equipments: PRESETS[preset] } })
     }
 
     default: {

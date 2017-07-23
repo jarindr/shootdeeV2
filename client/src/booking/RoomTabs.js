@@ -18,6 +18,7 @@ class RoomTabs extends React.Component {
   static propTypes = {
     saveUnfinshedBooking: PropTypes.func,
     addBookingRoom: PropTypes.func,
+    removeBookingRoom: PropTypes.func,
     bookingUnfinished: PropTypes.array,
     assignment: PropTypes.string,
     removeUnfinshedEquipment: PropTypes.func,
@@ -90,18 +91,9 @@ class RoomTabs extends React.Component {
   }
 
   remove = (targetKey) => {
-    let activeKey = this.state.activeKey
-    let lastIndex
-    this.state.panes.forEach((pane, i) => {
-      if (pane.key === targetKey) {
-        lastIndex = i - 1
-      }
-    })
-    const panes = this.state.panes.filter(pane => pane.key !== targetKey)
-    if (lastIndex >= 0 && activeKey === targetKey) {
-      activeKey = panes[lastIndex].key
-    }
-    this.setState({ panes, activeKey })
+    this.props.removeBookingRoom(targetKey)
+    const index = _.findIndex(this.props.bookingUnfinished, x => x.id === targetKey)
+    this.setState({ activeKey: this.props.bookingUnfinished[index - 1].id })
   }
   render () {
     return (

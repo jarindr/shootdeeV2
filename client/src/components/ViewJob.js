@@ -28,7 +28,7 @@ class ViewJobPane extends Component {
 
   onClickEdit = () => {
     const { showBooking } = queryString.parse(this.props.location.search)
-    this.props.history.push({pathname: '/edit/job/', search: queryString.stringify({bookingId: showBooking})})
+    this.props.history.push({pathname: '/edit/rooms/', search: queryString.stringify({bookingId: showBooking})})
   }
 
   renderModal = () => {

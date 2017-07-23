@@ -6,6 +6,7 @@ import { selectBookingsByJobId, selectBookingById } from '../../selectors/bookin
 import { selectjobById } from '../../selectors/jobSelector'
 import { selectEquipmentList } from '../../selectors/equipmentsSelectors'
 import { submitJob, saveUnfinshedJob } from '../../actions/jobUnfinishedActions'
+import { getInitialRoomState } from '../../reducers/bookingUnfinishedReducer'
 import { compose } from 'recompose'
 import BookingForm from './BookingForm'
 import queryString from 'query-string'
@@ -29,7 +30,6 @@ class EditBookingPage extends React.Component {
 
     selectjobById: propTypes.func,
     selectBookingsByJobId: propTypes.func,
-    selectBookingById: propTypes.func,
     submitJob: propTypes.func,
     equipments: propTypes.array
   }
@@ -50,13 +50,32 @@ class EditBookingPage extends React.Component {
   }
 
   addBookingRoom = () => {
-    
+    const subId = Number(_.last(this.state.bookings.map(x => x.id.split('-')[1]).sort())) + 1
+    const id = `${this.state.job.id}-${subId}`
+    this.setState(oldState => {
+      oldState.bookings.push(getInitialRoomState(id, this.state.job.assignment))
+      return oldState
+    })
+    return id
+  }
+  removeBookingRoom = (bookingId) => {
+    const index = _.findIndex(this.state.bookings, x => x.id === bookingId)
+    this.setState(oldState => {
+      oldState.bookings[index].deleted = true
+      return oldState
+    })
   }
 
   saveUnfinshedJob = (entity) => {
-    this.setState(oldState => {
-      return { job: { ...oldState.job, ...{ [entity.name]: entity.value } } }
-    })
+    if (entity.name === 'assignment') {
+      this.setState(oldState => {
+        return { bookings: [getInitialRoomState(`${this.state.job.id}-0`, this.state.job.assignment)] }
+      })
+    } else {
+      this.setState(oldState => {
+        return { job: { ...oldState.job, ...{ [entity.name]: entity.value } } }
+      })
+    }
   }
 
   removeUnfinshedEquipment = (equipmentId, bookingId) => {
@@ -105,10 +124,12 @@ class EditBookingPage extends React.Component {
         saveUnfinshedBooking={this.saveUnfinshedBooking}
         saveUnfinshedJob={this.saveUnfinshedJob}
         addBookingRoom={this.addBookingRoom}
+        removeBookingRoom={this.removeBookingRoom}
         removeUnfinshedEquipment={this.removeUnfinshedEquipment}
         addDefaultEquipment={this.addDefaultEquipment}
-        bookingUnfinished={this.state.bookings}
+        bookingUnfinished={this.state.bookings.filter(x => !x.deleted)}
         job={this.state.job}
+        title='Edit booking'
         submitJob={this.props.submitJob}
         history={this.props.history}
         location={this.props.location}

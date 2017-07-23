@@ -2,7 +2,7 @@ import Immutable from 'immutable'
 import _ from 'lodash'
 import moment from 'moment'
 import { PRESETS } from '../misc/constants'
-function getInitialRoomState (id, assignment) {
+export function getInitialRoomState (id, assignment) {
   const room = assignment === 'Onscreen room' ? 'O' : 'S'
   return {
     id,

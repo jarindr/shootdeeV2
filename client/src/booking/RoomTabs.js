@@ -48,12 +48,13 @@ class RoomTabs extends React.Component {
   }
 
   renderTabs = () => {
-    return this.getPanes().map(pane => {
+    const panes = this.getPanes()
+    return panes.map(pane => {
       return (
         <TabPane
           tab={pane.title}
           key={pane.key}
-          closable={pane.closable || true}
+          closable={panes.length !== 1}
         >
           <RoomForm
             saveUnfinshedBooking={this.props.saveUnfinshedBooking}
@@ -68,12 +69,7 @@ class RoomTabs extends React.Component {
     })
   }
   onChange = (activeKey) => {
-    this.setState({ activeKey }, () => {
-      if (this.props.location.pathname.split('/')[1] === 'edit') {
-        const search = queryString.stringify({ bookingId: this.state.activeKey })
-        this.props.history.push({ search })
-      }
-    })
+    this.setState({ activeKey })
   }
 
   onEdit = (targetKey, action) => {
@@ -82,12 +78,7 @@ class RoomTabs extends React.Component {
 
   add = () => {
     const id = this.props.addBookingRoom()
-    this.setState({ activeKey: id }, () => {
-      if (this.props.location.pathname.split('/')[1] === 'edit') {
-        const search = queryString.stringify({ bookingId: this.state.activeKey })
-        this.props.history.push({ search })
-      }
-    })
+    this.setState({ activeKey: id })
   }
 
   remove = (targetKey) => {
@@ -95,6 +86,7 @@ class RoomTabs extends React.Component {
     const index = _.findIndex(this.props.bookingUnfinished, x => x.id === targetKey)
     this.setState({ activeKey: this.props.bookingUnfinished[index - 1].id })
   }
+
   render () {
     return (
       <Tabs

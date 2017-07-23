@@ -35,12 +35,13 @@ export function saveJob ({ job, bookingUnfinished, onSuccess, onFailed }) {
     }
   })
 }
-export function saveEditJob ({ job, bookings }) {
+export function saveEditJob ({ job, bookings, onSuccess }) {
   JobModel.findOneAndUpdate({ id: job.id }, job, { upsert: true }, (err, result) => {
     if (err) {
       logger.error(err)
     } else {
       logger.info(`job ${job.id} completely updated`)
+      onSuccess()
     }
   })
   bookings.forEach(booking => {
@@ -49,6 +50,7 @@ export function saveEditJob ({ job, bookings }) {
         logger.error(err)
       } else {
         logger.info(`bookings ${booking.id} completely updated`)
+        onSuccess()
       }
     })
   })

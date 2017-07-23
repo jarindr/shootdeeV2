@@ -33,7 +33,7 @@ function handleBackendRecieved (socket) {
     'job:get:id': (data) => {
       store.dispatch(jobUnfinishedActions.jobIdRecievedFromBackend(data))
     },
-    'job:get:all': (data) => {
+    'job:get:all': (data) => {      
       store.dispatch(jobActions.jobsRecievedFromBackend(data))
     },
     'booking:get:all': (data) => {

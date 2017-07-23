@@ -68,7 +68,26 @@ function handleTopicRecieved (socket, io) {
       })
     },
     'job:edit:save': ({job, bookings}) => {
-      jobModel.saveEditJob({job, bookings})
+      jobModel.saveEditJob({
+        job,
+        bookings,
+        onSuccess: () => {
+          jobModel.getAll({
+            onSuccess: (data) => {
+              io.emit('job:get:all', data)
+            }
+          })
+          bookingModel.getAll({
+            onSuccess: (data) => {
+              io.emit('booking:get:all', data)
+            }
+          })
+          jobModel.getJobId({
+            onSuccess: (data) => {
+              io.emit('job:get:id', data)
+            }
+          })
+        }})
     },
     'job:save': ({ jobUnfinished, bookingUnfinished }) => {
       const bookingsData = _.values(bookingUnfinished).map((booking, index) => {

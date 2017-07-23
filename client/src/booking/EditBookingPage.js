@@ -5,7 +5,7 @@ import propTypes from 'prop-types'
 import { selectBookingsByJobId, selectBookingById } from '../../selectors/bookingsSelectors'
 import { selectjobById } from '../../selectors/jobSelector'
 import { selectEquipmentList } from '../../selectors/equipmentsSelectors'
-import { submitJob, saveUnfinshedJob } from '../../actions/jobUnfinishedActions'
+import { submitEditJob } from '../../actions/jobEditActions'
 import { getInitialRoomState } from '../../reducers/bookingUnfinishedReducer'
 import { compose } from 'recompose'
 import BookingForm from './BookingForm'
@@ -19,7 +19,7 @@ const enhance = compose(
     equipments: selectEquipmentList(state),
     selectBookingById: selectBookingById(state)
   }),
-    { saveUnfinshedJob, submitJob }),
+    { submitEditJob }),
 )
 
 class EditBookingPage extends React.Component {
@@ -30,7 +30,7 @@ class EditBookingPage extends React.Component {
 
     selectjobById: propTypes.func,
     selectBookingsByJobId: propTypes.func,
-    submitJob: propTypes.func,
+    submitEditJob: propTypes.func,
     equipments: propTypes.array
   }
 
@@ -69,7 +69,9 @@ class EditBookingPage extends React.Component {
   saveUnfinshedJob = (entity) => {
     if (entity.name === 'assignment') {
       this.setState(oldState => {
-        return { bookings: [getInitialRoomState(`${this.state.job.id}-0`, this.state.job.assignment)] }
+        return {
+          job: { ...oldState.job, ...{ [entity.name]: entity.value } },
+          bookings: [getInitialRoomState(`${this.state.job.id}-0`, entity.value)] }
       })
     } else {
       this.setState(oldState => {
@@ -117,6 +119,9 @@ class EditBookingPage extends React.Component {
       })
     }
   }
+  submitEditJob = () => {
+    this.props.submitEditJob({job: this.state.job, bookings: this.state.bookings})
+  }
 
   render () {
     return (
@@ -130,7 +135,7 @@ class EditBookingPage extends React.Component {
         bookingUnfinished={this.state.bookings.filter(x => !x.deleted)}
         job={this.state.job}
         title='Edit booking'
-        submitJob={this.props.submitJob}
+        submitJob={this.submitEditJob}
         history={this.props.history}
         location={this.props.location}
         stepUrls={this.stepUrls}

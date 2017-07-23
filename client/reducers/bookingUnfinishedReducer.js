@@ -6,7 +6,7 @@ export function getInitialRoomState (id, assignment) {
   const room = assignment === 'Onscreen room' ? 'O' : 'S'
   return {
     id,
-    room: room,
+    room,
     status: 'TENTATIVE',
     date: [moment(), moment()],
     assistance: [],

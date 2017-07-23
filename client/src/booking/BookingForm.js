@@ -136,7 +136,7 @@ class BookingForm extends React.Component {
         <div className={styles.topSectionContainer}>
           <div className={styles.titleContainer}>
             <h1>New booking</h1>
-            <h4 className={styles.subTitle}>quotation: Q0000001</h4>
+            <h4 className={styles.subTitle}>quotation: {this.props.job.id}</h4>
           </div>
           <div className={styles.stepNavigationContainer}>
             <Button.Group className={styles.stepNavigationButtons}>

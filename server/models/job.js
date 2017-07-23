@@ -35,6 +35,24 @@ export function saveJob ({ job, bookingUnfinished, onSuccess, onFailed }) {
     }
   })
 }
+export function saveEditJob ({ job, bookings }) {
+  JobModel.findOneAndUpdate({ id: job.id }, job, { upsert: true }, (err, result) => {
+    if (err) {
+      logger.error(err)
+    } else {
+      logger.info(`job ${job.id} completely updated`)
+    }
+  })
+  bookings.forEach(booking => {
+    Booking.findOneAndUpdate({ id: booking.id }, booking, { upsert: true }, (err, result) => {
+      if (err) {
+        logger.error(err)
+      } else {
+        logger.info(`bookings ${booking.id} completely updated`)
+      }
+    })
+  })
+}
 
 export function getJobId ({ onSuccess, onFailed }) {
   JobModel.count({}, (err, result) => {

@@ -67,6 +67,9 @@ function handleTopicRecieved (socket, io) {
         }
       })
     },
+    'job:edit:save': ({job, bookings}) => {
+      jobModel.saveEditJob({job, bookings})
+    },
     'job:save': ({ jobUnfinished, bookingUnfinished }) => {
       const bookingsData = _.values(bookingUnfinished).map((booking, index) => {
         return Object.assign({}, booking, { id: `${jobUnfinished.id}-${index}` })
@@ -89,7 +92,7 @@ function handleTopicRecieved (socket, io) {
           })
           jobModel.getJobId({
             onSuccess: (data) => {
-              socket.emit('job:get:id', data)
+              io.emit('job:get:id', data)
             }
           })
         }

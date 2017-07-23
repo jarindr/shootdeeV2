@@ -58,12 +58,18 @@ class BookingPage extends React.Component {
     ]
   }
 
+  addBookingRoom = () => {
+    const id = String(this.props.bookingUnfinished.length)
+    this.props.addBookingRoom(id)
+    return id
+  }
+
   render () {
     return (
       <BookingForm
         saveUnfinshedBooking={this.props.saveUnfinshedBooking}
         bookingUnfinished={this.props.bookingUnfinished}
-        addBookingRoom={this.props.addBookingRoom}
+        addBookingRoom={this.addBookingRoom}
         history={this.props.history}
         location={this.props.location}
         job={this.props.job}

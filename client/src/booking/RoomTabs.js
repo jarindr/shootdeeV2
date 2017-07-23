@@ -29,7 +29,6 @@ class RoomTabs extends React.Component {
 
   constructor (props) {
     super(props)
-    this.newTabIndex = 1
     const search = queryString.parse(this.props.location.search)
     this.state = {
       activeKey: search.bookingId || this.props.bookingUnfinished[0].id
@@ -69,8 +68,10 @@ class RoomTabs extends React.Component {
   }
   onChange = (activeKey) => {
     this.setState({ activeKey }, () => {
-      const search = queryString.stringify({bookingId: this.state.activeKey})
-      this.props.history.push({search})
+      if (this.props.location.pathname.split('/')[1] === 'edit') {
+        const search = queryString.stringify({ bookingId: this.state.activeKey })
+        this.props.history.push({ search })
+      }
     })
   }
 
@@ -79,10 +80,15 @@ class RoomTabs extends React.Component {
   }
 
   add = () => {
-    const id = `${this.newTabIndex++}`
-    this.props.addBookingRoom(id)
-    this.setState({activeKey: id})
+    const id = this.props.addBookingRoom()
+    this.setState({ activeKey: id }, () => {
+      if (this.props.location.pathname.split('/')[1] === 'edit') {
+        const search = queryString.stringify({ bookingId: this.state.activeKey })
+        this.props.history.push({ search })
+      }
+    })
   }
+
   remove = (targetKey) => {
     let activeKey = this.state.activeKey
     let lastIndex

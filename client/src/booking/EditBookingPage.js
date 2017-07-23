@@ -49,6 +49,10 @@ class EditBookingPage extends React.Component {
     }
   }
 
+  addBookingRoom = () => {
+    
+  }
+
   saveUnfinshedJob = (entity) => {
     this.setState(oldState => {
       return { job: { ...oldState.job, ...{ [entity.name]: entity.value } } }

@@ -92,8 +92,6 @@ function handleTopicRecieved (socket, io) {
               socket.emit('job:get:id', data)
             }
           })
-        },
-        onFailed: (response) => {
         }
       })
     }

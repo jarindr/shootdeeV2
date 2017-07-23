@@ -1,7 +1,7 @@
 import Immutable from 'immutable'
 import _ from 'lodash'
 import moment from 'moment'
-
+import { PRESETS } from '../misc/constants'
 function getInitialRoomState (id, assignment) {
   const room = assignment === 'Onscreen room' ? 'O' : 'S'
   return {
@@ -27,14 +27,9 @@ const bookingsUnfinishedReducer = (state = initialState, action) => {
       const equipmentsArr = state.get(id).equipments
       if (name === 'equipments') {
         const index = _.findIndex(equipmentsArr, x => x.equipment === value.equipment)
-        if (index === -1) {
-          return state.set(id, {...state.get(id), ...{ equipments: [...equipmentsArr, value] }})
-        } else {
-          equipmentsArr.splice(index, 0, value)
-        }
+        if (index !== -1) equipmentsArr.splice(index, 0, value)
         return state.set(id, {...state.get(id), ...{ equipments: [...equipmentsArr, value] }})
       }
-
       return state.set(id, {...state.get(id), ...{[name]: value}})
     }
     case 'ADD_BOOKING_ROOM': {
@@ -56,21 +51,7 @@ const bookingsUnfinishedReducer = (state = initialState, action) => {
 
     case 'ADD_DEFAULT_EQUIPMENTS': {
       const { bookingId, preset } = action
-      const presetsMap = {
-        profoto: [
-          { equipment: 'Pro-8a 2400 AirEUR', amount: 2, type: 'Profoto' },
-          { equipment: 'Century Stand', amount: 4, type: 'Light stand' },
-          { equipment: 'ProHead', amount: 4, type: 'Profoto' },
-          { equipment: 'Profoto Air Remote', amount: 1, type: 'Profoto' }
-        ],
-        broncolor: [
-          { equipment: 'Broncolor ScoroE 3200', amount: 2, type: 'broncolor' },
-          { equipment: 'Century Stand', amount: 4, type: 'Light stand' },
-          { equipment: 'Lamp Base Pulso G+reflector', amount: 4, type: 'broncolor' },
-          { equipment: 'Transceiver RSF2 Broncolor', amount: 1, type: 'broncolor' }
-        ]
-      }
-      return state.set(bookingId, {...state.get(bookingId), ...{ equipments: presetsMap[preset] }})
+      return state.set(bookingId, {...state.get(bookingId), ...{ equipments: PRESETS[preset] }})
     }
 
     default: {

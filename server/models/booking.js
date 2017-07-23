@@ -18,7 +18,8 @@ const bookingSchema = mongoose.Schema({
   startTime: { type: String },
   endTime: { type: String },
   assistants: { type: [String] },
-  equipments: { type: Array }
+  equipments: { type: Array },
+  preset: { type: String }
 })
 
 export const Booking = mongoose.model('bookings', bookingSchema)

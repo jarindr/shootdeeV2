@@ -9,6 +9,7 @@ import { submitJob, saveUnfinshedJob } from '../../actions/jobUnfinishedActions'
 import { compose } from 'recompose'
 import BookingForm from './BookingForm'
 import queryString from 'query-string'
+import { PRESETS } from '../../misc/constants'
 const enhance = compose(
   withRouter,
   connect(state => ({
@@ -60,6 +61,13 @@ class EditBookingPage extends React.Component {
     const indexEq = _.findIndex(booking.equipments, (x) => x.equipment === equipmentId)
     this.setState((oldState) => {
       _.pullAt(oldState.bookings[index].equipments, [indexEq])
+      return { bookings: oldState.bookings }
+    })
+  }
+  addDefaultEquipment = (bookingId, preset) => {
+    const index = _.findIndex(this.state.bookings, (x) => x.id === bookingId)
+    this.setState((oldState) => {
+      oldState.bookings[index].equipments = PRESETS[preset]
       return { bookings: oldState.bookings }
     })
   }

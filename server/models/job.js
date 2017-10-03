@@ -1,8 +1,6 @@
-import log4js from 'log4js'
 import moment from 'moment'
 import mongoose from 'mongoose'
 import { Booking } from './booking'
-const logger = log4js.getLogger()
 const job = mongoose.Schema({
   id: { type: String, required: true, unique: true },
   customer: { type: String },

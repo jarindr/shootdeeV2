@@ -112,9 +112,7 @@ class LayoutApp extends Component {
         </Header>
         <Route path='/' component={ViewJob} />
         <Row className={styles.innerContentContainer}>
-          <Col span={22} offset={1}>
-            {this.props.children}
-          </Col>
+,
         </Row>
       </Layout>
     )

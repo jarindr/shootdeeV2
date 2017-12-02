@@ -2,6 +2,7 @@ import { withRouter } from 'react-router-dom'
 import React from 'react'
 import { connect } from 'react-redux'
 import propTypes from 'prop-types'
+import { message } from 'antd'
 import { selectBookingsByJobId, selectBookingById } from '../../selectors/bookingsSelectors'
 import { selectjobById } from '../../selectors/jobSelector'
 import { selectEquipmentList } from '../../selectors/equipmentsSelectors'
@@ -120,7 +121,9 @@ class EditBookingPage extends React.Component {
     }
   }
   submitEditJob = () => {
-    this.props.submitEditJob({job: this.state.job, bookings: this.state.bookings})
+    this.props.submitEditJob({ job: this.state.job, bookings: this.state.bookings })
+    message.success(`successfully edit job ${this.state.job.id}`)
+    this.props.history.push('/schedules/')
   }
 
   render () {

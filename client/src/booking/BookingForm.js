@@ -1,4 +1,4 @@
-import { Button, Icon, Steps } from 'antd'
+import { Button, Icon, Steps, message } from 'antd'
 import { Route } from 'react-router-dom'
 import ConfirmJob from './ConfirmJob'
 import JobInformationForms from './JobInformationForms'
@@ -104,8 +104,17 @@ class BookingForm extends React.Component {
     )
   }
 
+  isJobDataValid = () => {
+    if (this.props.job.customer.length === 0) {
+      return message.error('customer fill is empty.')
+    }
+    return true
+  }
+
   onClickSubmitBooking = () => {
-    this.props.submitJob()
+    if (this.isJobDataValid()) {
+      this.props.submitJob()
+    }
   }
 
   onClickStep = (route) => {

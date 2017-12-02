@@ -24,7 +24,7 @@ class JobInformationForm extends Component {
         labelCol={{ sm: { span: 4 } }}
         wrapperCol={{ sm: { span: 10 } }}
       >
-        {getFieldDecorator('customer', { initialValue: this.props.job.customer })(
+        {getFieldDecorator('customer', {initialValue: this.props.job.customer, rules: [{required: true}]})(
           <Input
             size='large'
             placeholder='client'

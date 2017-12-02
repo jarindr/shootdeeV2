@@ -43,8 +43,8 @@ function handleTopicRecieved (socket, io) {
       const id = await jobModel.getJobId()
       socket.emit('job:get:id', id)
     },
-    'job:edit:save': async ({job, bookings}) => {
-      await jobModel.saveEditJob({job, bookings})
+    'job:edit:save': async ({ job, bookings }) => {
+      await jobModel.saveEditJob({ job, bookings })
       const updateBookings = await bookingModel.getAll()
       const jobId = await jobModel.getJobId()
       const jobs = await jobModel.getAll()

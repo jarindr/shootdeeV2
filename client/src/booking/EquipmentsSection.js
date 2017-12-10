@@ -2,7 +2,7 @@ import { Col, Row, Icon, Select, Form, Tag } from 'antd'
 import React, { Component } from 'react'
 
 import EquipmentsSearch from '../components/EquipmentsSearch'
-
+import EquipmentIdModalSelector from '../components/EquipmentIdModalSelectors'
 import propTypes from 'prop-types'
 import styles from './EquipmentsSection.sass'
 import _ from 'lodash'
@@ -19,6 +19,10 @@ class EquipmentSection extends Component {
     preset: propTypes.string
   }
 
+  state = {
+    modalEquipmentIdVisibility: false
+  }
+
   onAddEquipment = (data) => {
     const { equipment, type } = JSON.parse(data.equipment)
     this.props.saveUnfinshedBooking({
@@ -27,9 +31,28 @@ class EquipmentSection extends Component {
       value: { equipment, amount: data.amount, type }
     })
   }
+  onAddEquipmentId = (data) => {
+    this.props.saveUnfinshedBooking({
+      id: this.props.id,
+      name: 'usedEquipmentIds',
+      value: { usedEquipmentIds: {
+        [data.equipmentId]: data.usedEquipmentIds
+      }}
+    })
+  }
 
   onClickRemoveEquipment = (equipmentId, bookingId) => (e) => {
     this.props.removeUnfinshedEquipment(equipmentId, bookingId)
+  }
+
+  onClickAddIdEquipment = (description, amount) => (e) => {
+    console.log(description)
+
+    this.setState({
+      modalEquipmentIdVisibility: true,
+      modalEquipmentId: description,
+      modalEquipmentAmount: amount
+    })
   }
 
   onSelectPreset = (preset) => {
@@ -42,28 +65,34 @@ class EquipmentSection extends Component {
   }
 
   renderAddedEquipments = () => {
-    if (this.props.bookingUnfinishedEquipments) {
-      return _.map(this.props.bookingUnfinishedEquipments, (value, key) => (
-        <div
-          key={value.equipment}
-          className={styles.equipmentName}
-        >
-          <Row>
-            <Col xs={10}><Tag color='pink'>{value.type}</Tag>{value.equipment}</Col>
-            <Col xs={1}>{value.amount}</Col>
-            <Col xs={1}>
-              <span
-                onClick={this.onClickRemoveEquipment(value.equipment, this.props.id)}
-                className={styles.removeEquipmentIcon}
-              >
-                <Icon type='close-circle-o' />
-              </span>
-            </Col>
-          </Row>
-        </div>
+    return _.map(this.props.bookingUnfinishedEquipments, (value, key) => (
+      <div
+        key={value.equipment}
+        className={styles.equipmentName}
+      >
+        <Row>
+          <Col xs={10}><Tag color='pink'>{value.type}</Tag>{value.equipment}</Col>
+          <Col xs={1}>{value.amount}</Col>
+          <Col xs={1}>
+            <span
+              onClick={this.onClickRemoveEquipment(value.equipment, this.props.id)}
+              className={styles.removeEquipmentIcon}
+            >
+              <Icon type='close-circle-o' />
+            </span>
+            <span
+              onClick={this.onClickAddIdEquipment(value.equipment, value.amount)}
+              className={styles.removeEquipmentIcon}
+            >
+              add id
+            </span>
+          </Col>
+        </Row>
+        <Row>
+          <Col xs={10} />
+        </Row>
+      </div>
       ))
-    }
-    return null
   }
 
   renderPresetSelect = () => {
@@ -103,6 +132,11 @@ class EquipmentSection extends Component {
         <Row>
           <Col>
             {this.renderAddedEquipments()}
+            <EquipmentIdModalSelector
+              equipment={this.state.modalEquipmentId}
+              open={this.state.modalEquipmentIdVisibility}
+              amount={this.state.modalEquipmentAmount}
+            />
           </Col>
           <Col>
             <EquipmentsSearch

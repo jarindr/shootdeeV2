@@ -1,5 +1,6 @@
 import { withRouter } from 'react-router-dom'
 import React from 'react'
+import { message } from 'antd'
 import { connect } from 'react-redux'
 import propTypes from 'prop-types'
 import { selectbookingUnfinished } from '../../selectors/bookingUnfinishedSelectors'
@@ -67,6 +68,11 @@ class BookingPage extends React.Component {
     return id
   }
 
+  onSubmit = () => {
+    this.props.submitJob()
+    message.success(`successfully create job ${this.props.job.id}`)
+  }
+
   render () {
     return (
       <BookingForm
@@ -78,7 +84,7 @@ class BookingPage extends React.Component {
         location={this.props.location}
         job={this.props.job}
         equipments={this.props.equipments}
-        submitJob={this.props.submitJob}
+        submitJob={this.onSubmit}
         saveUnfinshedJob={this.props.saveUnfinshedJob}
         stepUrls={this.stepUrls}
         removeUnfinshedEquipment={this.props.removeUnfinshedEquipment}

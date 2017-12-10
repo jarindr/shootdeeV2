@@ -10,7 +10,6 @@ class EquipmentSearch extends Component {
   static propTypes = {
     equipments: PropTypes.array,
     onAddEquipment: PropTypes.func,
-    getFieldDecorator: PropTypes.func,
     form: PropTypes.object
   }
 

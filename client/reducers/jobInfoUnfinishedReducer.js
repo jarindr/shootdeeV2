@@ -15,6 +15,9 @@ const jobInfoUnfinishedReducer = (state = initialState, action) => {
     case 'SET_BOOKING_ID': {
       return state.setIn(['id'], action.jobId)
     }
+    case 'SUBMIT_JOB': {
+      return initialState
+    }
     default: {
       return state
     }

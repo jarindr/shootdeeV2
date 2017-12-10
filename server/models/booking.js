@@ -1,6 +1,4 @@
-import log4js from 'log4js'
 import mongoose from 'mongoose'
-const logger = log4js.getLogger()
 const bookingSchema = mongoose.Schema({
   id: { type: String, required: true, unique: true },
   status: {
@@ -19,6 +17,7 @@ const bookingSchema = mongoose.Schema({
   endTime: { type: String },
   assistants: { type: [String] },
   equipments: { type: Array },
+  usedEquipmentIds: { type: Object },
   preset: { type: String }
 })
 

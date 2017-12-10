@@ -24,8 +24,7 @@ class RoomTabs extends React.Component {
     removeUnfinshedEquipment: PropTypes.func,
     addDefaultEquipment: PropTypes.func,
     equipments: PropTypes.array,
-    location: PropTypes.object,
-    history: PropTypes.object
+    location: PropTypes.object
   }
 
   constructor (props) {

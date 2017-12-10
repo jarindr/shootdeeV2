@@ -24,12 +24,17 @@ const bookingsUnfinishedReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'SAVE_UNFINISHED_BOOKING': {
       const { id, name, value } = action.bookingUnfinished
-      const equipmentsArr = state.get(id).equipments
       if (name === 'equipments') {
+        const equipmentsArr = state.get(id).equipments
         const index = _.findIndex(equipmentsArr, x => x.equipment === value.equipment)
         if (index !== -1) equipmentsArr.splice(index, 0, value)
         return state.set(id, { ...state.get(id), ...{ equipments: [...equipmentsArr, value] } })
       }
+      if (name === 'usedEquipmentIds') {
+        const usedEquipmentIds = state.get(id).usedEquipmentIds
+        return state.set(id, { ...state.get(id), ...{ usedEquipmentIds: { ...usedEquipmentIds, ...value } } })
+      }
+
       return state.set(id, { ...state.get(id), ...{ [name]: value } })
     }
     case 'ADD_BOOKING_ROOM': {

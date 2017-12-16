@@ -106,7 +106,8 @@ class BookingForm extends React.Component {
 
   isJobDataValid = () => {
     if (this.props.job.customer.length === 0) {
-      return message.error('customer fill is empty.')
+      message.error('customer fill is empty.')
+      return false
     }
     return true
   }
@@ -114,6 +115,7 @@ class BookingForm extends React.Component {
   onClickSubmitBooking = () => {
     if (this.isJobDataValid()) {
       this.props.submitJob()
+      this.props.history.push('/schedules/')
     }
   }
 

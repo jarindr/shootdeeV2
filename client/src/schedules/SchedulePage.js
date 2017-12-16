@@ -99,8 +99,6 @@ class SchedulePage extends Component {
     const filterWeek = week ? Number(week) : 0
     const start = moment().add(filterWeek, 'weeks').startOf('isoweek')
     const end = moment().add(filterWeek, 'weeks').endOf('isoweek')
-    console.log(this.props.bookings)
-    
     const dataSource = this.props.bookings
       .reduce((prev, booking, index) => {
         const datesArr = _.uniq(booking.date)

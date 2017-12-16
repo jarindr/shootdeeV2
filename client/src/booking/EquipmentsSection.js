@@ -46,8 +46,6 @@ class EquipmentSection extends Component {
   }
 
   onClickAddIdEquipment = (description, amount) => (e) => {
-    console.log(description)
-
     this.setState({
       modalEquipmentIdVisibility: true,
       modalEquipmentId: description,
@@ -80,11 +78,13 @@ class EquipmentSection extends Component {
             >
               <Icon type='close-circle-o' />
             </span>
+          </Col>
+          <Col>
             <span
               onClick={this.onClickAddIdEquipment(value.equipment, value.amount)}
               className={styles.removeEquipmentIcon}
             >
-              add id
+              <Icon type='tool' />
             </span>
           </Col>
         </Row>

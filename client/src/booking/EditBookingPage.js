@@ -123,6 +123,7 @@ class EditBookingPage extends React.Component {
   submitEditJob = () => {
     this.props.submitEditJob({ job: this.state.job, bookings: this.state.bookings })
     message.success(`successfully edit job ${this.state.job.id}`)
+    this.props.history.push('/schedules/')
   }
 
   render () {

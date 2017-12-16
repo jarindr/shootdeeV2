@@ -2,6 +2,7 @@ import Immutable from 'immutable'
 import _ from 'lodash'
 import moment from 'moment'
 import { PRESETS } from '../misc/constants'
+
 export function getInitialRoomState (id, assignment) {
   const room = assignment === 'Onscreen room' ? 'O' : 'S'
   return {
@@ -13,7 +14,8 @@ export function getInitialRoomState (id, assignment) {
     equipments: [],
     preset: 'no',
     startTime: moment('09:00', 'HH:mm'),
-    endTime: moment('09:00', 'HH:mm')
+    endTime: moment('09:00', 'HH:mm'),
+    usedEquipmentIds: {}
   }
 }
 const initialState = Immutable.Map({
@@ -31,8 +33,22 @@ const bookingsUnfinishedReducer = (state = initialState, action) => {
         return state.set(id, { ...state.get(id), ...{ equipments: [...equipmentsArr, value] } })
       }
       if (name === 'usedEquipmentIds') {
+        console.log(value)
+
         const usedEquipmentIds = state.get(id).usedEquipmentIds
-        return state.set(id, { ...state.get(id), ...{ usedEquipmentIds: { ...usedEquipmentIds, ...value } } })
+        const oldEquipmentIds = usedEquipmentIds[value.equipmentName] || {}
+        console.log('')
+
+        return state.set(id, {
+          ...state.get(id),
+          ...{ usedEquipmentIds:
+          { ...usedEquipmentIds,
+            ...{ [value.equipmentName]:
+              { ...oldEquipmentIds, ...{ [String(value.index)]: value.usedEquipmentId } }
+            }
+          }
+          }
+        })
       }
 
       return state.set(id, { ...state.get(id), ...{ [name]: value } })

@@ -35,9 +35,11 @@ class EquipmentSection extends Component {
     this.props.saveUnfinshedBooking({
       id: this.props.id,
       name: 'usedEquipmentIds',
-      value: { usedEquipmentIds: {
-        [data.equipmentId]: data.usedEquipmentIds
-      }}
+      value: {
+        equipmentName: data.equipmentName,
+        usedEquipmentId: data.usedEquipmentId,
+        index: data.index
+      }
     })
   }
 
@@ -50,6 +52,11 @@ class EquipmentSection extends Component {
       modalEquipmentIdVisibility: true,
       modalEquipmentId: description,
       modalEquipmentAmount: amount
+    })
+  }
+  onCancel = () => {
+    this.setState({
+      modalEquipmentIdVisibility: false
     })
   }
 
@@ -135,7 +142,10 @@ class EquipmentSection extends Component {
             <EquipmentIdModalSelector
               equipment={this.state.modalEquipmentId}
               open={this.state.modalEquipmentIdVisibility}
+              onCancel={this.onCancel}
+              bookingId={this.props.id}
               amount={this.state.modalEquipmentAmount}
+              onAddEquipmentId={this.onAddEquipmentId}
             />
           </Col>
           <Col>

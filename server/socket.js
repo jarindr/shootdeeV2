@@ -53,11 +53,7 @@ function handleTopicRecieved (socket, io) {
       io.emit('job:get:all', jobs)
     },
     'job:save': async ({ jobUnfinished, bookingUnfinished }) => {
-      const bookingsData = _.values(bookingUnfinished).map((booking, index) => {
-        return Object.assign({}, booking, { id: `${jobUnfinished.id}-${index}` })
-      })
-      const jobData = Object.assign({}, jobUnfinished, { bookings: bookingsData.map(x => x.id) })
-      await jobModel.saveJob({job: jobData, bookingUnfinished: bookingsData })
+      await jobModel.saveJob({ job: jobUnfinished, bookingUnfinished: bookingUnfinished })
       const updateBookings = await bookingModel.getAll()
       const jobId = await jobModel.getJobId()
       const jobs = await jobModel.getAll()

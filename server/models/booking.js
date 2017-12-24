@@ -1,6 +1,9 @@
 import mongoose from 'mongoose'
+import CounterModel from './counter'
+import { generateAltId } from './helpers'
 const bookingSchema = mongoose.Schema({
   id: { type: String, required: true, unique: true },
+  jobId: { type: String },
   status: {
     type: String,
     required: true,

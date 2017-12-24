@@ -33,12 +33,8 @@ const bookingsUnfinishedReducer = (state = initialState, action) => {
         return state.set(id, { ...state.get(id), ...{ equipments: [...equipmentsArr, value] } })
       }
       if (name === 'usedEquipmentIds') {
-        console.log(value)
-
         const usedEquipmentIds = state.get(id).usedEquipmentIds
         const oldEquipmentIds = usedEquipmentIds[value.equipmentName] || {}
-        console.log('')
-
         return state.set(id, {
           ...state.get(id),
           ...{ usedEquipmentIds:

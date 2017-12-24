@@ -1,7 +1,8 @@
-import moment from 'moment'
+import { generateAltId } from './helpers'
 import mongoose from 'mongoose'
 import { Booking } from './booking'
-
+import CounterModel from './counter'
+import _ from 'lodash'
 const job = mongoose.Schema({
   id: { type: String, required: true, unique: true },
   customer: { type: String },
@@ -10,12 +11,29 @@ const job = mongoose.Schema({
   bookings: { type: [String] }
 })
 
+job.pre('save', (next) => {
+  CounterModel.findOneAndUpdate({ id: 'jobCounter' },
+    { $inc: { seq: 1 } },
+    { upsert: true, new: true },
+    (error, counter) => {
+      if (error) { return next(error) }
+      job.id = generateAltId(counter.seq)
+      next()
+    })
+})
+
 const JobModel = mongoose.model('job', job)
 
 export async function saveJob ({ job, bookingUnfinished }) {
-  const newJob = new JobModel(job)
-  await newJob.save()
-  await Booking.insertMany(bookingUnfinished)
+  const insertedJob = await JobModel.create(job)
+  const toInsertBookings = _.values(bookingUnfinished).map((booking, i) => {
+    return Object.assign(booking, { jobId: insertedJob.id, id: `${insertedJob.id}-${i}` })
+  })
+  const insertedBookings = await Booking.insertMany(toInsertBookings)
+  await JobModel.findOneAndUpdate({
+    id: insertedJob.id
+  },
+    { bookings: insertedBookings.map(b => b.id) })
 }
 
 export async function saveEditJob ({ job, bookings }) {
@@ -34,10 +52,8 @@ export async function saveEditJob ({ job, bookings }) {
 }
 
 export async function getJobId () {
-  const result = await JobModel.count()
-  let count = `000${result}`
-  count = count.substr(count.length - 4)
-  return `Q${moment().format('YYDD')}${count}`
+  const result = await CounterModel.findOne({ id: 'jobCounter' })
+  return generateAltId(result.seq)
 }
 
 export async function getAll () {

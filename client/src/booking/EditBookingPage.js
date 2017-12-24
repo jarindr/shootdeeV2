@@ -63,6 +63,7 @@ class EditBookingPage extends React.Component {
     const index = _.findIndex(this.state.bookings, x => x.id === bookingId)
     this.setState(oldState => {
       oldState.bookings[index].deleted = true
+      oldState.job.bookings.splice(index, 1)
       return oldState
     })
   }
@@ -99,8 +100,7 @@ class EditBookingPage extends React.Component {
   }
 
   saveUnfinshedBooking = (entity) => {
-    const { bookingId } = queryString.parse(this.props.location.search)
-    const index = _.findIndex(this.state.bookings, (x) => x.id === bookingId)
+    const index = _.findIndex(this.state.bookings, (x) => x.id === entity.id)
     if (entity.name === 'equipments') {
       this.setState((oldState) => {
         const booking = oldState.bookings[index]

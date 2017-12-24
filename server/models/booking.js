@@ -1,6 +1,4 @@
 import mongoose from 'mongoose'
-import CounterModel from './counter'
-import { generateAltId } from './helpers'
 const bookingSchema = mongoose.Schema({
   id: { type: String, required: true, unique: true },
   jobId: { type: String },
@@ -21,7 +19,8 @@ const bookingSchema = mongoose.Schema({
   assistants: { type: [String] },
   equipments: { type: Array },
   usedEquipmentIds: { type: Object },
-  preset: { type: String }
+  preset: { type: String },
+  deleted: { type: Boolean }
 })
 
 export const Booking = mongoose.model('bookings', bookingSchema)

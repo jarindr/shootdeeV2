@@ -91,7 +91,7 @@ class SchedulePage extends Component {
     }
   }
   onRowClick = (record, index, a) => {
-    const search = queryString.stringify({showBooking: record.bookingId})
+    const search = queryString.stringify({ showBooking: record.bookingId })
     this.props.history.push({ search })
   }
   render () {

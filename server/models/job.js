@@ -23,11 +23,13 @@ job.pre('save', (next) => {
 })
 
 const JobModel = mongoose.model('job', job)
-
 export async function saveJob ({ job, bookingUnfinished }) {
   const insertedJob = await JobModel.create(job)
   const toInsertBookings = _.values(bookingUnfinished).map((booking, i) => {
-    return Object.assign(booking, { jobId: insertedJob.id, id: `${insertedJob.id}-${i}` })
+    return Object.assign(booking, {
+      jobId: insertedJob.id,
+      id: `${insertedJob.id}-${i}`
+    })
   })
   const insertedBookings = await Booking.insertMany(toInsertBookings)
   await JobModel.findOneAndUpdate({
@@ -52,7 +54,7 @@ export async function saveEditJob ({ job, bookings }) {
 }
 
 export async function getJobId () {
-  const result = await CounterModel.findOne({ id: 'jobCounter' })
+  const result = await CounterModel.findOne({ id: 'jobCounter' }) || { seq: 0 }
   return generateAltId(result.seq)
 }
 

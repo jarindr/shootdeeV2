@@ -54,7 +54,12 @@ class EditBookingPage extends React.Component {
     const subId = Number(_.last(this.state.bookings.map(x => x.id.split('-')[1]).sort())) + 1
     const id = `${this.state.job.id}-${subId}`
     this.setState(oldState => {
-      oldState.bookings.push(getInitialRoomState(id, this.state.job.assignment))
+      oldState.bookings.push(getInitialRoomState({
+        id,
+        assignment: this.state.job.assignment,
+        jobId: this.state.job.id
+      }))
+      oldState.job.bookings.push(id)
       return oldState
     })
     return id
@@ -64,6 +69,8 @@ class EditBookingPage extends React.Component {
     this.setState(oldState => {
       oldState.bookings[index].deleted = true
       oldState.job.bookings.splice(index, 1)
+      console.log(oldState.job.bookings)
+
       return oldState
     })
   }
@@ -126,6 +133,8 @@ class EditBookingPage extends React.Component {
   }
 
   render () {
+    console.log(this.state)
+
     return (
       <BookingForm
         saveUnfinshedBooking={this.saveUnfinshedBooking}

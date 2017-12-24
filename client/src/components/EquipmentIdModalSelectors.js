@@ -41,7 +41,7 @@ class EquipmentModalSelector extends Component {
   renderEquipmentSelects = () => {
     return Array(this.props.amount).fill()
     .map((x, i) => (
-      <Form.Item>
+      <Form.Item key={i}>
         {this.props.form.getFieldDecorator(String(i))(
           <Select
             showSearch

@@ -32,8 +32,8 @@ class RoomForm extends Component {
     return this.props.assignment !== 'Equipment rental' ? (
       <FormItem
         label={'room'}
-        labelCol={{sm: {span: 4}}}
-        wrapperCol={{sm: {span: 10}}}
+        labelCol={{ sm: { span: 4 } }}
+        wrapperCol={{ sm: { span: 10 } }}
       >
         {this.props.form.getFieldDecorator('room', { initialValue })(
           <Select>
@@ -44,7 +44,7 @@ class RoomForm extends Component {
                 </Option>)
             })}
           </Select>
-      )}
+        )}
       </FormItem>
     ) : null
   }
@@ -54,8 +54,8 @@ class RoomForm extends Component {
     return (
       <FormItem
         label={'status'}
-        labelCol={{sm: {span: 4}}}
-        wrapperCol={{sm: {span: 10}}}
+        labelCol={{ sm: { span: 4 } }}
+        wrapperCol={{ sm: { span: 10 } }}
       >
         {this.props.form.getFieldDecorator('status', { initialValue })(
           <Select>
@@ -63,7 +63,7 @@ class RoomForm extends Component {
             <Option value='CONFIRM'>Confirm</Option>
             <Option value='CANCEL'>Cancel</Option>
           </Select>
-      )}
+        )}
       </FormItem>
 
     )
@@ -73,15 +73,15 @@ class RoomForm extends Component {
     return (
       <FormItem
         label={'date'}
-        labelCol={{sm: {span: 4}}}
-        wrapperCol={{sm: {span: 10}}}
+        labelCol={{ sm: { span: 4 } }}
+        wrapperCol={{ sm: { span: 10 } }}
       >
-        {this.props.form.getFieldDecorator('date', {initialValue})(
+        {this.props.form.getFieldDecorator('date', { initialValue })(
           <DatePicker.RangePicker
-            format={'dddd DD MMMM YYYY'}
-            style={{width: '100%'}}
+            format={'ddd DD/MM/YYYY'}
+            style={{ width: '100%' }}
           />
-      )}
+        )}
       </FormItem>
     )
   }
@@ -101,17 +101,17 @@ class RoomForm extends Component {
     return (
       <FormItem
         label={name}
-        labelCol={{sm: {span: 4}}}
-        wrapperCol={{sm: {span: 10}}}
+        labelCol={{ sm: { span: 4 } }}
+        wrapperCol={{ sm: { span: 10 } }}
       >
-        {this.props.form.getFieldDecorator(name, {initialValue})(
+        {this.props.form.getFieldDecorator(name, { initialValue })(
           <TimePicker
             format='HH:mm'
             hideDisabledOptions
             disabledMinutes={getFilteredRange}
             onChange={this.onTimePickerChange}
           />
-      )}
+        )}
       </FormItem>
     )
   }
@@ -120,10 +120,10 @@ class RoomForm extends Component {
     return (
       <FormItem
         label='assistant'
-        labelCol={{sm: {span: 4}}}
-        wrapperCol={{sm: {span: 10}}}
+        labelCol={{ sm: { span: 4 } }}
+        wrapperCol={{ sm: { span: 10 } }}
       >
-        {this.props.form.getFieldDecorator('assistants', {initialValue})(
+        {this.props.form.getFieldDecorator('assistants', { initialValue })(
           <Select
             mode='multiple'
             placeholder='Please select assistants'
@@ -176,4 +176,4 @@ function onFieldsChange (props, field) {
   props.saveUnfinshedBooking(entity)
 }
 
-export default Form.create({onFieldsChange})(RoomForm)
+export default Form.create({ onFieldsChange })(RoomForm)

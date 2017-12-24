@@ -3,10 +3,9 @@ import _ from 'lodash'
 import moment from 'moment'
 import { PRESETS } from '../misc/constants'
 
-export function getInitialRoomState (id, assignment) {
-  const room = assignment === 'Onscreen room' ? 'O' : 'S'
-  return {
-    id,
+export function getInitialRoomState (options) {
+  const room = options.assignment === 'Onscreen room' ? 'O' : 'S'
+  return Object.assign({
     room,
     status: 'TENTATIVE',
     date: [moment(), moment()],
@@ -16,10 +15,10 @@ export function getInitialRoomState (id, assignment) {
     startTime: moment('09:00', 'HH:mm'),
     endTime: moment('09:00', 'HH:mm'),
     usedEquipmentIds: {}
-  }
+  }, options)
 }
 const initialState = Immutable.Map({
-  '0': getInitialRoomState('0')
+  '0': getInitialRoomState({ id: '0' })
 })
 
 const bookingsUnfinishedReducer = (state = initialState, action) => {
@@ -37,12 +36,15 @@ const bookingsUnfinishedReducer = (state = initialState, action) => {
         const oldEquipmentIds = usedEquipmentIds[value.equipmentName] || {}
         return state.set(id, {
           ...state.get(id),
-          ...{ usedEquipmentIds:
-          { ...usedEquipmentIds,
-            ...{ [value.equipmentName]:
-              { ...oldEquipmentIds, ...{ [String(value.index)]: value.usedEquipmentId } }
+          ...{
+            usedEquipmentIds:
+            {
+              ...usedEquipmentIds,
+              ...{
+                [value.equipmentName]:
+                  { ...oldEquipmentIds, ...{ [String(value.index)]: value.usedEquipmentId } }
+              }
             }
-          }
           }
         })
       }
@@ -50,7 +52,7 @@ const bookingsUnfinishedReducer = (state = initialState, action) => {
       return state.set(id, { ...state.get(id), ...{ [name]: value } })
     }
     case 'ADD_BOOKING_ROOM': {
-      return state.set(action.id, getInitialRoomState(action.id))
+      return state.set(action.id, getInitialRoomState({ id: action.id }))
     }
 
     case 'REMOVE_BOOKING_ROOM': {
@@ -59,9 +61,7 @@ const bookingsUnfinishedReducer = (state = initialState, action) => {
     }
 
     case 'SAVE_UNFINISHED_JOB': {
-      if (action.job.name === 'assignment') {
-        return Immutable.Map({ '0': getInitialRoomState('0', action.job.value) })
-      }
+      if (action.job.name === 'assignment') return initialState
       return state
     }
     case 'REMOVE_EQUIPMENT_UNFINISHED_BOOKING': {
